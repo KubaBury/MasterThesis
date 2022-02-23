@@ -1,11 +1,10 @@
 using Distributions
 using Flux
 using Flux: @epochs, throttle, @show, train!
-using LaTeXStrings
-using Plots, PlotlyJS
+using Plots
 using Random
 
-Random.seed!(12314)
+Random.seed!(12314)#seed
 N = 100; # number of samples
 dataDist = Normal(5, 2); #distribution of the data
 x = rand(dataDist, N) #training data
@@ -69,11 +68,11 @@ println("μ=$μ, σ=$σ, c=$c") #results
 
 plotlyjs() #initalize backend
 
-plot(1:length(L),L,xlabel="time", ylabel="loss",
+A=plot(1:length(L),L,xlabel="time", ylabel="loss",
 linewidth=3, label="loss")
 
-plot(-2:0.01:12,pdf.(Normal(5.0,2.0),-2:0.01:12 ), 
-linewidth=3,fill=(0,:lightblue), fillalpha=0.3)
+B=plot(-2:0.01:12,pdf.(Normal(5.0,2.0),-2:0.01:12 ), 
+linewidth=3,fill=(0,:lightblue), fillalpha=0.3, label="true")
 
 plot!(-2:0.01:12,exp.(Gaussianlogpdf(collect(-2:0.01:12),μ,σ,c)), 
-linewidth=3, fill=(0,:red), fillalpha=0.3)
+linewidth=3, fill=(0,:red), fillalpha=0.3, label="estimated")
