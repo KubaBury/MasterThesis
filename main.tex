@@ -63,7 +63,6 @@
 \newcommand{\A}{\mathrm{A}}
 \newcommand{\BS}{\mathrm{BS}}
 \newcommand{\HF}{H_F^{-1}}
-
 \newcommand{\prostor}{(\Omega,\mathcal{A},\PP)} % prostor
 \newcommand{\mi}{\mathrm{i}} % imaginární jednotka
 \newcommand{\R}{\mathbb{R}} % množina reálných čísel
@@ -632,7 +631,11 @@ where subscript $\boldsymbol{\theta}$ emphasizes that $\pi_{\boldsymbol{\theta}}
 \begin{equation}
 \min_{\boldsymbol{\theta}} D_{\mathrm{KL}} \left(\Psi || \Pi \right) = \min_{\boldsymbol{\theta}} - \E_{x\sim \psi}\left[\log \pi_{\boldsymbol{\theta}}\left(x\right)\right] 
 \end{equation}
-In practice, expected value $\E$ is usually replaced by sample mean. 
+In practise it is dealt with discrete data, so $ \E_{x\sim \psi}\left[\log \pi_{\boldsymbol{\theta}}\left(x\right)\right] $ takes the form
+\begin{equation}
+\E_{x\sim \psi}\left[\log \pi_{\boldsymbol{\theta}}\left(x\right)\right] = \sum_{i=1}^N\psi(x_i)\log \pi_{\boldsymbol{\theta}}\left(x_i)\right)
+\end{equation}
+
 \subsection{One-hot encoding}\label{OHE}
  Machine learning (ML) algorithms can misinterpret the numeric values of labels if there exists any hiearchy between them. One-hot encoding is a very common approach how to deal with this issue, in order to improve the algorithm performance. \\
  Each unique category value is transformed into a new column and these dummy variables are then filled up with 0 or 1 (0 for FALSE and 1 for TRUE). Transformation of a label encoding to the one-hot encoding is illustrated in following tables \ref{tab:LE} and \ref{tab:OHE}. \\
@@ -680,7 +683,7 @@ The obbjective above is called joint energy model and it is obvious that $f_{\bo
 \begin{equation}
 	p\left(\boldsymbol{x}\right) = \frac{\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)}{Z(\boldsymbol{\theta})},
 \end{equation}
-where energy is given by $E_{\boldsymbol{\theta}}(\boldsymbol{x}) = -\log\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)$. Very useful property appears when computing $p(y|\boldsymbol{x})$. We can take advatage of the definition of conditional distribution $p(y|\boldsymbol{x})~=~\frac{p\left(\boldsymbol{x},y\right)}{p\left(\boldsymbol{x}\right)}$, yielding  
+where energy is given by $E_{\boldsymbol{\theta}}(\boldsymbol{x}) = -\log\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)$. Very useful property appears when computing $p(y|\boldsymbol{x})$. We can take advantage of the definition of conditional distribution $p(y|\boldsymbol{x})~=~\frac{p\left(\boldsymbol{x},y\right)}{p\left(\boldsymbol{x}\right)}$, yielding  
 \begin{equation}\label{softmaxdef}
 	p_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right) = \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)}.
 \end{equation}
@@ -691,26 +694,49 @@ Note that the normalization constant $Z(\boldsymbol{\theta})$ canceled out and w
 	\min_{\boldsymbol{\theta}}- \mathbb{E}_{p_{\mathrm{data}}(\boldsymbol{x})}\left[\log \frac{\exp\left({h_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)\cdot h_{\boldsymbol{\theta}}\left(\boldsymbol{x}'\right)}\right)}{\sum_{i=1}^N\exp\left({h_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)\cdot h_{\boldsymbol{\theta}}(\boldsymbol{x}_i) }\right)} \right].
 \end{equation}
 Function $h_{\boldsymbol{\theta}}: \mathbb{R}^D \to \mathbb{R}^H$ maps each data point to a representation space with dimension $H$, while $\boldsymbol{x}$ and $\boldsymbol{x}'$ are two different augmented views of the same data point. If $\boldsymbol{x}$ is an image, then augmented view of $\boldsymbol{x}$ can be obtained for example by rotation or colorization of that image. Note that the inner product between two vectors can replaced with any distance metric, for example Euclidean distance. \\
-What this objective does is that it tries to maximally distinguish an input $\boldsymbol{x}_i$ from an alternative input $\boldsymbol{x}'_i$. In other words, \eqref{eq:contrastive} reduces the distance between representations of different augmented views of the same image $\boldsymbol{x}, \boldsymbol{x}'$ (positive pairs) and increases the distance between representations of augmented viwes of from different images (negative pairs). This means that the model should be able to distinguish between different types of images without even knowing what these images really are. 
+What this objective does is that it tries to maximally distinguish an input $\boldsymbol{x}_i$ from an alternative input $\boldsymbol{x}'_i$. In other words, \eqref{eq:contrastive} reduces the distance between representations of different augmented views of the same image $\boldsymbol{x}, \boldsymbol{x}'$ (positive pairs) and increases the distance between representations of augmented views of from different images (negative pairs). This means that the model should be able to distinguish between different types of images without even knowing what these images really are. 
 \subsection{Noise-contrastive estimation}
-Suppose we have to estimate a model that is specified by an unnormalized probability density function $q^0_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)$. Thus, we introduce the another parameter $c$ among the estimated parameters $\boldsymbol{\theta}$. For clarity, the symbol $\boldsymbol{\theta}^\star=\lbrace \boldsymbol{\theta}, c\rbrace$ is introduced for the set of estimated parameters including $c$. 
+Suppose we have to estimate a model that is specified by an non-normalized probability density function $q^0_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)$. Thus, we introduce the another parameter $c$ among the estimated parameters $\boldsymbol{\theta}$. For clarity, the symbol $\boldsymbol{\theta}^\star=\lbrace \boldsymbol{\theta}, c\rbrace$ is introduced for the set of estimated parameters including $c$. 
 Using this notation, the following equality then holds 
 \begin{equation}
 \ln q_{\boldsymbol{\theta}^\star}\left(\boldsymbol{x}\right) = \ln q^0_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) + c
 \end{equation}
 which means that the newly introduced parameter $c$ is an estimate of the negative logarithm of the normalization constant $Z(\boldsymbol{\theta})$.\\
 As the name of the subsection suggests, we use noise to estimate. 
-By our convention, let $\boldsymbol{x}_1,...,\boldsymbol{x}_N$ be the observations and $\boldsymbol{e}_1,...,\boldsymbol{e}_N$ be the artificially generated noise data with known distribution $\pi\left(\boldsymbol{e}\right)$. The $\widehat{\boldsymbol{\theta}^\star}$ estimate is then defined as 
+By our convention, let $\boldsymbol{x}_1,...,\boldsymbol{x}_N$ be the observations and $\boldsymbol{e}_1,...,\boldsymbol{e}_N$ be the artificially generated noise data with known distribution $\psi\left(\boldsymbol{e}\right)$. The $\widehat{\boldsymbol{\theta}^\star}$ estimate is then defined as 
 \begin{align}
-    \widehat{\boldsymbol{\theta}^\star} =& \argmax_{\boldsymbol{\theta}^\star} \pazocal{L}^{\mathrm{NC}}\left(\boldsymbol{\theta}^\star \right) \\= &\argmax_{\boldsymbol{\theta}^\star}\frac{1}{2N} \sum_{i=1}^N \ln{h(\boldsymbol{x}_i, \boldsymbol{\theta}^\star)} + \ln{\left(1 - h(\boldsymbol{e}_i, \boldsymbol{\theta}^\star)\right)}
+    \widehat{\boldsymbol{\theta}^\star} =& \argmax_{\boldsymbol{\theta}^\star} \pazocal{L}^{\mathrm{NC}}\left(\boldsymbol{\theta}^\star \right) \\= &\argmax_{\boldsymbol{\theta}^\star}\frac{1}{2N} \sum_{i=1}^N \ln{\sigma_{\bt^\star}(\boldsymbol{x}_i}) + \ln{\left(1 - \sigma_{\bt^\star}(\boldsymbol{e}_i)\right)}
 \end{align}
-where function $h$ is in the form
+where $\sigma_{\bt^\star}$ is logistic function
 \begin{align}
-    h(.) = \frac{1}{1 + \exp(-\ln q_{\boldsymbol{\theta}^\star}\left(\boldsymbol{.}\right) + \ln \pi\left(\boldsymbol{.}\right))}
+    \sigma_{\bt^\star}(\boldsymbol{x}) = \frac{1}{1 + \exp\left(-G_{\boldsymbol{\theta}^\star}(\boldsymbol{x})\right)}
+\end{align}
+and finally $G_{\bt^\star}$ is the difference of the log-likelihoods of $q_{\boldsymbol{\theta}^\star}$ and    $\psi$, hence
+\begin{align}
+G_{\bt^\star}(\boldsymbol{x}) = \ln q_{\boldsymbol{\theta}^\star}\left(\boldsymbol{x}\right) - \ln \psi\left(\boldsymbol{x}\right).
 \end{align}
 
-It may be noted that equation 4.14 also appears in supervised learning and is called binary cross-entropy loss.  It is actually a special case of cross-entropy itself. Thus, it is used for classification between two classes. 
-
+It may be noted that equation 4.15 also appears in supervised learning and is called binary cross-entropy loss.  It is actually a special case of cross-entropy itself. Thus, it is used for classification between two classes. This gives an intuitive insight into how noise-contrastive estimation really works. By comparing data and noise, the model is learned, so this method can be called learning by comparison.
+\subsubsection{Experiment}
+To test this approach, we perform a simple experiment.There are a total of $N=100$ i.i.d. one dimensional observations $x$ from an unknown distribution that is assumed to be non-normalized and Gaussian. It is therefore of the form
+\begin{equation}
+q_{\bt^\star}(x) =  \exp\left(-\frac{1}{2}\cdot\frac{(x-\mu)^2}{\sigma^2} + c\right)
+\end{equation}
+where $\bt^\star = \{\mu, \sigma, c\}$. Next, we artificially generate $N=100$ noise data $e$, which is again easiest to do using a Gaussian distribution. Which means that it can be chosen, for example
+\begin{equation}
+\psi(e) =  \frac{1}{\sqrt{2\pi 10}}\exp\left(-\frac{1}{2}\cdot\frac{e^2}{10}\right).
+\end{equation}
+At this point it is possible to construct a function $\pazocal{L}^{\mathrm{NC}}\left(\boldsymbol{\theta}^\star \right)$ that is minimized using stochastic gradient descent. The following figure shows the training process and the comparison between the estimated distribution and the true one.
+\begin{figure}[h]
+	\centering
+	\subfloat[Training loss function]
+	{{\includegraphics[width=8.0cm]{images/NCE_loss.pdf} }}%
+	\subfloat[Comparison of true and estimated pdf]
+	{{\includegraphics[width=8.0cm]{images/NCE_results.pdf} }}%
+	\caption{Results of the NCE experiment.}%
+	\label{NCE_experiment}%
+\end{figure}
+As can be seen in the figure \ref{NCE_experiment}, this approach works quite well and for more observations results would be even better.
 \section{Hybrid Dicriminative and Generative Models, HDGM}
 In this section will be discussed an approach, how to combine both of the already mentioned models.
 Authors of the article \cite{HDGEmain} proposed a solution, however the rationale of this objective originates from \cite{generativevsdisriminative}, where authors show that hybrid models can out--perform purely generative or purely discriminative counterparts.\\
@@ -740,7 +766,7 @@ Now it is possible to substitute approximation \eqref{approxcontrasstive} to Equ
 	&\label{eq:hybrid}\approx	\min_{\boldsymbol{\theta}}- \mathbb{E}_{p_{\mathrm{data}}(\boldsymbol{x},y)}\left[\alpha\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)}+ \left(1-\alpha\right)\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^M\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}_i\right)[y]}\right)} \right]. 
 \end{align}
 Parameter $\alpha$ is a weight between $\left[0,1\right]$. It is obvious that in the case of $\alpha = 1$, the objective reduces to the standard cross entropy loss, while $\alpha = 0$, the objective is reduced to a case called an \emph{end-to-end supervised version of contrastive learning}. The choice of parameter $\alpha$ is a decision of the experiment designer, however authors in \cite{HDGEmain} evaluated many possible variants in performed experiments and found out that the choice of $\alpha=0.5$ yields to the highest performance on a classification accuracy. As far as we know, these experiments involved only image classification, unfortunately. \\
-Hybrid combination of supervised learning and contrastive learning \eqref{eq:hybrid} is for us absolutely crucial as we extend this approach to multiple instance learning problem, but this is disscused more in further sections.  
+Hybrid combination of supervised learning and contrastive learning \eqref{eq:hybrid} is for us absolutely crucial as we extend this approach to multiple instance learning problem, but this is discussed more in further sections.  
 
 
 \section{Toy problem - Polynomial Regression}
@@ -753,7 +779,7 @@ where the model model is given by
 \begin{equation}
 	f_{\boldsymbol{\theta}}(x)[y] = -E_{\boldsymbol{\theta}}(x,y) .
 \end{equation}
-At this point, we should transform our problem to the polynomial regression. We need to be aware of the discriminative term in the Equation \eqref{q1q2}, because we do not want to clasify, but we would like to find the best fit to the given data. For this reason, we replace that with the typical regression loss
+At this point, we should transform our problem to the polynomial regression. We need to be aware of the discriminative term in the Equation \eqref{q1q2}, because we do not want to classify, but we would like to find the best fit to the given data. For this reason, we replace that with the typical regression loss
 \begin{equation}\label{S(theta)}
 	S = S(\boldsymbol{\theta}) = \sum_{k=1}^N \left(y_k - \sum_{i=0}^{s-1} \theta_i x^i_k\right)^2.
 \end{equation}	
@@ -765,11 +791,11 @@ thus we need to find $p(y\vert x)$ and $p(x)$. From polynomial regression we can
 \begin{equation}\label{eq:linregpdf}
 	p(y\vert x, \boldsymbol{\theta}) = \pazocal{N}\left(\sum_{i=0}^{s-1} \theta_i x^i, \sigma^2 \right),
 \end{equation}
-where symbol $\pazocal{N}(\cdot)$ denotes probability density fucntion of Normal distribution and $\sigma^2$ is known variance. In this case, we also need to determine prior distribution on $x$. To keep this example simple, let the pdf takes the form
+where symbol $\pazocal{N}(\cdot)$ denotes probability density function of Normal distribution and $\sigma^2$ is known variance. In this case, we also need to determine prior distribution on $x$. To keep this example simple, let the pdf takes the form
 \begin{equation}\label{eq:tauprior}
 	p(x|\tau) = \pazocal{N}\left(0, \tau^2\right),
 \end{equation}
-where the choice of parameter $\tau$ is based on the fact that we would like to have a non--informative prior, thus $\tau$ should be adequately high. If the value of $\tau$ is high, data are spread very far from their expected value.  Subtituting Equation \eqref{eq:tauprior} and \eqref{eq:linregpdf} to the \eqref{eq:chainrule} results to
+where the choice of parameter $\tau$ is based on the fact that we would like to have a non--informative prior, thus $\tau$ should be adequately high. If the value of $\tau$ is high, data are spread very far from their expected value.  Substituting Equation \eqref{eq:tauprior} and \eqref{eq:linregpdf} to the \eqref{eq:chainrule} results to
 \begin{equation}
 	p(x,y) = \pazocal{N}\left(0,\tau^2\right) \cdot \pazocal{N}\left(\sum_{i=0}^{s-1} \theta_i x^i, \sigma^2 \right)  =  \frac{1}{2\pi\sigma\tau}\exp\left(-\frac{\left(y-\sum_{i=0}^{s-1} \theta_i x^i\right)^2}{2\sigma^2}-\frac{x^2}{2\tau^2}\right),
 \end{equation}
@@ -792,7 +818,7 @@ Note that for $\alpha =1$ we get purely polynomial regression and for $\alpha =0
 We would like to test the sensitivity of this approach on the unknown parameter $\tau$ and order of the polynomial $s-1$. In addition, we would like to observe, how the estimated model behaves in relation to $\alpha$. \\
 We generated synthetic data, two clusters consisting of 5 datapoints each, then the model was fitted for different weight $\alpha \in \left\{0.0, 0.1, 0.2,\dots,1.0\right\}$, giving 11 different models in total. Models estimated for $\alpha \in \left\{0.0, 0.5, 1.0 \right\}$ are highlighted as they are more important to us then the other models.\\
 At first, we trained the mentioned models for the fixed order of the polynomial, but for 6 different values of the parameter $\tau$. Obtained results (Figure \ref{fig:linregtoy_tau}) for small $\tau$ barely vary from those for high $\tau$, that is exactly what we hoped for, since the prior distribution should be non--informative \eqref{eq:tauprior}.  This is very exciting discovery, because there is no need to know much information about the data distribution.\\
-Secondly, we trained our polynomial models for the fixed value of $\tau$ with 6 different values of the order of the polynomial. The goal of this part of the experiment is to observe how the contrastive part of Equation \eqref{eq:SSEq} affects the polynomial regression loss for different values of $s-1$. As can be seen in Figure \ref{fig:linregtoy_s}, for small $s-1$, such as $s-1 = 2$, term $\log q_{\theta}\left(x|y\right)$ does not affect polynomial regression too much. However, we get considerable difference for higher orders of the polynomial. Furthermore, it seems that the curve $\alpha = 0$ prefers not to oscilate. This also could be very interesting, because combining of discriminative and generative models could result in better model predictions.    
+Secondly, we trained our polynomial models for the fixed value of $\tau$ with 6 different values of the order of the polynomial. The goal of this part of the experiment is to observe how the contrastive part of Equation \eqref{eq:SSEq} affects the polynomial regression loss for different values of $s-1$. As can be seen in Figure \ref{fig:linregtoy_s}, for small $s-1$, such as $s-1 = 2$, term $\log q_{\theta}\left(x|y\right)$ does not affect polynomial regression too much. However, we get considerable difference for higher orders of the polynomial. Furthermore, it seems that the curve $\alpha = 0$ prefers not to oscillate. This also could be very interesting, because combining of discriminative and generative models could result in better model predictions.    
 
 \begin{figure}[h] 
 	\centering
@@ -841,9 +867,9 @@ In standard machine learning problems each sample is represented by a fixed vect
 \begin{figure}[h]
 	\centering
 	\subfloat[Standard machine learning]
-	{{\includegraphics[width=8.0cm]{images/tikzit_image1} }}%
+	{{\includegraphics[width=8.0cm]{images/tikzit_image1.pdf} }}%
 	\subfloat[Multiple instance learning]
-	{{\includegraphics[width=8.0cm]{images/tikzit_image3} }}%
+	{{\includegraphics[width=8.0cm]{images/tikzit_image3.pdf} }}%
 	\caption{The difference between standard ML and MIL \cite{mandlik}. Standard ML is special case of MIL with $\vert b \vert = 1$. }%
 	\label{ggm}%
 \end{figure}
@@ -888,9 +914,9 @@ For prediction error metrics will be simply used standard cross--entropy loss  a
 \end{para}
 \vspace{1cm}
 
-To summarize,  we fit 100 models for selected $z$ on train data and evaluate prediction error for all of them on test data, then we take mean value. This proccess is repetead for each $z~\in~\left\{1,2,3\dots,20 \right\}$, giving 2000 models in total. 
+To summarize,  we fit 100 models for selected $z$ on train data and evaluate prediction error for all of them on test data, then we take mean value. This process is repeated for each $z~\in~\left\{1,2,3\dots,20 \right\}$, giving 2000 models in total. 
 \subsection{Results}
-As can be seen in Figure \ref{CV}, obtained results are totally expected. The prediction error evaluated on the training data for higher model complexity approaches zero. However, testing data give oscilating curves with an increasing trend (with a little exception of Musk1), therefore the model selection is neccessary. This applies for each dataset.  In addition, following table \ref{tab:resultsCV} numerically summarizes the results evaluated on testing data. 
+As can be seen in Figure \ref{CV}, obtained results are totally expected. The prediction error evaluated on the training data for higher model complexity approaches zero. However, testing data give oscillating curves with an increasing trend (with a little exception of Musk1), therefore the model selection is necessary. This applies for each dataset.  In addition, following table \ref{tab:resultsCV} numerically summarizes the results evaluated on testing data. 
 
 \begin{figure}[h]
 	\centering
