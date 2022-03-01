@@ -9,7 +9,8 @@ N = 100; # number of samples
 dataDist = Normal(5, 2); #distribution of the data
 x = rand(dataDist, N) #training data
 noiseDist = Normal(0, 10); #distribution of the noise data
-y = rand(noiseDist,N) #noise data
+y = rand(noiseDist, N) #noise data
+
 
 """
 Computes log-likelihood for given vector of data u with parameters mean μ, 
@@ -53,26 +54,27 @@ function loss_binary(x::Vector{Float64}, y::Vector{Float64})
     loss = -sum(log.(h(x, μ, σ, c)) .+ log.(1 .- h(y, μ, σ, c)))
     return loss
 end
-
-# set initial value for training
 μ = [0.0]
 σ = [1.0]
 c = [1.0]
 
+
+# set initial value for training
+
 L = Float64[]
-opt = Flux.ADAM(); #optimalization method
-evalcb() =  push!(L, loss_binary(x,y))
-Flux.train!((x, y) -> loss_binary(x, y), [μ, σ, c], Iterators.repeated((x, y), 10000), opt,cb=throttle(evalcb,1)) # train binary
+opt = Flux.ADAM() #optimalization method
+evalcb() = push!(L, loss_binary(x, y))
+Flux.train!((x, y) -> loss_binary(x, y), [μ, σ, c], Iterators.repeated((x, y), 10000), opt, cb = throttle(evalcb, 1)) # train binary
 println("μ=$μ, σ=$σ, c=$c") #results
 
 
-plotlyjs() #initalize backend
+#plotlyjs() #initalize backend
 
-A=plot(1:length(L),L,xlabel="time", ylabel="loss",
-linewidth=3, label="loss")
+#A = plot(1:length(L), L, xlabel = "time", ylabel = "loss",
+#linewidth = 3, label = "loss")
 
-B=plot(-2:0.01:12,pdf.(Normal(5.0,2.0),-2:0.01:12 ), 
-linewidth=3,fill=(0,:lightblue), fillalpha=0.3, label="true")
+#B = plot(-2:0.01:12, pdf.(Normal(5.0, 2.0), -2:0.01:12),
+#linewidth = 3, fill = (0, :lightblue), fillalpha = 0.3, label = "true")
 
-plot!(-2:0.01:12,exp.(Gaussianlogpdf(collect(-2:0.01:12),μ,σ,c)), 
-linewidth=3, fill=(0,:red), fillalpha=0.3, label="estimated")
+#plot!(-2:0.01:12, exp.(Gaussianlogpdf(collect(-2:0.01:12), μ, σ, c)),
+#linewidth = 3, fill = (0, :red), fillalpha = 0.3, label = "estimated")
