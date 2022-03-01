@@ -336,7 +336,7 @@
 \noindent %
 \begin{minipage}[c]{3cm}%
 \noindent \begin{center}
-\includegraphics[width=3cm,height=3cm,keepaspectratio]{Images/TITLE/cvut}
+\includegraphics[width=3cm,height=3cm,keepaspectratio]{plots/Images/TITLE/cvut}
 \par\end{center}%
 \end{minipage}%
 \begin{minipage}[c]{0.6\linewidth}%
@@ -347,18 +347,18 @@
 \end{minipage}%
 \begin{minipage}[c]{3cm}%
 \noindent \begin{center}
-\includegraphics[width=3cm,height=3cm,keepaspectratio]{Images/TITLE/fjfi}
+\includegraphics[width=3cm,height=3cm,keepaspectratio]{plots/Images/TITLE/fjfi}
 \par\end{center}%
 \end{minipage}
 
 \vspace{3cm}
 
-\textbf{\huge{}Generative and discriminative models for set data}{\huge\par}
+\textbf{\huge{}Hybrid Discriminative-Generative Training for Set data}{\huge\par}
 
 \vspace{1cm}
 
 \selectlanguage{czech}%
-\textbf{\huge{}Generativní a diskriminativní modely pro množinová data}{\huge\par}
+\textbf{\huge{}Hybridní diskriminativně-generativní modely pro množinová data}{\huge\par}
 
 \selectlanguage{american}%
 \vspace{2cm}
@@ -553,7 +553,7 @@ To obtain some quantitative insight into dependance of the generalization perfor
 In general, prediction error evaluated on the training data for increasing model complexity approaches zero. On the other hand, prediction error evaluated on the testing data for increasing model complexity is (from certain point) increasing as well. The typical scenario is illustrated in Figure \ref{fig:Prediction_error}.
  \begin{figure}[h]
 	\centering
-	\includegraphics[width=16.0cm]{Images/TITLE/PE3.pdf}
+	\includegraphics[width=16.0cm]{plots/Images/PE3.pdf}
 	\caption{Evaluation of prediction error as a function of model complexity.}%
 	\label{fig:Prediction_error}%
 \end{figure}
@@ -773,19 +773,19 @@ Secondly, we trained our polynomial models for the fixed value of $\tau$ with 6 
 \begin{figure}[h] 
 	\centering
 	\subfloat[Estimated model for $\tau=1$ and $s=11$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/tau1.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/tau1.pdf} }}%
 	\subfloat[Estimated model for $\tau=10$ and $s=11$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/tau10.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/tau10.pdf} }}%
 	\
 	\subfloat[Estimated model for $\tau=100$ and $s=11$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/tau100.pdf} }}%,
+	{{\includegraphics[width=8.0cm]{plots/Images/tau100.pdf} }}%,
 	\subfloat[Estimated model for $\tau=1000$ and $s=11$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/tau1000.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/tau1000.pdf} }}%
 	\
 	\subfloat[Estimated model for $\tau=100000$ and $s=11$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/tau100000.pdf} }}%,
+	{{\includegraphics[width=8.0cm]{plots/Images/tau100000.pdf} }}%,
 	\subfloat[Estimated model for $\tau=1000000$ and $s=11$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/tau1000000.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/tau1000000.pdf} }}%
 	\caption{Sensitivity of the polynomial model to parameter $\tau$ with parameter $s$ held fixed for six different cases.}%
 	\label{fig:linregtoy_tau}%
 \end{figure}
@@ -793,19 +793,19 @@ Secondly, we trained our polynomial models for the fixed value of $\tau$ with 6 
 \begin{figure}[h]
 	\centering
 	\subfloat[Estimated model for $\tau=100$ and $s-1=2$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/n2.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/n2.pdf} }}%
 	\subfloat[Estimated model for $\tau=100$ and $s-1=4$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/n4.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/n4.pdf} }}%
 	\
 	\subfloat[Estimated model for $\tau=100$ and $s-1=5$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/n5.pdf} }}%,
+	{{\includegraphics[width=8.0cm]{plots/Images/n5.pdf} }}%,
 	\subfloat[Estimated model for $\tau=100$ and $s-1=6$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/n6.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/n6.pdf} }}%
 	\
 	\subfloat[Estimated model for $\tau=100$ and $s-1=8$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/n8.pdf} }}%,
+	{{\includegraphics[width=8.0cm]{plots/Images/n8.pdf} }}%,
 	\subfloat[Estimated model for $\tau=100$ and $s-1=10$.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/n10.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/n10.pdf} }}%
 	\caption{Sensitivity of the polynomial model to the order of polynomial $s-1$ for six different cases.}%
 	\label{fig:linregtoy_s}%
 \end{figure}
@@ -817,9 +817,9 @@ In standard machine learning problems each sample is represented by a fixed vect
 \begin{figure}[h]
 	\centering
 	\subfloat[Standard machine learning]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/tikzit_image1} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/tikzit_image1} }}%
 	\subfloat[Multiple instance learning]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/tikzit_image3} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/tikzit_image3} }}%
 	\caption{The difference between standard ML and MIL \cite{mandlik}. Standard ML is special case of MIL with $\vert b \vert = 1$. }%
 	\label{ggm}%
 \end{figure}
@@ -848,7 +848,7 @@ In this experiment, datasets are 100 times randomly split into 2 sets in advance
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=16.0cm, trim={4cm 4.0cm 0.5cm 3.5cm},clip]{Images/TITLE/nn.pdf}
+	\includegraphics[width=16.0cm, trim={4cm 4.0cm 0.5cm 3.5cm},clip]{plots/Images/nn.pdf}
 	\caption{NN example for $z=5$, where input and output layer are only illustrative.}
 	\label{NN}
 \end{figure}
@@ -871,14 +871,14 @@ As can be seen in Figure \ref{CV}, obtained results are totally expected. The pr
 \begin{figure}[h]
 	\centering
 	\subfloat[CV for dataset Musk1.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/KFCV_Musk4.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/KFCV_Musk4.pdf} }}%
 	\subfloat[CV for dataset Musk2.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/KFCV_Musk2.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/KFCV_Musk2.pdf} }}%
 	\
 	\subfloat[CV for dataset Fox.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/KFCV_Fox.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/KFCV_Fox.pdf} }}%
 	\subfloat[CV for dataset Tiger.]
-	{{\includegraphics[width=8.0cm]{Images/TITLE/KFCV_Tiger.pdf} }}%
+	{{\includegraphics[width=8.0cm]{plots/Images/KFCV_Tiger.pdf} }}%
 	\caption{Evaluation of prediction error with the use of training data and testing data on MIL datasets Musk1, Musk2, Fox and Tiger. }%
 	\label{CV}%
 \end{figure}
@@ -943,14 +943,14 @@ Overall, it can be said that HDGM approach leads to the decreased prediction err
 \begin{figure}[h]
 	\centering
 	\subfloat[HDGM for dataset Musk1.]
-	{{\includegraphics[width=8.2cm]{Images/TITLE/HDGM_Musk3.pdf} }}%
+	{{\includegraphics[width=8.2cm]{plots/Images/HDGM_Musk3.pdf} }}%
 	\subfloat[HDGM for dataset Musk2.]
-	{{\includegraphics[width=8.2cm]{Images/TITLE/HDGM_Musk4.pdf} }}%
+	{{\includegraphics[width=8.2cm]{plots/Images/HDGM_Musk4.pdf} }}%
 	\
 	\subfloat[HDGM for dataset Fox.]
-	{{\includegraphics[width=8.2cm]{Images/TITLE/HDGM_Fox.pdf} }}%
+	{{\includegraphics[width=8.2cm]{plots/Images/HDGM_Fox.pdf} }}%
 	\subfloat[HDGM for dataset Tiger.]
-	{{\includegraphics[width=8.2cm]{Images/TITLE/HDGM_Tiger.pdf} }}
+	{{\includegraphics[width=8.2cm]{plots/Images/HDGM_Tiger.pdf} }}
 	\caption{Evaluation of the prediction error $\widehat{\mathrm{Err}}(\alpha)$ with the use of training data and testing data on MIL datasets. }%
 	\label{fig:HDGE}%
 \end{figure}
@@ -974,14 +974,14 @@ Overall, it can be said that HDGM approach leads to the decreased prediction err
 \begin{figure}[h]
 	\centering
 	\subfloat[HDGM: $\alpha=0.5$ vs Discriminative; Musk1.]
-	{{\includegraphics[width=8.2cm]{Images/TITLE/supervisedvsHDGM0_5_Musk1.pdf} }}%
+	{{\includegraphics[width=8.2cm]{plots/Images/supervisedvsHDGM0_5_Musk1.pdf} }}%
 	\subfloat[HDGM: $\alpha=0.5$ vs Discriminative; Musk2.]
-	{{\includegraphics[width=8.2cm]{Images/TITLE/supervisedvsHDGM0_5_Musk2.pdf} }}%
+	{{\includegraphics[width=8.2cm]{plots/Images/supervisedvsHDGM0_5_Musk2.pdf} }}%
 	\
 	\subfloat[HDGM: $\alpha=0.5$ vs Discriminative; Fox.]
-	{{\includegraphics[width=8.2cm]{Images/TITLE/supervisedvsHDGM0_5_Fox.pdf} }}%
+	{{\includegraphics[width=8.2cm]{plots/Images/supervisedvsHDGM0_5_Fox.pdf} }}%
 	\subfloat[HDGM: $\alpha=0.5$ vs Discriminative; Tiger.]
-	{{\includegraphics[width=8.2cm]{Images/TITLE/supervisedvsHDGM0_5_Tiger.pdf} }}
+	{{\includegraphics[width=8.2cm]{plots/Images/supervisedvsHDGM0_5_Tiger.pdf} }}
 \caption{Comaparison of the prediction error  $\widehat{\mathrm{Err}}(z)$ for HDGM $\alpha=0.5$ and discriminative part only. }%
 	\label{fig:resultsHDGMz}%
 \end{figure}
