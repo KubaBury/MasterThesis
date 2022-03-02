@@ -363,7 +363,7 @@
 \selectlanguage{american}%
 \vspace{2cm}
 
-{\large{}Research Project}{\large\par}
+{\large{}Master Thesis}{\large\par}
 
 }
 
@@ -376,7 +376,7 @@
 \end{singlespace}
 
 \begin{singlespace}
-\item [{Academic~year:}] 2020/2021
+\item [{Academic~year:}] 2021/2022
 \end{singlespace}
 \end{lyxlist}
 
@@ -391,7 +391,7 @@ for his expert guidance and patience during this academic year.
 
 \noindent \emph{\Large{}Author's declaration:}{\Large\par}
 
-\noindent I declare that this Research Project is entirely
+\noindent I declare that this Master Thesis is entirely
 my own work and I have listed all the used sources in the bibliography.
 
 \bigskip{}
@@ -406,7 +406,7 @@ my own work and I have listed all the used sources in the bibliography.
 \begin{onehalfspace}
 \noindent \emph{Název práce:}
 
-\noindent \textbf{Generativní a diskriminativní modely pro množinová data}
+\noindent \textbf{Hybridní diskriminativně-generativní modely pro množinová data}
 \end{onehalfspace}
 
 \bigskip{}
@@ -421,7 +421,7 @@ my own work and I have listed all the used sources in the bibliography.
 
 \bigskip{}
 
-\noindent \emph{Druh práce:} Výzkumný úkol
+\noindent \emph{Druh práce:} Diplomová práce
 
 \bigskip{}
 
@@ -430,7 +430,7 @@ my own work and I have listed all the used sources in the bibliography.
 \bigskip{}
 
 
-\noindent \emph{Abstrakt:} Tento výzkumný úkol se zabývá hybridními diskriminativními a generativními modely a jejich možným využitím v multi--instačním učení, kde je jeden vzorek tvořen množinou vektorů. Nejprve se seznámíme s technikáliemi tohoto přístupu, po té provedeme jednoduchý experiment a nakonec se budeme věnovat samotnému multi--instančnímu učení. Hlavním cílem je pak využít strukturu HMill s knihovnou Mill.jl a rozšírit je o konstrastivní učení na množinová data, kde ukážeme výhody oproti diskriminativnímu učení.
+\noindent \emph{Abstrakt:} Tato diplomová práce se zabývá hybridními diskriminativními a generativními modely a jejich možným využitím v multi--instačním učení, kde je jeden vzorek tvořen množinou vektorů. Nejprve se seznámíme s technikáliemi tohoto přístupu, po té provedeme jednoduchý experiment a nakonec se budeme věnovat samotnému multi--instančnímu učení. Hlavním cílem je pak využít strukturu HMill s knihovnou Mill.jl a rozšírit je o konstrastivní učení na množinová data, kde ukážeme výhody oproti diskriminativnímu učení.
 
 \bigskip{}
 
@@ -443,7 +443,7 @@ my own work and I have listed all the used sources in the bibliography.
 \begin{onehalfspace}
 \noindent \emph{Title:}
 
-\noindent \textbf{Generative and discriminative models for set data}
+\noindent \textbf{Hybrid Discriminative-Generative Training for Set data}
 \end{onehalfspace}
 
 \bigskip{}
@@ -452,7 +452,7 @@ my own work and I have listed all the used sources in the bibliography.
 
 \bigskip{}
 
-\noindent \emph{Abstract:} This research project deals with hybrid discriminative and generative modeling and its possible utilisation in multiple--instance learning. At first, technicalities of this approach are introduced, consequently a simple experiment is performed and lastly multi--instance laerning itself is taken care of. The main aim of this work is to use the HMill framework with the Mill.jl library and involve the contrastive learning into it, where benefits of this approach are shown. 
+\noindent \emph{Abstract:} This Master Thesis deals with hybrid discriminative and generative modeling and its possible utilisation in multiple--instance learning. At first, technicalities of this approach are introduced, consequently a simple experiment is performed and lastly multi--instance laerning itself is taken care of. The main aim of this work is to use the HMill framework with the Mill.jl library and involve the contrastive learning into it, where benefits of this approach are shown. 
 
 \bigskip{}
 
@@ -475,134 +475,8 @@ Contrastive learning \cite{contrastive1, contrastive2} is a machine learning met
 In this research project, these two objectives are brought together and utilized in the form of a hybrid combination \cite{HDGEmain}, which is used instead of the aformentioned cross entropy loss. Consequently, this approach is applied on multiple instance learning problems , where is taken advantage of the unified framework HMill and Mill.jl library \cite{mandlik} implemented in Julia programming language \cite{Julia}.\\
 This work is arranged into 3 chapters in a logical sequence. In the first chapter is written theoretical introduction needed for a better understanding of the whole work. The second chapter consists of discriminative and generative modeling and its hybrid combination, where the simple polynomial regression experiment is performed. In the last, third, chapter is introduced the multiple instance learning with following experiments. 
 The primary goal of this work is to test out the hybrid approach on the real data and, eventually, show its benefits in comparison to discriminative learning. 
-\chapter{Theoretical introduction}
-\section{Terminology}\label{sec:terminology}
-At the beginning of this work and for avoiding confusion, it is appropriate to clarify the terminology. \\
-The notation for random variables via uppercase letters, for example $X,Y$, is very common and widely used. The realization of a random variable, also known as observed value, or simply observation, will be denoted by correspodning lowercase letters $x, y$. Most of the time, input variable will be denoted by the symbol $x$ and output variable will be denoted by the symbol $y$. Bold symbols $\boldsymbol{x}$, $\boldsymbol{y}$ will be used to distinguish vectors from scalars. \\
-For the probability density function (pdf) over $x$, will be used the symbol $p(x)$. In addition, this will be used for both disrete and continuous $x$. In this way can be achieved siginificant simplification and unification of all formulas and equations. \\
-The average value of some function $g(x)$ under a probability distribution $p(x)$ is typically denoted by $\EE{g}$ and it is called expectation or mean \cite{bishop}. For a continuous variable, expectations are expressed in terms of an integration with respect to the corresponding probability density
-\begin{equation}
-	\EE{g} = \int p(x)g(x)\d{x}.
-\end{equation} 
-In the case of a discrete variable, one has to keep in mind that an integration turns into a sum over all $x$.   \\
-Usual goal (learning task) is to make a good prediction of the output $y$, denoted by the symbol $\hat{y}$, with given input $\boldsymbol{x}$. Such tasks are called \emph{supervised learning} problems \cite{supervised}. This prediction is obtained through learning a model $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) = f\left(\boldsymbol{\theta}, \boldsymbol{x}\right)$ that minimizes a loss function (also known as the error function) $\pazocal{L}(f_{\boldsymbol{\theta}}(\boldsymbol{x}), y)$, where $\boldsymbol{\theta}$ are the parameters of the model. \\
-To contruct this prediction we need data, hence it is supposed that we have available set of observations, input--output paired samples denoted by $\mathcal{D} = \lbrace \left(x_i , y_i \right)\rbrace_{i=1}^N$, eventually, this may in fact be $\mathcal{D} = \lbrace\left( \boldsymbol{x}_i , y_i \right)\rbrace_{i=1}^N$, where $\boldsymbol{x}_i \in \R^D$ and $y_i \in \R,~~\forall i = 1,\dots,N$, known as training data.  Observations are considered to be independent and indentically distributed, often abbreviated as i.i.d. 
-\section{Bayesian Inference}
-The Bayesian methodology is a well established approach to statistical inference and became very important technique in statistics and data analysis. As its name suggests, Bayesian statistics is based on application of Bayes' rule. In this chapter, we briefly review basic concept of this approach, which was suggested here \cite{smidl}. \\
- Let the measured data be denoted by $\mathcal{D}$, defined according to previous section \ref{sec:terminology}. A parametric probabilistic model of the data $\mathcal{D}$ is given by the probability density function  $p(\mathcal{D}|\boldsymbol{\theta})$, where $\boldsymbol{\theta}~\in~\boldsymbol{\Theta}~\subset~\R^s$ denotes parameters of the model. The main idea behind Bayesian theory is the treatment of the uknown parameters $\boldsymbol{\theta}$ as a random variable.  Bayes' rule is applied to infer model parameters $\boldsymbol{\theta}$, therefore
- \begin{equation}\label{Bayesinference}
- 	p(\boldsymbol{\theta} | \mathcal{D}) = \frac{p(\boldsymbol{\theta}, \mathcal{D})}{p(\mathcal{D})} = \frac{p(\mathcal{D}| \boldsymbol{\theta})p(\boldsymbol{\theta})}{\int_{\boldsymbol{\Theta}}p(\mathcal{D}|\boldsymbol{\theta})p(\boldsymbol{\theta})\d\boldsymbol{\theta}}.
- \end{equation} 
-Since $p(\mathcal{D})$ is just the normalization constant, Equation \eqref{Bayesinference} is often simplified to
-\begin{equation}
-	p(\boldsymbol{\theta} | \mathcal{D}) \propto p(\mathcal{D}| \boldsymbol{\theta})p(\boldsymbol{\theta}).
-\end{equation} 
-Symbol $\propto$ means equal up to the normalization constant. The term $p(\boldsymbol{\theta} | \mathcal{D})$ is known as the \emph{posterior} distribution, $p(\mathcal{D}| \boldsymbol{\theta})$  as the \emph{observation model}, and $p(\boldsymbol{\theta})$ is called the \emph{prior} distribution of the $\boldsymbol{\theta}$. Note that evaluation of the normalization constant can be computionally expensive, in higher dimension even intractable. \\
-Popular choices for an optimal value of the point estimate are:
-\begin{enumerate}
-	\item Maximum A posteriori estimate (MAP)
-	\begin{equation}
-		\widehat{\boldsymbol{\theta}}_{\mathrm{MAP}} = \argmax_{\boldsymbol{\theta}} p(\boldsymbol{\theta} | \mathcal{D})
-	\end{equation}
-This method estimates $\boldsymbol{\theta}$ as the mode of the posterior distribution. It appears to be computionally attractive, as it is not necessary to evaluate the normalization constant. 
-\item Mean or expected value
-\begin{equation}
-	\widehat{\boldsymbol{\theta}}_{\mathrm{B}} = \int_{\boldsymbol{\Theta}} \boldsymbol{\theta}~ p(\boldsymbol{\theta} | \mathcal{D}) \d\boldsymbol{\theta} = \E_{\boldsymbol{\theta} \sim p(\boldsymbol{\theta} | \mathcal{D}) }\left[\boldsymbol{\theta} \right]
-\end{equation}
-Mean value, unlike MAP estimate, may be very expensive to compute because of the required integration. This may lead to further approximations such as EM algorithm \cite{EM}.
-\end{enumerate}	
 
-\subsection{Choice of prior distribution}
-For the posterior computation, it is necessary to specify the prior distribution $p(\boldsymbol{\theta})$, unfortunatelly, this might not be easily determined. This can be achieved via knowledge of previous models, expert knowledge, their combination or even uncertainty about $\boldsymbol{\theta}$ can be viable option. \\
-There is also many practical aspects of priors:
-\begin{itemize}
-	\item Regularization - supplementing the data, if there is insufficient data or poorly defined model. 
-	\item Imposing various restrictions on the parameters $\boldsymbol{\theta}$ reflecting physical constraints. The choice of prior distribution with bounded support will result to posterior distribution with bounded support as well. 
-	\item Non--informative prior - if the data are informative enough to make a prediction, it is proposed to choose a prior with minimal impact on the posterior distribution, such as uniform distribution. However, typical choices of non--informative priors are so--called \emph{Jeffreys priors} \cite{jeffrey}.
-\end{itemize}
-
-
-
-\subsection{Prediction}
-We are not usually interested in the value of $\widehat{\boldsymbol{\theta}}$ itself but rather, once the model is estimated, we are intersted in making prediction of output variable $y^{\star}$ for the new input variable $\boldsymbol{x}^{\star}$. Note that the symbol $\mathcal{D}$ contains all of the previous given data $\boldsymbol{x}$ and $y$. The posterior predictive distribution is then determined by distribution of the $y^{\star}$, marginalized over the posterior
-\begin{equation}
-	p(y^{\star} | \boldsymbol{x}^{\star}, \mathcal{D}) =   \int_{\boldsymbol{\Theta}} p(y^{\star}|\boldsymbol{x}^{\star}, \boldsymbol{\theta}) p(\boldsymbol{\theta}|\mathcal{D}) \d\boldsymbol{\theta}.
-\end{equation} 
-When the distribution $p(\boldsymbol{\theta}|\mathcal{D})$ is not available, we have to approximate leveraging the Dirac delta function $\delta(x)$  
-\begin{equation}
-p(y^{\star} | \boldsymbol{x}^{\star}, \mathcal{D}) = \int_{\boldsymbol{\Theta}} 	p(y^{\star}|\boldsymbol{x}^{\star}, \boldsymbol{\theta}) \delta(\boldsymbol{\theta} - \widehat{\boldsymbol{\theta}})\d\boldsymbol{\theta} = p(y^{\star}|\boldsymbol{x}^{\star}, \widehat{\boldsymbol{\theta}}),
-\end{equation}
-causing an error. In typical MAP, this is known as \emph{over--fitting}. Prediction error is then defined by a loss function measuring errors between $y$ and $\widehat{y}$
-\begin{equation}
-	\mathrm{Err} = \pazocal{L}\left(\widehat{y}, y \right),
-\end{equation}	
-where $\widehat{y} = \widehat{f}_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) = f(\widehat{\boldsymbol{\theta}}, \boldsymbol{x})$.  As an example, we can mention couple of typically used loss functions 
-\begin{equation}
-\pazocal{L}\left(y,\widehat{y} \right) =
- \begin{cases}
-	 \left(y - \widehat{y}\right)^2& \text{squared error}\\
-	 \abs{y - \widehat{y}} & \text{absolute error}\\
-\end{cases}   .
-\end{equation}
-We shall also discuss the problem of the model complexity. Consider a polynomial regression problem,  where the model is defined by
-\begin{equation}
-	f_{\boldsymbol{\theta}}(x) = \sum_{i=0}^{s-1}\theta_ix^i.
-\end{equation}
- Here, over--fitting occurs very frequently. Model complexity of this case is very intuitive, as it is just the order of the polynomial, $s-1$.  Smaller orders of the polynomial (may) give rather poor fits to the data in contrast to much higher order polynomial giving an excellent fit. Such polynomial passes exactly through each datapoint, however, oscilates wildly and gives poor prediction for new input variable $x^{\star}$. \\
-To obtain some quantitative insight into dependance of the generalization performance on model complexity, consider separate test set of data (testing data) used to assess the performance of the model. 
-In general, prediction error evaluated on the training data for increasing model complexity approaches zero. On the other hand, prediction error evaluated on the testing data for increasing model complexity is (from certain point) increasing as well. The typical scenario is illustrated in Figure \ref{fig:Prediction_error}.
- \begin{figure}[h]
-	\centering
-	\includegraphics[width=16.0cm]{plots/Images/PE3.pdf}
-	\caption{Evaluation of prediction error as a function of model complexity.}%
-	\label{fig:Prediction_error}%
-\end{figure}
-
-\section{Cross-Validation}
-The simplest and most widely used method for estimating prediction error of  the model $\hat{f}_{\boldsymbol{\theta}}$ is called \emph{cross-validation} (CV) \cite{statistics}. It is used for direct estimating of the expected extra-sample error
-\begin{equation}
-	\widehat{\mathrm{Err}} = \E\left[\mathcal{L}\left(y, \widehat{y}\right)\right],
-\end{equation}
-the measure how accurately is the model able to predict output values for previously unseen data - independent test sample. 
-
-
-\subsection{K-Fold Cross-Validation}
-In an ideal case, if we have sufficient number of data, we can set aside a test set and use
-it to assess the performance of our prediction model. Since data are often
-scarce, this is usually not possible. Very elegant solution to this problem is via K-fold cross-validation \cite{statistics}. It
-uses part of the available data for fitting the model, and a different
-part for testing. We split the data into $K$ roughly equal-sized parts, for
-example, when $K = 5$, the scenario is shown in Figure \ref{fig:KFOLD}. 
-\begin{figure}[h]
-\begin{center}
-\begin{tikzpicture}
-\draw[step=2cm,gray,very thin] (0,0) grid (10,2); 
-\draw (5,1) node{test};
-\draw (1,1) node{train};
-\draw (3,1) node{train};
-\draw (7,1) node{train};
-\draw (9,1) node{train};
-\end{tikzpicture}
-\end{center}
-\caption{Splitting the data into $K=5$ roughly equal-sized parts.}
-\label{fig:KFOLD}
-\end{figure}
-
-For the $j^{\mathrm{th}}$ part (third in Figure \ref{fig:KFOLD}), we train the model to the other $K-1$ parts
-of the data, and calculate the prediction error of the fitted model when
-predicting the $j^{\mathrm{th}}$ part of the data. We repeat this process for $j = \left\lbrace 1,2,\dots,K\right\rbrace$ and
-combine the $K$ estimates of prediction error.\\
-Let $\gamma : \left\lbrace 1,\dots,N\right\rbrace\rightarrow  \left\lbrace 1,\dots,K\right\rbrace$ be an indexing
-function that indicates the partition to which observation $j$ is allocated by
-the randomization. Symbol $\hat{f}_{\boldsymbol{\theta}}^{-j}\left(\boldsymbol{x}\right)$ denotes the fitted model, computed with
-the $j^{\mathrm{th}}$th part of the data removed. Then the cross-validation estimate of
-prediction error is defined by
-\begin{equation}
-\mathrm{CV}\left(\hat{f}_{\boldsymbol{\theta}}\right) = \frac{1}{N}\sum_{i = 1}^{N}\mathcal{L}\left(y_i , \hat{f}_{\boldsymbol{\theta}}^{-\gamma\left(i\right)}\left(\boldsymbol{x}_i\right)\right).
-\end{equation}
-Typical choices of $K$ are 5 or 10 and even case $K = N$ that is known as \emph{leave-one-out} cross--validation. Generally, there is not an universal way of choosing $K$, since it strongly depends on the available number of data. \\
-The biggest problem of this method is a fact that it is computionally very expensive. For extremely complicated and complex models that are trained for hours or days, is cross--validation inconvenient approach of estimating the prediction error. 
-
+\input{theoritecal_intro.tex}
 
 \chapter{Hybrid Generative and Discriminative models}
 \section{Discriminative modeling}\label{discriminative_modelinmg}
@@ -615,7 +489,7 @@ which is known as the Softmax function. Note that the convention $f_{\boldsymbol
 	\min_{\boldsymbol{\theta}}- \mathbb{E}_{ p_{\mathrm{data}}(\boldsymbol{x},y)}\left[\log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right].
 \end{equation} 
 Rationale for this objective comes from minimizing the Kullback-Leibler divergence with a target distribution $p(y| \boldsymbol{x})$ \cite{KL}. In general,
-Kullback-Leibler divergence, for distribution functions $\Psi$ and $\Pi$ with corresponding probablity density functions $\psi$ and $\pi$, is defined as
+Kullback-Leibler divergence, for distribution functions $\Psi$ and $\Pi$ with corresponding probability density functions $\psi$ and $\pi$, is defined as
 \begin{equation}
 D_{\mathrm{KL}} \left(\Psi || \Pi \right) = \mathbb{E}_{x\sim \psi} \left[\log\frac{\psi(x)}{\pi(x)} \right],
 \end{equation}
@@ -629,9 +503,9 @@ where subscript $\boldsymbol{\theta}$ emphasizes that $\pi_{\boldsymbol{\theta}}
 \end{equation}
 In practice, expected value $\E$ is usually replaced by sample mean. 
 \subsection{One-hot encoding}\label{OHE}
- Machine learning (ML) algorithms can misinterpret the numeric values of labels if there exists any hiearchy between them. One-hot encoding is a very common approach how to deal with this issue, in order to improve the algorithm performance. \\
+ Machine learning (ML) algorithms can misinterpret the numeric values of labels if there exists any hierarchy between them. One-hot encoding is a very common approach how to deal with this issue, in order to improve the algorithm performance. \\
  Each unique category value is transformed into a new column and these dummy variables are then filled up with 0 or 1 (0 for FALSE and 1 for TRUE). Transformation of a label encoding to the one-hot encoding is illustrated in following tables \ref{tab:LE} and \ref{tab:OHE}. \\
- However, this method has its own downsides. For example, it creates new variables and if there exists many unique category values, models have to deal with large amount of predictors, causing so-called \emph{Big-p problem} \cite{Bigp}. Also, one--hot encoding causes multicollinearity between the individual varibles, which may lead to reducing model's accuracy. 
+ However, this method has its own downsides. For example, it creates new variables and if there exists many unique category values, models have to deal with large amount of predictors, causing so-called \emph{Big-p problem} \cite{Bigp}. Also, one--hot encoding causes multi-colinearity between the individual variables, which may lead to reducing model's accuracy. 
  \begin{table}[h]
  	\centering
  	\begin{tabular}{|l|l|l|}
@@ -667,7 +541,7 @@ where function $E_{\boldsymbol{\theta}} : \mathbb{R}^D \to \mathbb{R}$ is called
 \begin{equation}
 	Z(\boldsymbol{\theta}) = \sum_{i=1}^N \exp\left(-E_{\boldsymbol{\theta}}(\boldsymbol{x}_i)\right),
 \end{equation}
-where  the summation is over all datapoints $\boldsymbol{x}$ available. The sum turns into integral for a continuous $\boldsymbol{x}$.   Very imporant observations made authors in \cite{energy2}, where they show, that classifiers in supervised learning are secretly energy-based models on $p(\boldsymbol{x},y)$ and can be expressed as
+where  the summation is over all datapoints $\boldsymbol{x}$ available. The sum turns into integral for a continuous $\boldsymbol{x}$.   Very important observations made authors in \cite{energy2}, where they show, that classifiers in supervised learning are secretly energy-based models on $p(\boldsymbol{x},y)$ and can be expressed as
 \begin{equation}
 	p\left(\boldsymbol{x},y\right) = \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{Z(\boldsymbol{\theta})}.
 \end{equation}
@@ -716,7 +590,7 @@ Now it is possible to substitute approximation \eqref{approxcontrasstive} to Equ
 	&\label{eq:hybrid}\approx	\min_{\boldsymbol{\theta}}- \mathbb{E}_{p_{\mathrm{data}}(\boldsymbol{x},y)}\left[\alpha\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)}+ \left(1-\alpha\right)\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^M\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}_i\right)[y]}\right)} \right]. 
 \end{align}
 Parameter $\alpha$ is a weight between $\left[0,1\right]$. It is obvious that in the case of $\alpha = 1$, the objective reduces to the standard cross entropy loss, while $\alpha = 0$, the objective is reduced to a case called an \emph{end-to-end supervised version of contrastive learning}. The choice of parameter $\alpha$ is a decision of the experiment designer, however authors in \cite{HDGEmain} evaluated many possible variants in performed experiments and found out that the choice of $\alpha=0.5$ yields to the highest performance on a classification accuracy. As far as we know, these experiments involved only image classification, unfortunately. \\
-Hybrid combination of supervised learning and contrastive learning \eqref{eq:hybrid} is for us absolutely crucial as we extend this approach to multiple instance learning problem, but this is disscused more in further sections.  
+Hybrid combination of supervised learning and contrastive learning \eqref{eq:hybrid} is for us absolutely crucial as we extend this approach to multiple instance learning problem, but this is discussed more in further sections.  
 
 
 \section{Toy problem - Polynomial Regression}
@@ -729,7 +603,7 @@ where the model model is given by
 \begin{equation}
 	f_{\boldsymbol{\theta}}(x)[y] = -E_{\boldsymbol{\theta}}(x,y) .
 \end{equation}
-At this point, we should transform our problem to the polynomial regression. We need to be aware of the discriminative term in the Equation \eqref{q1q2}, because we do not want to clasify, but we would like to find the best fit to the given data. For this reason, we replace that with the typical regression loss
+At this point, we should transform our problem to the polynomial regression. We need to be aware of the discriminative term in the Equation \eqref{q1q2}, because we do not want to classify, but we would like to find the best fit to the given data. For this reason, we replace that with the typical regression loss
 \begin{equation}\label{S(theta)}
 	S = S(\boldsymbol{\theta}) = \sum_{k=1}^N \left(y_k - \sum_{i=0}^{s-1} \theta_i x^i_k\right)^2.
 \end{equation}	
@@ -741,7 +615,7 @@ thus we need to find $p(y\vert x)$ and $p(x)$. From polynomial regression we can
 \begin{equation}\label{eq:linregpdf}
 	p(y\vert x, \boldsymbol{\theta}) = \pazocal{N}\left(\sum_{i=0}^{s-1} \theta_i x^i, \sigma^2 \right),
 \end{equation}
-where symbol $\pazocal{N}(\cdot)$ denotes probability density fucntion of Normal distribution and $\sigma^2$ is known variance. In this case, we also need to determine prior distribution on $x$. To keep this example simple, let the pdf takes the form
+where symbol $\pazocal{N}(\cdot)$ denotes probability density function of Normal distribution and $\sigma^2$ is known variance. In this case, we also need to determine prior distribution on $x$. To keep this example simple, let the pdf takes the form
 \begin{equation}\label{eq:tauprior}
 	p(x|\tau) = \pazocal{N}\left(0, \tau^2\right),
 \end{equation}
@@ -768,7 +642,7 @@ Note that for $\alpha =1$ we get purely polynomial regression and for $\alpha =0
 We would like to test the sensitivity of this approach on the unknown parameter $\tau$ and order of the polynomial $s-1$. In addition, we would like to observe, how the estimated model behaves in relation to $\alpha$. \\
 We generated synthetic data, two clusters consisting of 5 datapoints each, then the model was fitted for different weight $\alpha \in \left\{0.0, 0.1, 0.2,\dots,1.0\right\}$, giving 11 different models in total. Models estimated for $\alpha \in \left\{0.0, 0.5, 1.0 \right\}$ are highlighted as they are more important to us then the other models.\\
 At first, we trained the mentioned models for the fixed order of the polynomial, but for 6 different values of the parameter $\tau$. Obtained results (Figure \ref{fig:linregtoy_tau}) for small $\tau$ barely vary from those for high $\tau$, that is exactly what we hoped for, since the prior distribution should be non--informative \eqref{eq:tauprior}.  This is very exciting discovery, because there is no need to know much information about the data distribution.\\
-Secondly, we trained our polynomial models for the fixed value of $\tau$ with 6 different values of the order of the polynomial. The goal of this part of the experiment is to observe how the contrastive part of Equation \eqref{eq:SSEq} affects the polynomial regression loss for different values of $s-1$. As can be seen in Figure \ref{fig:linregtoy_s}, for small $s-1$, such as $s-1 = 2$, term $\log q_{\theta}\left(x|y\right)$ does not affect polynomial regression too much. However, we get considerable difference for higher orders of the polynomial. Furthermore, it seems that the curve $\alpha = 0$ prefers not to oscilate. This also could be very interesting, because combining of discriminative and generative models could result in better model predictions.    
+Secondly, we trained our polynomial models for the fixed value of $\tau$ with 6 different values of the order of the polynomial. The goal of this part of the experiment is to observe how the contrastive part of Equation \eqref{eq:SSEq} affects the polynomial regression loss for different values of $s-1$. As can be seen in Figure \ref{fig:linregtoy_s}, for small $s-1$, such as $s-1 = 2$, term $\log q_{\theta}\left(x|y\right)$ does not affect polynomial regression too much. However, we get considerable difference for higher orders of the polynomial. Furthermore, it seems that the curve $\alpha = 0$ prefers not to oscillate. This also could be very interesting, because combining of discriminative and generative models could result in better model predictions.    
 
 \begin{figure}[h] 
 	\centering
@@ -839,12 +713,12 @@ Learning of the MIL model $f_{\boldsymbol{\theta}}$ is also supervised, a specif
 \begin{equation}\label{crossentropy52}
 	\min_{\boldsymbol{\theta}}- \mathbb{E}_{p_{\mathrm{data}}(\boldsymbol{x},y) }\left[\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)} \right],
 \end{equation}   
-already mentioned in section \ref{discriminative_modelinmg}. This is very imporant for us and we will take advantage of that in our experiments.
+already mentioned in section \ref{discriminative_modelinmg}. This is very important for us and we will take advantage of that in our experiments.
  
 \section{Cross--validation on MIL datasets}\label{experimentCV}
-For testing MIL, we have avaliable four datasets, namely Musk1, Musk2, Tiger and Fox. All of them will be used to assess performance of the MIL model.
+For testing MIL, we have available four datasets, namely Musk1, Musk2, Tiger and Fox. All of them will be used to assess performance of the MIL model.
 \subsection{Setup}
-In this experiment, datasets are 100 times randomly split into 2 sets in advance, train and test sets, with 80\% of observations being in train set and 20\% of observations belonging to test set. For a future simplification, let a number of random splits be denoted by $r$, thus $r=100$.  We fit the model on train set, then we evaluate the prediction error on the train data via cross--entropy \ref{crossentropy}. The objective here is to plot the prediction error dependancy on the model complexity. Smaller number of random splits $r$ were tested, but obtained results were too noisy. For this reason, such high $r$ was selected, although the experiment became noticeably expensive to compute.    \\
+In this experiment, datasets are 100 times randomly split into 2 sets in advance, train and test sets, with 80\% of observations being in train set and 20\% of observations belonging to test set. For a future simplification, let a number of random splits be denoted by $r$, thus $r=100$.  We fit the model on train set, then we evaluate the prediction error on the train data via cross--entropy \ref{crossentropy}. The objective here is to plot the prediction error dependency on the model complexity. Smaller number of random splits $r$ were tested, but obtained results were too noisy. For this reason, such high $r$ was selected, although the experiment became noticeably expensive to compute.    \\
 
 \begin{figure}[h]
 	\centering
@@ -864,9 +738,9 @@ For prediction error metrics will be simply used standard cross--entropy loss  a
 \end{para}
 \vspace{1cm}
 
-To summarize,  we fit 100 models for selected $z$ on train data and evaluate prediction error for all of them on test data, then we take mean value. This proccess is repetead for each $z~\in~\left\{1,2,3\dots,20 \right\}$, giving 2000 models in total. 
+To summarize,  we fit 100 models for selected $z$ on train data and evaluate prediction error for all of them on test data, then we take mean value. This process is repeated for each $z~\in~\left\{1,2,3\dots,20 \right\}$, giving 2000 models in total. 
 \subsection{Results}
-As can be seen in Figure \ref{CV}, obtained results are totally expected. The prediction error evaluated on the training data for higher model complexity approaches zero. However, testing data give oscilating curves with an increasing trend (with a little exception of Musk1), therefore the model selection is neccessary. This applies for each dataset.  In addition, following table \ref{tab:resultsCV} numerically summarizes the results evaluated on testing data. 
+As can be seen in Figure \ref{CV}, obtained results are totally expected. The prediction error evaluated on the training data for higher model complexity approaches zero. However, testing data give oscillating curves with an increasing trend (with a little exception of Musk1), therefore the model selection is necessary. This applies for each dataset.  In addition, following table \ref{tab:resultsCV} numerically summarizes the results evaluated on testing data. 
 
 \begin{figure}[h]
 	\centering
@@ -903,18 +777,18 @@ As can be seen in Figure \ref{CV}, obtained results are totally expected. The pr
 \section{MIL to HDGM problem}
 In the previous part was performed the CV experiment with expected results. However, the estimated prediction error seems to be rather high. Logically, the question has been raised whether the prediction error can be reduced and also whether it is possible to make $r$ smaller.
 \subsection{Setup}
-On the iniciative of reducing the prediction error, it is proposed to train a MIL model that is obtained by minimizing the hybrid loss function 
+On the initiative of reducing the prediction error, it is proposed to train a MIL model that is obtained by minimizing the hybrid loss function 
 
 \begin{equation}
 	\min_{\boldsymbol{\theta}}- \mathbb{E}_{p_{\mathrm{data}}(\boldsymbol{x},y)}\left[\alpha\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)}+ \left(1-\alpha\right)\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}_i\right)[y]}\right)}{\sum_{j=1}^N\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}_j\right)[y]}\right)} \right].
 	\end{equation}
 Since the discriminative part is already used in HMill framework, the only task is to add the generative part into it. At this point are available all normalization samples, thus $M=N$. This modification should lead to a reduced prediction error evaluated on training data.\\
-In the first part of this experiment, we would like to train models in relation to parametr $\alpha$. For this setup, we need to choose fixed $z$. Since authors of \cite{mandlik} usually use $z=10$, we use this value as well. For the prediction error evaluation is used standard cross--entropy as in the previous experiment, again with $r=100$ and $\alpha \in \left\{0.0, 0.1, 0.2,\dots,1.0\right\}$. Therefore estimated prediction error can be written in the form
+In the first part of this experiment, we would like to train models in relation to parameter $\alpha$. For this setup, we need to choose fixed $z$. Since authors of \cite{mandlik} usually use $z=10$, we use this value as well. For the prediction error evaluation is used standard cross--entropy as in the previous experiment, again with $r=100$ and $\alpha \in \left\{0.0, 0.1, 0.2,\dots,1.0\right\}$. Therefore estimated prediction error can be written in the form
 \begin{equation}
 	\widehat{\mathrm{Err}}(\alpha) = \frac{1}{r}\sum_{k=1}^r \pazocal{L}_k(z=10, \alpha).
 \end{equation}
 We hope to see a curve in the shape of a bowl, having its global minimum in a point $\alpha=0.5$ or somewhere near.\\ 
-In the second part, evaluating of the prediction error is approached the other way. Fixed $\alpha = 0.5$ is selected and the dependancy on $z~\in~\left\{1,2,3\dots,20 \right\}$ is evaluated as in the section \ref{experimentCV}. Finally, estimated prediction error in this case is defined by
+In the second part, evaluating of the prediction error is approached the other way. Fixed $\alpha = 0.5$ is selected and the dependency on $z~\in~\left\{1,2,3\dots,20 \right\}$ is evaluated as in the section \ref{experimentCV}. Finally, estimated prediction error in this case is defined by
 \begin{equation}
 	\widehat{\mathrm{Err}}(z) = \frac{1}{r}\sum_{k=1}^r \pazocal{L}_k(z, \alpha =0.5).
 \end{equation}
@@ -994,7 +868,7 @@ Overall, it can be said that HDGM approach leads to the decreased prediction err
 \pagestyle{plain}
 
 \addcontentsline{toc}{chapter}{Conclusion}
-At the begining of this work, supervised learning and energy-based models were introduced. Following passage consists of contrastive learning, which was briefly reviewed and thereafter supervised learning and contrastive learning was merged into a hybrid discriminative and generative models. Subsequently, this approach was applied and tested on a simple example consisting of polynomial regression.\\ After this example was briefly introduced multiple instance learning with a short description of embedded space and its way of training. As a first MIL experiment, cross--validation on 4 MIL datasets was performed, where was given enough space to a proper definition of the model complexity metrics.  Obtained results were totally expected, it included decreasing prediction error for train data and increasing for test data. In the next step was searched for a solution, how to decrease the prediction error evaluated on test data. On this iniciative, HDGM was trained instead of a standard discriminative model. In consecutive result assessment was found out that HDGM leads to a decrease in prediction error, however nothing significant. In addition, high number of random splits of dataset was still necessary to get rid of the noise on the prediction error.\\
+At the beginning of this work, supervised learning and energy-based models were introduced. Following passage consists of contrastive learning, which was briefly reviewed and thereafter supervised learning and contrastive learning was merged into a hybrid discriminative and generative models. Subsequently, this approach was applied and tested on a simple example consisting of polynomial regression.\\ After this example was briefly introduced multiple instance learning with a short description of embedded space and its way of training. As a first MIL experiment, cross--validation on 4 MIL datasets was performed, where was given enough space to a proper definition of the model complexity metrics.  Obtained results were totally expected, it included decreasing prediction error for train data and increasing for test data. In the next step was searched for a solution, how to decrease the prediction error evaluated on test data. On this initiative, HDGM was trained instead of a standard discriminative model. In consecutive result assessment was found out that HDGM leads to a decrease in prediction error, however nothing significant. In addition, high number of random splits of dataset was still necessary to get rid of the noise on the prediction error.\\
 In conclusion, this approach was proven to be functional, although a proposed generative regularization is very simple and can be replaced by much complicated models. From this point of view, this approach has a great potential that has not yet been properly exploited.
 \begin{thebibliography}{1}
 
