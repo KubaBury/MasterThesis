@@ -2,21 +2,71 @@
 
 \section{Notation}\label{sec:terminology}
 It will be most appropriate to begin by introducing the basic notation that will be used throughout this thesis. This will avoid any confusion, even though the notation is quite standard. \\
-Notation for random variables using upper case letters of the Latin alphabet is widely used. Typically, the letters used are from the end of the alphabet, i.e. $X,Y$ or $Z$. The realization of a random variable, also known as an observed value or simply an observation, will be denoted by the appropriate lower case letters. Thus, the realization  $x$ corresponds to the random variable $X$, which holds by analogy for other random variables. Bold symbols, for instance $\boldsymbol{x}$ or $\boldsymbol{y}$, will be used to distinguish vectors and scalars. Of course, random variables can also be vectors, but we will not work with them; our primary interest is in realizations, since realizations of random variables are all data. \\
+Notation for random variables using upper case letters of the Latin alphabet is widely used. Typically, the letters used are from the end of the alphabet, i.e. $X,Y$ or $Z$. The realization of a random variable, also known as an observed value or simply an observation, will be denoted by the appropriate lower case letters. Thus, the realization  $x$ corresponds to the random variable $X$, which holds by analogy for other random variables. Bold symbols, for instance $\boldsymbol{x}$ or $\boldsymbol{y}$, will be used to distinguish vectors and scalars. Of course, random variables can also be vectors, but this thesis will not work with them; the primary interest is in realizations, since realizations of random variables are all data. \\
 
 
 
 \section{Probability theory}
 Mathematical models are very well described by probability and for this reason, this section will look at some of the basic concepts of probability theory that we will need. The most important such concept is probability density (PDF). 
-The symbol $p(x)$ will be used predominantly for the PDF, which is a function of $x$.  In addition, this will be used for both discrete and continuous $x$. In this way can be achieved significant simplification and unification of all formulas and equations. \\
-The average value of some function $g(x)$ under a probability distribution $p(x)$ is typically denoted by $\EE{g}$ and it is called expectation or mean \cite{bishop}. For a continuous variable, expectations are expressed in terms of an integration with respect to the corresponding probability density
+The symbol $p(x)$ will be used predominantly for the PDF, which is a function of $x$.  In addition, this will be used for both discrete and continuous $x$. In this way can be achieved significant simplification and unification of all formulas and equations. PDF is a non-negative function and its integration over the entire space is equal to 1. This applies to multi-dimensional PDFs $p(\boldsymbol{x})$ as well as to one-dimensional PDFs. In mathematical terms one can express it as follows
+\begin{equation}
+    \int_{\R^d}p(\boldsymbol{x})\d{\boldsymbol{x}} = 1.
+\end{equation}
+The average value of some function $g(x)$ under a probability distribution $p(x)$ is typically denoted by $\EE{g}$ and it is called expected value or mean \cite{bishop}. For a continuous variable, expected value are expressed in terms of an integration with respect to the corresponding probability density
 \begin{equation}
 	\EE{g} = \int p(x)g(x)\d{x}.
 \end{equation} 
 In the case of a discrete variable, one has to keep in mind that an integration turns into a sum over all $x$.   \\
-Usual goal (learning task) is to make a good prediction of the output $y$, denoted by the symbol $\hat{y}$, with given input $\boldsymbol{x}$. Such tasks are called \emph{supervised learning} problems \cite{supervised}. This prediction is obtained through learning a model $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) = f\left(\boldsymbol{\theta}, \boldsymbol{x}\right)$ that minimizes a loss function (also known as the error function) $\pazocal{L}(f_{\boldsymbol{\theta}}(\boldsymbol{x}), y)$, where $\boldsymbol{\theta}$ are the parameters of the model. \\
-To contruct this prediction we need data, hence it is supposed that we have available set of observations, input--output paired samples denoted by $\mathcal{D} = \lbrace \left(x_i , y_i \right)\rbrace_{i=1}^N$, eventually, this may in fact be $\mathcal{D} = \lbrace\left( \boldsymbol{x}_i , y_i \right)\rbrace_{i=1}^N$, where $\boldsymbol{x}_i \in \R^D$ and $y_i \in \R,~~\forall i = 1,\dots,N$, known as training data.  Observations are considered to be independent and identically distributed, often abbreviated as i.i.d. 
 
+\section{Supervised Learning}
+Supervised learning, in less academic terms "learning with a teacher". This metaphor means that the student presents output $\widehat{y}$ and the teacher provides either a correct answer and/or an error that corresponds to the student's answer.  The goal (learning task) is to make a good prediction of the output $y$, denoted by the symbol $\hat{y}$, with given input $\boldsymbol{x}$. Such tasks are called \emph{supervised learning} problems \cite{supervised}. This prediction is obtained through learning a model $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) = f\left(\boldsymbol{\theta}, \boldsymbol{x}\right)$ that minimizes a loss function (also known as the error function) $\pazocal{L}(f_{\boldsymbol{\theta}}(\boldsymbol{x}), y)$, where $\boldsymbol{\theta}$ are the parameters of the model. \\
+To construct this prediction one needs data, hence it is supposed that we have available set of observations, input--output paired samples denoted by $\mathcal{D} = \lbrace \left(x_i , y_i \right)\rbrace_{i=1}^N$, eventually, this may in fact be $\mathcal{D} = \lbrace\left( \boldsymbol{x}_i , y_i \right)\rbrace_{i=1}^N$, where $\boldsymbol{x}_i \in \R^D$ and $y_i \in \R,~~\forall i = 1,\dots,N$, known as training data.  Observations are considered to be independent and identically distributed, often abbreviated as i.i.d. 
+
+\section{Unsupervised learning}
+The previous section dealt with input--output paired samples $\mathcal{D}$. 
+\subsection{Prediction}
+
+\subsection{Cross-Validation}
+The simplest and most widely used method for estimating prediction error of  the model $\hat{f}_{\boldsymbol{\theta}}$ is called \emph{cross-validation} (CV) \cite{statistics}. It is used for direct estimating of the expected extra-sample error
+\begin{equation}
+	\widehat{\mathrm{Err}} = \E\left[\mathcal{L}\left(y, \widehat{y}\right)\right],
+\end{equation}
+the measure how accurately is the model able to predict output values for previously unseen data - independent test sample. In an ideal case, if we have sufficient number of data, we can set aside a test set and use
+it to assess the performance of our prediction model. Since data are often
+scarce, this is usually not possible. Very elegant solution to this problem is via K-fold cross-validation \cite{statistics}. It
+uses part of the available data for fitting the model, and a different
+part for testing. We split the data into $K$ roughly equal-sized parts, for
+example, when $K = 5$, the scenario is shown in Figure \ref{fig:KFOLD}. 
+\begin{figure}[h]
+\begin{center}
+\begin{tikzpicture}
+\draw[step=2cm,gray,very thin] (0,0) grid (10,2); 
+\draw (5,1) node{test};
+\draw (1,1) node{train};
+\draw (3,1) node{train};
+\draw (7,1) node{train};
+\draw (9,1) node{train};
+\end{tikzpicture}
+\end{center}
+\caption{Splitting the data into $K=5$ roughly equal-sized parts.}
+\label{fig:KFOLD}
+\end{figure}
+
+For the $j^{\mathrm{th}}$ part (third in Figure \ref{fig:KFOLD}), we train the model to the other $K-1$ parts
+of the data, and calculate the prediction error of the fitted model when
+predicting the $j^{\mathrm{th}}$ part of the data. We repeat this process for $j = \left\lbrace 1,2,\dots,K\right\rbrace$ and
+combine the $K$ estimates of prediction error.\\
+Let $\gamma : \left\lbrace 1,\dots,N\right\rbrace\rightarrow  \left\lbrace 1,\dots,K\right\rbrace$ be an indexing
+function that indicates the partition to which observation $j$ is allocated by
+the randomization. Symbol $\hat{f}_{\boldsymbol{\theta}}^{-j}\left(\boldsymbol{x}\right)$ denotes the fitted model, computed with
+the $j^{\mathrm{th}}$th part of the data removed. Then the cross-validation estimate of
+prediction error is defined by
+\begin{equation}
+\mathrm{CV}\left(\hat{f}_{\boldsymbol{\theta}}\right) = \frac{1}{N}\sum_{i = 1}^{N}\mathcal{L}\left(y_i , \hat{f}_{\boldsymbol{\theta}}^{-\gamma\left(i\right)}\left(\boldsymbol{x}_i\right)\right).
+\end{equation}
+Typical choices of $K$ are 5 or 10 and even case $K = N$ that is known as \emph{leave-one-out} cross--validation. Generally, there is not an universal way of choosing $K$, since it strongly depends on the available number of data. \\
+The biggest problem of this method is a fact that it is computionally very expensive. For extremely complicated and complex models that are trained for hours or days, is cross--validation inconvenient approach of estimating the prediction error.
+\subsection{Akaike information criterion}
 
 
 
@@ -91,47 +141,5 @@ In general, prediction error evaluated on the training data for increasing model
 	\label{fig:Prediction_error}%
 \end{figure}
 
-\section{Cross-Validation}
-The simplest and most widely used method for estimating prediction error of  the model $\hat{f}_{\boldsymbol{\theta}}$ is called \emph{cross-validation} (CV) \cite{statistics}. It is used for direct estimating of the expected extra-sample error
-\begin{equation}
-	\widehat{\mathrm{Err}} = \E\left[\mathcal{L}\left(y, \widehat{y}\right)\right],
-\end{equation}
-the measure how accurately is the model able to predict output values for previously unseen data - independent test sample. 
 
-
-\subsection{K-Fold Cross-Validation}
-In an ideal case, if we have sufficient number of data, we can set aside a test set and use
-it to assess the performance of our prediction model. Since data are often
-scarce, this is usually not possible. Very elegant solution to this problem is via K-fold cross-validation \cite{statistics}. It
-uses part of the available data for fitting the model, and a different
-part for testing. We split the data into $K$ roughly equal-sized parts, for
-example, when $K = 5$, the scenario is shown in Figure \ref{fig:KFOLD}. 
-\begin{figure}[h]
-\begin{center}
-\begin{tikzpicture}
-\draw[step=2cm,gray,very thin] (0,0) grid (10,2); 
-\draw (5,1) node{test};
-\draw (1,1) node{train};
-\draw (3,1) node{train};
-\draw (7,1) node{train};
-\draw (9,1) node{train};
-\end{tikzpicture}
-\end{center}
-\caption{Splitting the data into $K=5$ roughly equal-sized parts.}
-\label{fig:KFOLD}
-\end{figure}
-
-For the $j^{\mathrm{th}}$ part (third in Figure \ref{fig:KFOLD}), we train the model to the other $K-1$ parts
-of the data, and calculate the prediction error of the fitted model when
-predicting the $j^{\mathrm{th}}$ part of the data. We repeat this process for $j = \left\lbrace 1,2,\dots,K\right\rbrace$ and
-combine the $K$ estimates of prediction error.\\
-Let $\gamma : \left\lbrace 1,\dots,N\right\rbrace\rightarrow  \left\lbrace 1,\dots,K\right\rbrace$ be an indexing
-function that indicates the partition to which observation $j$ is allocated by
-the randomization. Symbol $\hat{f}_{\boldsymbol{\theta}}^{-j}\left(\boldsymbol{x}\right)$ denotes the fitted model, computed with
-the $j^{\mathrm{th}}$th part of the data removed. Then the cross-validation estimate of
-prediction error is defined by
-\begin{equation}
-\mathrm{CV}\left(\hat{f}_{\boldsymbol{\theta}}\right) = \frac{1}{N}\sum_{i = 1}^{N}\mathcal{L}\left(y_i , \hat{f}_{\boldsymbol{\theta}}^{-\gamma\left(i\right)}\left(\boldsymbol{x}_i\right)\right).
-\end{equation}
-Typical choices of $K$ are 5 or 10 and even case $K = N$ that is known as \emph{leave-one-out} cross--validation. Generally, there is not an universal way of choosing $K$, since it strongly depends on the available number of data. \\
-The biggest problem of this method is a fact that it is computionally very expensive. For extremely complicated and complex models that are trained for hours or days, is cross--validation inconvenient approach of estimating the prediction error. 
+ 
