@@ -1,29 +1,39 @@
 \chapter{Theoretical introduction}
 
-\section{Notation}\label{sec:terminology}
-It will be most appropriate to begin by introducing the basic notation that will be used throughout this thesis. This will avoid any confusion, even though the notation is quite standard. \\
-Notation for random variables using upper case letters of the Latin alphabet is widely used. Typically, the letters used are from the end of the alphabet, i.e. $X,Y$ or $Z$. The realization of a random variable, also known as an observed value or simply an observation, will be denoted by the appropriate lower case letters. Thus, the realization  $x$ corresponds to the random variable $X$, which holds by analogy for other random variables. Bold symbols, for instance $\boldsymbol{x}$ or $\boldsymbol{y}$, will be used to distinguish vectors and scalars. Of course, random variables can also be vectors, but this thesis will not work with them; the primary interest is in realizations, since realizations of random variables are all data. \\
+\section{Mathematical notation}\label{sec:terminology}
+It will be most appropriate to begin by introducing the basic notation that will be used throughout this thesis. This will avoid any confusion, even though the notation is quite standard. 
+
+Notation for random variables using upper case letters of the Latin alphabet is widely used. Typically, the letters used are from the end of the alphabet, i.e. $X,Y$ or $Z$. The realization of a random variable, also known as an observed value or simply an observation, will be denoted by the appropriate lower case letters. Thus, the realization  $x$ corresponds to the random variable $X$, which holds by analogy for other random variables. Bold symbols, for instance $\boldsymbol{x}$ or $\boldsymbol{y}$, will be used to distinguish vectors and scalars. All vectors are assumed to be column vectors, so $\boldsymbol{x} = \left(x_1,x_2,\dots,x_D\right)^\top$ and hence $\boldsymbol{x}^\top$ is a row vector. Of course, random variables can also be vectors, but this thesis will not work with them; the primary interest is in realizations, since realizations of random variables are all data. Any matrices will be denoted by blackboard bold Latin letters, for example if one has $N$ values of $D$-dimensional vector of observations $\boldsymbol{x}_1,\boldsymbol{x}_2,\dots,\boldsymbol{x}_N$, it can be simply combined into a $D \times N$ data matrix $\mathbb{X}=\left(\bx_{1},\bx_{2},\dots,\bx_{N}\right)$. 
 
 
 
 \section{Probability theory}
 Mathematical models are very well described by probability and for this reason, this section will look at some of the basic concepts of probability theory that we will need. The most important such concept is probability density (PDF). 
-The symbol $p(x)$ will be used predominantly for the PDF, which is a function of $x$.  In addition, this will be used for both discrete and continuous $x$. In this way can be achieved significant simplification and unification of all formulas and equations. PDF is a non-negative function and its integration over the entire space is equal to 1. This applies to multi-dimensional PDFs $p(\boldsymbol{x})$ as well as to one-dimensional PDFs. In mathematical terms one can express it as follows
+The symbol $p(x)$ will be used predominantly for the PDF, which is a function of $x$.  In addition, this will be used for both discrete and continuous $x$. In this way can be achieved significant simplification and unification of all formulas and equations. PDF is a non-negative function and its integration over the entire space is equal to 1. This applies to multivariate PDFs $p(\boldsymbol{x})$ as well as to univariate PDFs. In mathematical terms one can express it as follows
 \begin{equation}
-    \int_{\R^d}p(\boldsymbol{x})\d{\boldsymbol{x}} = 1.
+    \int_{\R^D}p(\boldsymbol{x})\d{\boldsymbol{x}} = 1.
 \end{equation}
+In other parts of this thesis we will use PDFs $p_{
+\bt}\left(\bx\right) \equiv p\left(\bx|\bt\right)  $ that are conditioned by known parameters $\bt$. 
+
 The average value of some function $g(x)$ under a probability distribution $p(x)$ is typically denoted by $\EE{g}$ and it is called expected value or mean \cite{bishop}. For a continuous variable, expected value are expressed in terms of an integration with respect to the corresponding probability density
 \begin{equation}
-	\EE{g} = \int p(x)g(x)\d{x}.
+	\EE{g} = \int_\R p(x)g(x)\d{x}.
 \end{equation} 
-In the case of a discrete variable, one has to keep in mind that an integration turns into a sum over all $x$.   \\
+In the case of a discrete variable, one has to keep in mind that an integration turns into a sum over all $x$.   
 
 \section{Supervised Learning}
-Supervised learning, in less academic terms "learning with a teacher". This metaphor means that the student presents output $\widehat{y}$ and the teacher provides either a correct answer and/or an error that corresponds to the student's answer.  The goal (learning task) is to make a good prediction of the output $y$, denoted by the symbol $\hat{y}$, with given input $\boldsymbol{x}$. Such tasks are called \emph{supervised learning} problems \cite{supervised}. This prediction is obtained through learning a model $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) = f\left(\boldsymbol{\theta}, \boldsymbol{x}\right)$ that minimizes a loss function (also known as the error function) $\pazocal{L}(f_{\boldsymbol{\theta}}(\boldsymbol{x}), y)$, where $\boldsymbol{\theta}$ are the parameters of the model. \\
-To construct this prediction one needs data, hence it is supposed that we have available set of observations, input--output paired samples denoted by $\mathcal{D} = \lbrace \left(x_i , y_i \right)\rbrace_{i=1}^N$, eventually, this may in fact be $\mathcal{D} = \lbrace\left( \boldsymbol{x}_i , y_i \right)\rbrace_{i=1}^N$, where $\boldsymbol{x}_i \in \R^D$ and $y_i \in \R,~~\forall i = 1,\dots,N$, known as training data.  Observations are considered to be independent and identically distributed, often abbreviated as i.i.d. 
+Supervised learning (SL), in less academic terms called "learning with a teacher", is one of the machine learning tasks  \cite{supervised}.  The goal of this approach is to make a good prediction of the output $y$ (sometimes also called target variable), denoted by the symbol $\hat{y}$, with given input $\boldsymbol{x}$. This prediction is obtained through learning a model $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)\equiv f\left(\boldsymbol{\theta}, \boldsymbol{x}\right)$ that minimizes a loss function  $\pazocal{L}(f_{\boldsymbol{\theta}}(\boldsymbol{x}), y)$ (also known as the error function), where $\boldsymbol{\theta}$ are the parameters of the model. \\
+To construct this prediction one needs data, hence it is supposed that we have available set of observations, input--output paired samples denoted by $\mathcal{D} = \lbrace \left(x_i , y_i \right)\rbrace_{i=1}^N$, eventually, this may in fact be 
+\begin{equation}
+\mathcal{D} = \lbrace\left( \boldsymbol{x}_i , y_i \right)\rbrace_{i=1}^N,\quad \boldsymbol{x}_i \in \R^D,\quad y_i \in \R,\quad\forall i = 1,\dots,N.
+\end{equation}
+Such setting is usually known as training data.  Observations are considered to be independent and identically distributed, often abbreviated as i.i.d. 
+
+Here it is clear, why "learning with a teacher". This metaphor means that the student presents output $\widehat{y}$ and the teacher provides either a correct answer and/or an error that corresponds to the student's answer. 
 
 \section{Unsupervised learning}
-The previous section dealt with input--output paired samples $\mathcal{D}$. 
+The previous section dealt with input--output paired samples $\mathcal{D}$. The second approach is a logical modification of SL, based on data without labels. Such setting is called unsupervised learning (UL) or "learning without a teacher". Unlike SL, one has a set of $N$ observations in the form of $\mathbb{X}$ as was defined in \ref{sec:terminology} and nothing more. In this case, the student learns without any feedback from a supervisor or teacher providing correct answers. The goal is to directly infer the properties of $p\left( \bx \right)$.
 \subsection{Prediction}
 
 \subsection{Cross-Validation}
@@ -55,7 +65,8 @@ example, when $K = 5$, the scenario is shown in Figure \ref{fig:KFOLD}.
 For the $j^{\mathrm{th}}$ part (third in Figure \ref{fig:KFOLD}), we train the model to the other $K-1$ parts
 of the data, and calculate the prediction error of the fitted model when
 predicting the $j^{\mathrm{th}}$ part of the data. We repeat this process for $j = \left\lbrace 1,2,\dots,K\right\rbrace$ and
-combine the $K$ estimates of prediction error.\\
+combine the $K$ estimates of prediction error.
+
 Let $\gamma : \left\lbrace 1,\dots,N\right\rbrace\rightarrow  \left\lbrace 1,\dots,K\right\rbrace$ be an indexing
 function that indicates the partition to which observation $j$ is allocated by
 the randomization. Symbol $\hat{f}_{\boldsymbol{\theta}}^{-j}\left(\boldsymbol{x}\right)$ denotes the fitted model, computed with
@@ -64,14 +75,16 @@ prediction error is defined by
 \begin{equation}
 \mathrm{CV}\left(\hat{f}_{\boldsymbol{\theta}}\right) = \frac{1}{N}\sum_{i = 1}^{N}\mathcal{L}\left(y_i , \hat{f}_{\boldsymbol{\theta}}^{-\gamma\left(i\right)}\left(\boldsymbol{x}_i\right)\right).
 \end{equation}
-Typical choices of $K$ are 5 or 10 and even case $K = N$ that is known as \emph{leave-one-out} cross--validation. Generally, there is not an universal way of choosing $K$, since it strongly depends on the available number of data. \\
+Typical choices of $K$ are 5 or 10 and even case $K = N$ that is known as \emph{leave-one-out} cross--validation. Generally, there is not an universal way of choosing $K$, since it strongly depends on the available number of data. 
+
 The biggest problem of this method is a fact that it is computionally very expensive. For extremely complicated and complex models that are trained for hours or days, is cross--validation inconvenient approach of estimating the prediction error.
 \subsection{Akaike information criterion}
 
 
 
 \section{Bayesian Inference}
-The Bayesian methodology is a well established approach to statistical inference and became very important technique in statistics and data analysis. As its name suggests, Bayesian statistics is based on application of Bayes' rule. In this chapter, we briefly review basic concept of this approach, which was suggested here \cite{smidl}. \\
+The Bayesian methodology is a well established approach to statistical inference and became very important technique in statistics and data analysis. As its name suggests, Bayesian statistics is based on application of Bayes' rule. In this chapter, we briefly review basic concept of this approach, which was suggested here \cite{smidl}. 
+
  Let the measured data be denoted by $\mathcal{D}$, defined according to previous section \ref{sec:terminology}. A parametric probabilistic model of the data $\mathcal{D}$ is given by the probability density function  $p(\mathcal{D}|\boldsymbol{\theta})$, where $\boldsymbol{\theta}~\in~\boldsymbol{\Theta}~\subset~\R^s$ denotes parameters of the model. The main idea behind Bayesian theory is the treatment of the unknown parameters $\boldsymbol{\theta}$ as a random variable.  Bayes' rule is applied to infer model parameters $\boldsymbol{\theta}$, therefore
  \begin{equation}\label{Bayesinference}
  	p(\boldsymbol{\theta} | \mathcal{D}) = \frac{p(\boldsymbol{\theta}, \mathcal{D})}{p(\mathcal{D})} = \frac{p(\mathcal{D}| \boldsymbol{\theta})p(\boldsymbol{\theta})}{\int_{\boldsymbol{\Theta}}p(\mathcal{D}|\boldsymbol{\theta})p(\boldsymbol{\theta})\d\boldsymbol{\theta}}.
@@ -80,7 +93,8 @@ Since $p(\mathcal{D})$ is just the normalization constant, Equation \eqref{Bayes
 \begin{equation}
 	p(\boldsymbol{\theta} | \mathcal{D}) \propto p(\mathcal{D}| \boldsymbol{\theta})p(\boldsymbol{\theta}).
 \end{equation} 
-Symbol $\propto$ means equal up to the normalization constant. The term $p(\boldsymbol{\theta} | \mathcal{D})$ is known as the \emph{posterior} distribution, $p(\mathcal{D}| \boldsymbol{\theta})$  as the \emph{observation model}, and $p(\boldsymbol{\theta})$ is called the \emph{prior} distribution of the $\boldsymbol{\theta}$. Note that evaluation of the normalization constant can be computionally expensive, in higher dimension even intractable. \\
+Symbol $\propto$ means equal up to the normalization constant. The term $p(\boldsymbol{\theta} | \mathcal{D})$ is known as the \emph{posterior} distribution, $p(\mathcal{D}| \boldsymbol{\theta})$  as the \emph{observation model}, and $p(\boldsymbol{\theta})$ is called the \emph{prior} distribution of the $\boldsymbol{\theta}$. Note that evaluation of the normalization constant can be computionally expensive, in higher dimension even intractable. 
+
 Popular choices for an optimal value of the point estimate are:
 \begin{enumerate}
 	\item Maximum A posteriori estimate (MAP)
@@ -96,7 +110,8 @@ Mean value, unlike MAP estimate, may be very expensive to compute because of the
 \end{enumerate}	
 
 \subsection{Choice of prior distribution}
-For the posterior computation, it is necessary to specify the prior distribution $p(\boldsymbol{\theta})$, unfortunately, this might not be easily determined. This can be achieved via knowledge of previous models, expert knowledge, their combination or even uncertainty about $\boldsymbol{\theta}$ can be viable option. \\
+For the posterior computation, it is necessary to specify the prior distribution $p(\boldsymbol{\theta})$, unfortunately, this might not be easily determined. This can be achieved via knowledge of previous models, expert knowledge, their combination or even uncertainty about $\boldsymbol{\theta}$ can be viable option. 
+
 There is also many practical aspects of priors:
 \begin{itemize}
 	\item Regularization - supplementing the data, if there is insufficient data or poorly defined model. 
