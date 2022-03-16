@@ -9,11 +9,11 @@ Notation for random variables using upper case letters of the Latin alphabet is 
 
 \section{Probability theory}
 Mathematical models are very well described by probability and for this reason, this section will look at some of the basic concepts of probability theory that we will need. The most important such concept is probability density (PDF). 
-The symbol $p(x)$ will be used predominantly for the PDF, which is a function of $x$.  In addition, this will be used for both discrete and continuous $x$. In this way can be achieved significant simplification and unification of all formulas and equations. PDF is a non-negative function and its integration over the entire space is equal to 1. This applies to multivariate PDFs $p(\boldsymbol{x})$ as well as to univariate PDFs. In mathematical terms one can express it as follows
+The symbol $p(x)$ will be used predominantly for the PDF, which is a function of $x$.  In addition, this will be used for both discrete and continuous $x$. In this way can be achieved significant simplification and unification of all formulas and equations. Any PDF is a non-negative function and its integration over the entire space is equal to 1. This applies to multivariate case as well as it applies to univariate case, therefore integration of joint PDFs $p(\boldsymbol{x}) = p\left(x_1, x_2, \dots, x_N\right)$ over the entire space is also equal to 1. In mathematical terms one can express it as follows
 \begin{equation}
     \int_{\R^D}p(\boldsymbol{x})\d{\boldsymbol{x}} = 1.
 \end{equation}
-In other parts of this thesis we will use PDFs $p_{
+In other parts of this thesis we will use conditional PDFs such as $p_{
 \bt}\left(\bx\right) \equiv p\left(\bx|\bt\right)  $ that are conditioned by known parameters $\bt$. 
 
 The average value of some function $g(x)$ under a probability distribution $p(x)$ is typically denoted by $\EE{g}$ and it is called expected value or mean \cite{bishop}. For a continuous variable, expected value are expressed in terms of an integration with respect to the corresponding probability density
@@ -23,7 +23,7 @@ The average value of some function $g(x)$ under a probability distribution $p(x)
 In the case of a discrete variable, one has to keep in mind that an integration turns into a sum over all $x$.   
 
 \section{Supervised Learning}
-Supervised learning (SL), in less academic terms called "learning with a teacher", is one of the machine learning tasks  \cite{supervised}.  The goal of this approach is to make a good prediction of the output $y$ (sometimes also called target variable), denoted by the symbol $\hat{y}$, with given input $\boldsymbol{x}$. This prediction is obtained through learning a model $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)\equiv f\left(\boldsymbol{\theta}, \boldsymbol{x}\right)$ that minimizes a loss function  $\pazocal{L}(f_{\boldsymbol{\theta}}(\boldsymbol{x}), y)$ (also known as the error function), where $\boldsymbol{\theta}$ are the parameters of the model. \\
+Supervised learning (SL), in less academic terms called "learning with a teacher", is one of the machine learning tasks  \cite{supervised}.  The goal of this approach is to make a good prediction of the output $y$ (sometimes also called target variable), denoted by the symbol $\hat{y}$, with given input $\boldsymbol{x}$. This prediction is obtained through learning a model $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)\equiv f\left(\boldsymbol{x}; \boldsymbol{\theta}\right)$ that minimizes a loss function  $\pazocal{L}(f_{\boldsymbol{\theta}}(\boldsymbol{x}), y)$ (also known as the error function), where $\boldsymbol{\theta}$ are the parameters of the model. \\
 To construct this prediction one needs data, hence it is supposed that we have available set of observations, input--output paired samples denoted by $\mathcal{D} = \lbrace \left(x_i , y_i \right)\rbrace_{i=1}^N$, eventually, this may in fact be 
 \begin{equation}
 \mathcal{D} = \lbrace\left( \boldsymbol{x}_i , y_i \right)\rbrace_{i=1}^N,\quad \boldsymbol{x}_i \in \R^D,\quad y_i \in \R,\quad\forall i = 1,\dots,N.
@@ -134,7 +134,7 @@ causing an error. In typical MAP, this is known as \emph{over--fitting}. Predict
 \begin{equation}
 	\mathrm{Err} = \pazocal{L}\left(\widehat{y}, y \right),
 \end{equation}	
-where $\widehat{y} = \widehat{f}_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) = f(\widehat{\boldsymbol{\theta}}, \boldsymbol{x})$.  As an example, we can mention couple of typically used loss functions 
+where $\widehat{y} = \widehat{f}_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) = f(\boldsymbol{x}; \widehat{\boldsymbol{\theta}})$.  As an example, we can mention couple of typically used loss functions 
 \begin{equation}
 \pazocal{L}\left(y,\widehat{y} \right) =
  \begin{cases}
@@ -146,7 +146,8 @@ We shall also discuss the problem of the model complexity. Consider a polynomial
 \begin{equation}
 	f_{\boldsymbol{\theta}}(x) = \sum_{i=0}^{s-1}\theta_ix^i.
 \end{equation}
- Here, over--fitting occurs very frequently. Model complexity of this case is very intuitive, as it is just the order of the polynomial, $s-1$.  Smaller orders of the polynomial (may) give rather poor fits to the data in contrast to much higher order polynomial giving an excellent fit. Such polynomial passes exactly through each datapoint, however, oscillates wildly and gives poor prediction for new input variable $x^{\star}$. \\
+ Here, over--fitting occurs very frequently. Model complexity of this case is very intuitive, as it is just the order of the polynomial, $s-1$.  Smaller orders of the polynomial (may) give rather poor fits to the data in contrast to much higher order polynomial giving an excellent fit. Such polynomial passes exactly through each datapoint, however, oscillates wildly and gives poor prediction for new input variable $x^{\star}$. 
+ 
 To obtain some quantitative insight into dependence of the generalization performance on model complexity, consider separate test set of data (testing data) used to assess the performance of the model. 
 In general, prediction error evaluated on the training data for increasing model complexity approaches zero. On the other hand, prediction error evaluated on the testing data for increasing model complexity is (from certain point) increasing as well. The typical scenario is illustrated in Figure \ref{fig:Prediction_error}.
  \begin{figure}[h]
