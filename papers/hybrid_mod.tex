@@ -30,57 +30,7 @@ Note that the normalization constant $Z(\boldsymbol{\theta})$ canceled out and w
 Function $h_{\boldsymbol{\theta}}: \mathbb{R}^D \to \mathbb{R}^H$ maps each data point to a representation space with dimension $H$, while $\boldsymbol{x}$ and $\boldsymbol{x}'$ are two different augmented views of the same data point. If $\boldsymbol{x}$ is an image, then augmented view of $\boldsymbol{x}$ can be obtained for example by rotation or colorization of that image. Note that the inner product between two vectors can replaced with any distance metric, for example Euclidean distance. \\
 What this objective does is that it tries to maximally distinguish an input $\boldsymbol{x}_i$ from an alternative input $\boldsymbol{x}'_i$. In other words, \eqref{eq:contrastive} reduces the distance between representations of different augmented views of the same image $\boldsymbol{x}, \boldsymbol{x}'$ (positive pairs) and increases the distance between representations of augmented views of from different images (negative pairs). This means that the model should be able to distinguish between different types of images without even knowing what these images really are. 
 
-\section{Noise--contrastive estimation}
-Suppose one has to estimate a model that is specified by an non-normalized probability den-
-sity function $q^0_{\bt}\left(\boldsymbol{x}\right)$. In such case, one can utilize noise--contrastive estimation (NCE). The first step is to  introduce the another parameter c among the estimated parameters $\bt$. For clarity, the symbol $\bt^\star=\left\lbrace\bt,c\right\rbrace$ is introduced for the set of estimated parameters including
-c. Using this notation, the following equalities hold
-\begin{align}
-    q_{\bt^\star}\left(\boldsymbol{x}\right)
-    \end{align}
-which means that the newly introduced parameter c is an estimate of the negative logarithm of
-the normalization constant $Z\left(\bt\right)$.
-As the name of the subsection suggests, we use noise to estimate. By our convention, let $\bx_1,\bx_2,\dots,\bx_N$
-be the observations and $\boldsymbol{e}_1,\boldsymbol{e}_2,\dots,\boldsymbol{e}_N$ be the artificially generated noise data with known distribution $\psi\left(\bt\right)$. The $\widehat{\bt^\star}$ estimate is then defined as
-\begin{align}
-    \widehat{\bt^\star} &= \argmax_{\bt^\star} \pazocal{L}^{\mathrm{NC}}\left(\bt^\star\right)\\
-   &= \argmax_{\bt^\star} \frac{1}{2N}\sum_{i=1}^N \ln\sigma_{\bt^\star}\left(\bx_i\right) + \ln\left(1-\sigma_{\bt^\star}\left(\boldsymbol{e}_i\right) \right)\label{NCEloss}
-\end{align}
-where $\sigma_{\bt^\star}$ is logistic function
-\begin{align}
-\sigma_{\bt^\star} = \frac{1}{1 + \exp\left(-G_{\bt^\star}\left(\bx\right) \right)}
-\end{align}
-and finally, function $G_{\bt^\star}$ represents the difference of the log-likelihoods of $q_{\bt^\star}$ and $\psi$, hence
-\begin{align}
-    G_{\bt^\star} = \ln q_{\bt^\star}\left(\bx \right) - \ln\psi\left(\bx \right).
-\end{align}
-It may be noted that equation \eqref{NCEloss} also appears in SL tasks and is called binary
-CE loss. It is actually a special case of CE itself. Thus, it is used for classification between two classes. This gives an intuitive insight into how noise--contrastive estimation
-really works. By comparing data and noise, the model is learned, so this method can be called
-learning by comparison. This approach does not use labels, so it is a UL algorithm. 
-\begin{example}[Gaussian distribution]
-To test this approach, we perform a simple experiment. There are a total of $N = 100$ i.i.d. one
-dimensional observations $x_1,x_2,\dots,x_N$ from an unknown distribution that is assumed to be non-normalized and Gaussian. It is therefore of the form
-\begin{align}
-    q_{\bt^\star}\left(x\right) = \exp\left(-\frac{1}{2}\cdot\frac{\left(x-\mu\right)^2}{\sigma^2} + c \right)
-\end{align}
-where $\bt^\star = \left\lbrace \mu, \sigma^2, c \right\rbrace$. Next, we artificially generate $N = 100$ noise data $e_1,e_2,\dots,e_N$, which is again easiest
-to do using a Gaussian distribution. Which means that it can be chosen, for example
-\begin{align}
-    \psi\left(e\right) = \frac{1}{\sqrt{2\pi 10}}\exp\left(-\frac{1}{2}\cdot\frac{e^2}{10} \right)
-\end{align}
-At this point it is possible to construct a function $\pazocal{L}^{\mathrm{NC}}\left(\bt^\star\right)$ that is minimized using stochastic
-gradient descent. The following figure shows the training process and the comparison between
-the estimated distribution and the true one. As can be seen in the figure 4.1, this approach works quite well and for more observations results would be even better.
-\begin{figure}[h]
-	\centering
-	\subfloat[Training loss function]
-	{{\includegraphics[width=8.0cm]{plots/Images/NCE_loss} }}%
-	\subfloat[Comparison of true and estimated pdf]
-	{{\includegraphics[width=8.0cm]{plots/Images/NCE_results.pdf} }}%
-	\caption{Results of the NCE experiment}%
-	\label{ggm}%
-\end{figure}
-\end{example}
+
 
 \section{Hybrid Dicriminative and Generative Models, HDGM}
 In this section will be discussed an approach, how to combine both of the already mentioned models.
@@ -134,13 +84,13 @@ Any joint probability distribution can be break down into parts via chain-rule
 \end{equation}
 thus we need to find $p(y\vert x)$ and $p(x)$. From polynomial regression we can obtain conditional probability density 
 \begin{equation}\label{eq:linregpdf}
-	p(y\vert x, \boldsymbol{\theta}) = \pazocal{N}\left(\sum_{i=0}^{s-1} \theta_i x^i, \sigma^2 \right),
+	p(y\vert x, \boldsymbol{\theta}) = \pazocal{N}\left(y; \sum_{i=0}^{s-1} \theta_i x^i, \sigma^2 \right),
 \end{equation}
 where symbol $\pazocal{N}(\cdot)$ denotes probability density function of Normal distribution and $\sigma^2$ is known variance. In this case, we also need to determine prior distribution on $x$. To keep this example simple, let the pdf takes the form
 \begin{equation}\label{eq:tauprior}
-	p(x|\tau) = \pazocal{N}\left(0, \tau^2\right),
+	p(x|\tau) = \pazocal{N}\left(x; 0, \tau^2\right),
 \end{equation}
-where the choice of parameter $\tau$ is based on the fact that we would like to have a non--informative prior, thus $\tau$ should be adequately high. If the value of $\tau$ is high, data are spread very far from their expected value.  Subtituting Equation \eqref{eq:tauprior} and \eqref{eq:linregpdf} to the \eqref{eq:chainrule} results to
+where the choice of parameter $\tau$ is based on the fact that we would like to have a non--informative prior, thus $\tau$ should be adequately high. If the value of $\tau$ is high, data are spread very far from their expected value.  Subtit uting Equation \eqref{eq:tauprior} and \eqref{eq:linregpdf} to the \eqref{eq:chainrule} results to
 \begin{equation}
 	p(x,y) = \pazocal{N}\left(0,\tau^2\right) \cdot \pazocal{N}\left(\sum_{i=0}^{s-1} \theta_i x^i, \sigma^2 \right)  =  \frac{1}{2\pi\sigma\tau}\exp\left(-\frac{\left(y-\sum_{i=0}^{s-1} \theta_i x^i\right)^2}{2\sigma^2}-\frac{x^2}{2\tau^2}\right),
 \end{equation}
