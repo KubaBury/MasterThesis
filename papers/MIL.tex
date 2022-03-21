@@ -18,7 +18,7 @@ Embedded space paradigm \cite{mandlik} defines a vector space for bag representa
 \end{equation}
 Mappings $\phi_i$ are instrumentals towards extraction and suitable aggregation of information on the level of instances. They can be defined via some instance transformation $k:\mathcal{X}\to \R^d$ and aggregation function $g:\mathcal{P}_F\left(\R^d\right) \to \R^s$ in the form 
 \begin{equation}
-	\phi_i(b)=g\left( k\left\{\boldsymbol{x}\right\}_{\boldsymbol{x} \in b}\right).
+	\phi_i(b)=g\left( k\left\lbrace\boldsymbol{x}\right\rbrace_{\boldsymbol{x} \in b}\right).
 \end{equation}
 On the resulting embedded representation of bag samples can be applied any standard machine learning algorithm, which is training bag-level classifier $f_{\boldsymbol{\theta}}^B :\R^s \to \mathcal{C}$ using adjusted dataset $\mathcal{D}_{\mathrm{ES}}~=~\Big\lbrace \left(\phi(b_i), y_i\right)~\in~\R^s\times\mathcal{C}~\ ~|~\ i~\in~\big\lbrace 1,2,\dots,\vert\mathcal{D}\vert\big\rbrace\Big\rbrace$. The most used aggregation functions are minimum, maximum or mean value.
 \section{Training}\label{MILtraining}
