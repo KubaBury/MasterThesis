@@ -108,7 +108,7 @@ Let the probabilistic encoder be a multivariate Gaussian with a diagonal covaria
 \begin{equation}\label{eq:VAE_q}
 q_{\bphi}\left(\boldsymbol{z}\vert \bx \right) = \pazocal{N}\left(\boldsymbol{z}; \boldsymbol{\mu},\boldsymbol{\sigma}^2\mathbb{I}_P  \right) 
 \end{equation}
-and let the probabilistic decoder takes the form depending on the type of given data and model. Finally, let the prior $p_{\bt}\left(\bz\right)$ be the centered izotropic multivariate Gaussian, i.e.
+and let the probabilistic decoder takes the form depending on the type of given data and model.This is typically either multivariate Gaussian or Bernoulli. Finally, let the prior $p_{\bt}\left(\bz\right)$ be the centered izotropic multivariate Gaussian, i.e.
 \begin{equation}
 p_{\bt}\left(\boldsymbol{z} \right) = p\left(\boldsymbol{z} \right) = \pazocal{N}\left(\boldsymbol{z}; \boldsymbol{0},\mathbb{I}_P  \right),
 \end{equation}
@@ -116,7 +116,7 @@ where generative parameters $\bt$ are omitted, since the chosen prior lacks para
 \begin{equation}\label{eq:reparam_specific}
 \boldsymbol{z}_{i,j} = \boldsymbol{\mu}_i + \boldsymbol{\sigma}_i\odot\boldsymbol{\varepsilon}_j ,
 \end{equation}
-where the symbol $\odot$ denotes Hadamard product, i.e. element-wise product and $\boldsymbol{\varepsilon} \sim \pazocal{N}\left(\boldsymbol{0},\mathbb{I} \right)$.
+where the symbol $\odot$ denotes Hadamard product, i.e. element-wise product and auxiliary variable $\boldsymbol{\varepsilon} \sim \pazocal{N}\left(\boldsymbol{0},\mathbb{I} \right)$.
 Another important fact is that the KL distance from a Gaussian distribution to a Gaussian distribution has an analytical solution, so $\KL{q_{\bphi}\left(\bz\vert \bx \right)}{p_{\bt}\left(\bz\right)}$ can be expressed in closed form:
 \begin{equation}
 \begin{split}

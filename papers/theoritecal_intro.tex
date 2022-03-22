@@ -8,32 +8,27 @@ Notation for random variables using upper case letters of the Latin alphabet is 
 
 
 \section{Probability theory}
-Mathematical models are very well described by probability and for this reason, this section will look at some of the basic concepts of probability theory that we will need. The most important such concept is probability density (PDF). 
-The symbol $p(x)$ will be used predominantly for the PDF, which is a function of $x$.  In addition, this will be used for both discrete and continuous $x$. In this way can be achieved significant simplification and unification of all formulas and equations. Any PDF is a non-negative function and its integration over the entire space is equal to 1. This applies to multivariate case as well as it applies to univariate case, therefore integration of joint PDFs $p(\boldsymbol{x}) = p\left(x_1, x_2, \dots, x_N\right)$ over the entire space is also equal to 1. In mathematical terms one can express it as follows
-\begin{equation}
-    \int_{\R^D}p(\boldsymbol{x})\d{\boldsymbol{x}} = 1.
-\end{equation}
-In other parts of this thesis we will use conditional PDFs such as $p_{
-\bt}\left(\bx\right) \equiv p\left(\bx|\bt\right)  $ that are conditioned by known parameters $\bt$. 
+Mathematical models are very well described by probability and for this reason, this section will look at some of the basic concepts of probability theory that we will need. The most important such concept is probability density (PDF). The symbol $p(x)$ will be used predominantly for the PDF, which is a function of $x$.  In addition, this will be used for both discrete and continuous $x$. In this way can be achieved significant simplification and unification of all formulas and equations. Any PDF is a non-negative function and its integration over the entire space is equal to 1. This applies to multivariate case as well as it applies to univariate case, therefore integration of joint PDFs $p(\boldsymbol{x}) = p\left(x_1, x_2, \dots, x_N\right)$ over the entire space is also equal to 1. In mathematical terms one can express it as follows $\int_{\R^D}p(\boldsymbol{x})\d{\boldsymbol{x}} = 1$. In other parts of this thesis we will use conditional PDFs such as $p_{\bt}\left(\bx\right) \equiv p\left(\bx|\bt\right)  $ that are conditioned by known parameters $\bt$. 
 
-The average value of some function $g(x)$ under a probability distribution $p(x)$ is typically denoted by $\EE{g}$ and it is called expected value or mean \cite{bishop}. For a continuous variable, expected value are expressed in terms of an integration with respect to the corresponding probability density
+The average value of some function $g(x)$ under a probability distribution $p(x)$ is typically denoted by $\EE{g\left(x\right)}$ and it is called expected value or mean \cite{bishop}. For a continuous variable, expected value are expressed in terms of an integration with respect to the corresponding probability density
 \begin{equation}
-	\EE{g} = \int_\R p(x)g(x)\d{x}.
+	\EE{g\left(x\right)} = \int_\R p(x)g(x)\d{x}.
 \end{equation} 
-In the case of a discrete variable, one has to keep in mind that an integration turns into a sum over all $x$.   
+In the case of a discrete variable, one has to keep in mind that an integration turns into a sum over all $x$. To specify over which PDF the expectation is calculated, the notation $\mathbb{E}_{p(x)}\left[g\left(x\right)\right]$ can be used.
 
 \section{Supervised Learning}
-Supervised learning (SL), in less academic terms called "learning with a teacher", is one of the machine learning tasks  \cite{supervised}.  The goal of this approach is to make a good prediction of the output $y$ (sometimes also called target variable), denoted by the symbol $\hat{y}$, with given input $\boldsymbol{x}$. This prediction is obtained through learning a model $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)\equiv f\left(\boldsymbol{x}; \boldsymbol{\theta}\right)$ that minimizes a loss function  $\pazocal{L}(f_{\boldsymbol{\theta}}(\boldsymbol{x}), y)$ (also known as the error function), where $\boldsymbol{\theta}$ are the parameters of the model. \\
-To construct this prediction one needs data, hence it is supposed that we have available set of observations, input--output paired samples denoted by $\mathcal{D} = \lbrace \left(x_i , y_i \right)\rbrace_{i=1}^N$, eventually, this may in fact be 
+Supervised learning (SL), in less academic terms called "learning with a teacher", is one of the machine learning tasks  \cite{supervised}.  The goal of this approach is to make a good prediction of the output $y$ (sometimes also called target variable), denoted by the symbol $\hat{y}$, with given input $\boldsymbol{x}$. This prediction is obtained through learning a model $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)\equiv f\left(\boldsymbol{x}; \boldsymbol{\theta}\right)$ that minimizes a loss function  $\pazocal{L}(f_{\boldsymbol{\theta}}(\boldsymbol{x}), y)$ (also known as the error function), where $\boldsymbol{\theta}$ are the parameters of the model. 
+
+To construct this prediction one needs data, hence it is supposed that we have available set of observations, input--output paired samples denoted by $D = \lbrace \left(x_i , y_i \right)\rbrace_{i=1}^N$, eventually, this may in fact be 
 \begin{equation}
-\mathcal{D} = \lbrace\left( \boldsymbol{x}_i , y_i \right)\rbrace_{i=1}^N,\quad \boldsymbol{x}_i \in \R^D,\quad y_i \in \R,\quad\forall i = 1,\dots,N.
+D = \lbrace\left( \boldsymbol{x}_i , y_i \right)\rbrace_{i=1}^N,\quad \boldsymbol{x}_i \in \R^D,\quad y_i \in \R,\quad\forall i = 1,\dots,N.
 \end{equation}
 Such setting is usually known as training data.  Observations are considered to be independent and identically distributed, often abbreviated as i.i.d. 
 
-Here it is clear, why "learning with a teacher". This metaphor means that the student presents output $\widehat{y}$ and the teacher provides either a correct answer and/or an error that corresponds to the student's answer. 
+Here it is clear why the term "learning with a teacher" is used                                   . This metaphor means that the student presents output $\widehat{y}$ and the teacher provides either a correct answer and/or an error that corresponds to the student's answer. 
 
 \section{Unsupervised learning}
-The previous section dealt with input--output paired samples $\mathcal{D}$. The second approach is a logical modification of SL, based on data without labels. Such setting is called unsupervised learning (UL) or "learning without a teacher". Unlike SL, one has a set of $N$ observations in the form of $\mathbb{X}$ as was defined in \ref{sec:terminology} and nothing more. In this case, the student learns without any feedback from a supervisor or teacher providing correct answers. The goal is to directly infer the properties of $p\left( \bx \right)$.
+The previous section dealt with input--output paired samples $D$. The second approach is a logical modification of SL, based on data without labels. Such setting is called unsupervised learning (UL) or "learning without a teacher". Unlike SL, one has a set of $N$ observations in the form of $\mathbb{X}$ as was defined in \ref{sec:terminology} and nothing more. In this case, the student learns without any feedback from a supervisor or teacher providing correct answers. The goal is to directly infer the properties of $p\left( \bx \right)$.
 \subsection{Prediction}
 
 \subsection{Cross-Validation}
@@ -85,7 +80,7 @@ The biggest problem of this method is a fact that it is computionally very expen
 \section{Bayesian Inference}
 The Bayesian methodology is a well established approach to statistical inference and became very important technique in statistics and data analysis. As its name suggests, Bayesian statistics is based on application of Bayes' rule. In this chapter, we briefly review basic concept of this approach, which was suggested here \cite{smidl}. 
 
- Let the measured data be denoted by $\mathcal{D}$, defined according to previous section \ref{sec:terminology}. A parametric probabilistic model of the data $\mathcal{D}$ is given by the probability density function  $p(\mathcal{D}|\boldsymbol{\theta})$, where $\boldsymbol{\theta}~\in~\boldsymbol{\Theta}~\subset~\R^s$ denotes parameters of the model. The main idea behind Bayesian theory is the treatment of the unknown parameters $\boldsymbol{\theta}$ as a random variable.  Bayes' rule is applied to infer model parameters $\boldsymbol{\theta}$, therefore
+ Let the measured data be denoted by $D$, defined according to previous section \ref{sec:terminology}. A parametric probabilistic model of the data $D$ is given by the probability density function  $p\left(D|\boldsymbol{\theta}\right)$, where $\boldsymbol{\theta}~\in~\boldsymbol{\Theta}~\subset~\R^s$ denotes parameters of the model. The main idea behind Bayesian theory is the treatment of the unknown parameters $\boldsymbol{\theta}$ as a random variable.  Bayes' rule is applied to infer model parameters $\boldsymbol{\theta}$, therefore
  \begin{equation}\label{Bayesinference}
  	p(\boldsymbol{\theta} | \mathcal{D}) = \frac{p(\boldsymbol{\theta}, \mathcal{D})}{p(\mathcal{D})} = \frac{p(\mathcal{D}| \boldsymbol{\theta})p(\boldsymbol{\theta})}{\int_{\boldsymbol{\Theta}}p(\mathcal{D}|\boldsymbol{\theta})p(\boldsymbol{\theta})\d\boldsymbol{\theta}}.
  \end{equation} 
@@ -93,7 +88,7 @@ Since $p(\mathcal{D})$ is just the normalization constant, Equation \eqref{Bayes
 \begin{equation}
 	p(\boldsymbol{\theta} | \mathcal{D}) \propto p(\mathcal{D}| \boldsymbol{\theta})p(\boldsymbol{\theta}).
 \end{equation} 
-Symbol $\propto$ means equal up to the normalization constant. The term $p(\boldsymbol{\theta} | \mathcal{D})$ is known as the \emph{posterior} distribution, $p(\mathcal{D}| \boldsymbol{\theta})$  as the \emph{observation model}, and $p(\boldsymbol{\theta})$ is called the \emph{prior} distribution of the $\boldsymbol{\theta}$. Note that evaluation of the normalization constant can be computionally expensive, in higher dimension even intractable. 
+Symbol $\propto$ means equal up to the normalization constant. The term $p(\boldsymbol{\theta} | D)$ is known as the \emph{posterior} distribution, $p(D| \boldsymbol{\theta})$  as the \emph{observation model}, and $p(\boldsymbol{\theta})$ is called the \emph{prior} distribution of the $\boldsymbol{\theta}$. Note that evaluation of the normalization constant can be computionally expensive, in higher dimension even intractable. 
 
 Popular choices for an optimal value of the point estimate are:
 \begin{enumerate}
@@ -114,9 +109,9 @@ For the posterior computation, it is necessary to specify the prior distribution
 
 There is also many practical aspects of priors:
 \begin{itemize}
-	\item Regularization - supplementing the data, if there is insufficient data or poorly defined model. 
-	\item Imposing various restrictions on the parameters $\boldsymbol{\theta}$ reflecting physical constraints. The choice of prior distribution with bounded support will result to posterior distribution with bounded support as well. 
-	\item Non--informative prior - if the data are informative enough to make a prediction, it is proposed to choose a prior with minimal impact on the posterior distribution, such as uniform distribution. However, typical choices of non--informative priors are so--called \emph{Jeffreys priors} \cite{jeffrey}.
+	\item \emph{Regularization} - supplementing the data, if there is insufficient data or poorly defined model. 
+	\item \emph{Restrictive conditions} - Imposing various restrictions on the parameters $\boldsymbol{\theta}$ reflecting physical constraints. The choice of prior distribution with bounded support will result to posterior distribution with bounded support as well. 
+	\item \emph{Non--informative prior} - if the data are informative enough to make a prediction, it is proposed to choose a prior with minimal impact on the posterior distribution, such as uniform distribution. However, typical choices of non--informative priors are so--called \emph{Jeffreys priors} \cite{jeffrey}.
 \end{itemize}
 
 
