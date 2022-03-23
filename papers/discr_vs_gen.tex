@@ -1,15 +1,15 @@
 
 \chapter{Discriminative vs. Generative Models}\label{discriminative_modelinmg}
 \section{Overview}
-Machine learning models can be classified into two main categories, discriminative and generative models. Simply put, a discriminative model makes predictions based on conditional probability $p\left(y|\bx\right)$ and is either used for classification or regression problems. In other words discriminative models distinguishes the decision boundary between the
-classes.  It corresponds to learning parameters maximizing conditional probability
-distribution $p(y|\bx)$. In opposition, a generative model revolves around the distribution of a dataset to return a probability for a given example. Rather than
+Machine learning models can be classified into two main categories, discriminative and generative models. Simply put, a discriminative model makes predictions based on conditional probability $p\left(y|\bx\right)$ and is used for classification or regression problems. In other words, discriminative models distinguishes the decision boundary between the
+classes.  It corresponds to learning parameters that maximize the conditional probability
+distribution $p(y|\bx)$. On the contrary, a generative model revolves around the distribution of a data set to return a probability for a given example. Rather than
 looking at classes and trying to find something to separate them, it focuses
-only on the one class at the time and builds a model what that certain class looks like, than turns attention to the other class. To express it more formally, generative models learns parameters maximizing $p\left(\bx|y \right)$ and $p\left(y\right)$. Since
+only on the one class at the time and builds a model what that certain class looks like, then turns attention to the other class. To express it more formally, generative models learn parameters that maximize $p\left(\bx|y \right)$ and $p\left(y\right)$. Since
 \begin{align}\label{eq:prob_decompostion}
 p\left(\bx,y\right) = p\left(\bx|y\right)\cdot p\left(y\right),
 \end{align}
-with joint PDF it is possible to generate new $\left(\bx',y'\right)$ pairs. In some cases, using the second decomposition $p\left(\bx,y\right) = p\left(y|\bx\right)\cdot p\left(\bx\right)$ is also an option.  Note that in an unsupervised setting the task is reduced to inferring only $p\left(\bx\right)$.
+with joint PDF it is possible to generate new $\left(\bx',y'\right)$ pairs. In some cases, the use of the second decomposition $p\left(\bx,y\right) = p\left(y|\bx\right)\cdot p\left(\bx\right)$ is also an option.  Note that in an unsupervised setting, the task is reduced to inferring only $p\left(\bx\right)$.
 \begin{figure}[h]
 	\centering
 	\begin{minipage}{.5\textwidth}
@@ -27,15 +27,15 @@ with joint PDF it is possible to generate new $\left(\bx',y'\right)$ pairs. In s
 %\caption{Discriminative and Generative approach.}
 \end{figure}
 \section{Discriminative modeling}
-In this section, we review basics of discriminative modeling that was proposed in \cite{HDGEmain}. Given a data distribution via probability density $p(\boldsymbol{x})$ and a label distribution with probability density $p(y|\boldsymbol{x})$ containing $C$ categories. In other words, variable $y$ is now cathegorical taking on $C$ possible values and comes from a finite set $\pazocal{C}$.  A classification problem is typically solved using a parametric function $f_{\boldsymbol{\theta}} : \mathbb{R}^D \to \pazocal{C}$, where $\boldsymbol{\theta}$ denotes parameters of the model. In practice, function $f_{\boldsymbol{\theta}}$ is often used in the form of $\mathbb{R}^D \to  \mathbb{R}^C$. This function maps each data point $\boldsymbol{x} \in \mathbb{R}^D$ to $C$ real-valued numbers known as logits. One has to keep in mind that $\mathbb{R}^C$ is allowed here due to the utilization of \emph{one-hot encoding}, which will be explained in section \ref{OHE}. Logits are used to parametrize a categorical distribution via the function
+In this section, we review the basics of discriminative modeling proposed in \cite{HDGEmain}. Given a data distribution through the probability density $p(\boldsymbol{x})$ and a label distribution with probability density $p(y|\boldsymbol{x})$ containing $C$ categories. In other words, the variable $y$ is now categorical, taking on $C$ possible values, and comes from a finite set $\pazocal{C}$.  A classification problem is typically solved using a parametric function $f_{\boldsymbol{\theta}} : \mathbb{R}^D \to \pazocal{C}$, where $\boldsymbol{\theta}$ denotes the parameters of the model. In practice, the function $f_{\boldsymbol{\theta}}$ is often used in the form of $\mathbb{R}^D \to  \mathbb{R}^C$. This function maps each data point $\boldsymbol{x} \in \mathbb{R}^D$ to $C$ real-valued numbers known as logits. It should be noted that $\mathbb{R}^C$ is allowed here due to the utilization of \emph{one-hot encoding}, which will be explained in Section \ref{OHE}. Logits are used to parameterize a categorical distribution through the function.
 \begin{equation}\label{softmax}
 	q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right) = \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)},
 \end{equation}
-which is known as the Softmax function. Note that the convention $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]$ means the $y^{\mathrm{th}}$ element of the $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)$. For learning $f_{\boldsymbol{\theta}}$ is usually minimized cross-entropy loss 
+which is known as the Softmax function. Note that the convention $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]$ means the element $y^{\mathrm{th}}$ of $f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)$. For learning $f_{\boldsymbol{\theta}}$ is usually minimized cross-entropy loss 
 \begin{equation}\label{crossentropy}
 	\min_{\boldsymbol{\theta}}- \mathbb{E}_{p(y|\bx)}\left[\log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right].
 \end{equation} 
-Rationale for this objective comes from minimizing the Kullback-Leibler (KL) divergence with a target distribution $p(y| \boldsymbol{x})$ \cite{KL}. In general,
+The rationale for this objective comes from minimizing the Kullback-Leibler (KL) divergence with a target distribution $p(y| \boldsymbol{x})$ \cite{KL}. In general, the
 KL divergence (or KL distance) from $p(y| \boldsymbol{x})$ to $q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)$ is defined as
 \begin{equation}\label{eq:KLdiv}
 D_{\mathrm{KL}} \left(p(y| \boldsymbol{x}) || q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right) \right) = \int p(y| \boldsymbol{x})\log\frac{p(y| \boldsymbol{x})}{q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)}\d{y} = \mathbb{E}_{p(y| \boldsymbol{x})} \left[\log\frac{p(y| \boldsymbol{x})}{q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)} \right]
@@ -46,7 +46,7 @@ and has the following properties:
 \item $\KL{p(y| \boldsymbol{x})}{q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)} = 0$ iff $p(y| \boldsymbol{x}) = q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)$ almost everywhere,
 \item $\KL{p(y| \boldsymbol{x})}{q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)} \neq \KL{q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)}{p(y| \boldsymbol{x})}$ and KL divergence does not obey the triangle inequality.
 \end{enumerate}
-The third property indicates that care is needed in the syntax describing KL divergence. We say that \eqref{eq:KLdiv} is from $p(y| \boldsymbol{x})$ to $q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)$. Using the logarithm property, \eqref{eq:KLdiv} can be further rewritten into the form 
+The third property indicates that care is needed in the syntax describing KL divergence. We say that \eqref{eq:KLdiv} is from $p(y| \boldsymbol{x})$ to $q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)$. Using the logarithmic property, \eqref{eq:KLdiv} can be further rewritten in the form 
 \begin{equation}
 	 \mathbb{E}_{p(y| \boldsymbol{x})} \left[\log\frac{p(y| \boldsymbol{x})}{q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)} \right] = 
 	 \mathbb{E}_{p(y| \boldsymbol{x})} \left[\log p(y| \boldsymbol{x}) \right] - \mathbb{E}_{p(y| \boldsymbol{x})} \left[\log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right) \right],
@@ -56,25 +56,25 @@ the first term does not depend on $\bt$ and therefore minimizing either CE or KL
 \begin{equation}
 \min_{\boldsymbol{\theta}} D_{\mathrm{KL}} \left(p(y| \boldsymbol{x}) \Vert q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right) \right) = \min_{\boldsymbol{\theta}} - \E_{p(y| \boldsymbol{x})}\left[ \log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right].
 \end{equation}
-For clarity, the expected value will be discussed. In practise, it is dealt with discrete data, so the term  $\E_{ p(y| \boldsymbol{x})}\left[\log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right]$ takes the form
+For clarity, the expected value will be discussed. In practice, it is dealt with discrete data, so the term $\E_{ p(y| \boldsymbol{x})}\left[\log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right]$ takes the form of
 \begin{equation}
     \E_{p(y| \boldsymbol{x})}\left[\log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right] = \sum_{k=1}^C p(y_k| \boldsymbol{x})\log q_{\boldsymbol{\theta}}\left(y_k|\boldsymbol{x}\right).
 \end{equation}
 This part deserves further discussion for a few reasons:
 \begin{itemize}
-    \item Maximum likelihood estimation (ML) of $\bt$ is equivalent to minimization of KL distance.
+    \item Maximum likelihood estimation (ML) of $\bt$ is equivalent to minimization of the KL distance.
     \item One may encounter the concepts of minimization or maximization of CE.
 \end{itemize}
-To address the first mentioned reason it is necessary to break down ML estimation. Since $q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)$ is the model PDF, we have to follow objective function
+To address the first mentioned reason, it is necessary to break down ML estimation. Since $q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)$ is the PDF model, we have to follow the objective function.
 \begin{equation}
     q_{\boldsymbol{\theta}}\left(y_1,y_2,\dots,y_N|\boldsymbol{x}_1, \bx_2, \dots, \bx_N\right) = \prod_{i=1}^{N}q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x_i}\right).
 \end{equation}
 
 
-\subsection{One-hot encoding}\label{OHE}
- Machine learning (ML) algorithms can misinterpret the numeric values of labels if there exists any hierarchy between them. One--hot encoding is a very common approach how to deal with this issue, in order to improve the algorithm performance. Each unique category value is transformed into a new column and these dummy variables are then filled up with 0 or 1 (0 for FALSE and 1 for TRUE). Transformation of a label encoding to the one-hot encoding is for clarity illustrated in the following table \ref{tab:OHE}. 
+\subsection{One--hot encoding}\label{OHE}
+ Machine learning (ML) algorithms can misinterpret the numeric values of labels if there exists any hierarchy between them. One--hot encoding is a very common approach for dealing with this issue, in order to improve the algorithm performance. Each unique category value is transformed into a new column and these dummy variables are then filled up with 0 or 1 (0 for FALSE and 1 for TRUE). For the sake of clarity, the transformation of a label encoding into a one--hot encoding is illustrated in the following table \ref{tab:OHE}. 
  
- However, this method has its own downsides. For example, it creates new variables and if there exists many unique category values, models have to deal with large amount of predictors, causing so-called \emph{Big-p problem} \cite{Bigp}. Also, one--hot encoding causes multi-colinearity between the individual variables, which may lead to reducing model's accuracy. 
+ However, this method has its own downsides. For example, it creates new variables and if there exist many unique category values, models have to deal with a large number of predictors, causing the so-called \emph{Big-p problem} \cite{Bigp}. Also, one--hot encoding causes multicolinearity between the individual variables, which may lead to reducing the model's accuracy. 
  \begin{table}[h]
  \centering
  	\begin{tabular}{|l|l|l|}
@@ -95,51 +95,48 @@ To address the first mentioned reason it is necessary to break down ML estimatio
 	\caption{Transformation of a label encoding (left) to the one--hot encoding (right).}
 	\label{tab:OHE}
  \end{table}
-\section{Generative modelling}
+\section{Generative modeling}
 
 \input{variational_autoencoder.tex}
 
 \subsection{Noise--contrastive estimation}
-Suppose one has to estimate a model that is specified by an non-normalized probability den-
-sity function $q^0_{\bt}\left(\boldsymbol{x}\right)$. In such case, one can utilize noise--contrastive estimation (NCE). The first step is to  introduce the another parameter c among the estimated parameters $\bt$. For clarity, the symbol $\bt^\star=\left\lbrace\bt,c\right\rbrace$ is introduced for the set of estimated parameters including
-c. Using this notation, the following equalities hold
+Suppose one has to estimate a model that is specified by an nonnormalized probability density function $q^0_{\bt}\left(\boldsymbol{x}\right)$. In such a case, one can utilize noise--contrastive estimation (NCE). The first step is to introduce another parameter $c$ among the estimated parameters $\bt$. For clarity, the symbol $\bt^\star=\left\lbrace\bt,c\right\rbrace$ is introduced for the set of estimated parameters, including
+$c$. Using this notation, the following equalities hold
 \begin{align}
     q_{\bt^\star}\left(\boldsymbol{x}\right)
     \end{align}
 which means that the newly introduced parameter $c$ is an estimate of the negative logarithm of
 the normalization constant $Z\left(\bt\right)$.
-As the name of the subsection suggests, we use noise to estimate. By our convention, let $\bx_1,\bx_2,\dots,\bx_N$
-be the observations and $\boldsymbol{e}_1,\boldsymbol{e}_2,\dots,\boldsymbol{e}_N$ be the artificially generated noise data with known distribution $\psi\left(\bt\right)$. The $\widehat{\bt^\star}$ estimate is then defined as
+As the name suggests, we use noise to estimate. By our convention, let $\bx_1,\bx_2,\dots,\bx_N$
+be the observations and $\boldsymbol{e}_1,\boldsymbol{e}_2,\dots,\boldsymbol{e}_N$ be the artificially generated noise data with known distribution $\psi\left(\bt\right)$. The estimate $\widehat{\bt^\star}$ is then defined as
 \begin{align}
     \widehat{\bt^\star} &= \argmax_{\bt^\star} \pazocal{L}^{\mathrm{NC}}\left(\bt^\star\right)\\
    &= \argmax_{\bt^\star} \frac{1}{2N}\sum_{i=1}^N \ln\sigma_{\bt^\star}\left(\bx_i\right) + \ln\left(1-\sigma_{\bt^\star}\left(\boldsymbol{e}_i\right) \right)\label{NCEloss}
 \end{align}
-where $\sigma_{\bt^\star}$ is logistic function
+where $\sigma_{\bt^\star}$ is a logistic function,
 \begin{align}
 \sigma_{\bt^\star} = \frac{1}{1 + \exp\left(-G_{\bt^\star}\left(\bx\right) \right)}
 \end{align}
-and finally, function $G_{\bt^\star}$ represents the difference of the log-likelihoods of $q_{\bt^\star}$ and $\psi$, hence
+and finally, the function $G_{\bt^\star}$ represents the difference of the log-likelihoods of $q_{\bt^\star}$ and $\psi$, hence the
 \begin{align}
     G_{\bt^\star} = \ln q_{\bt^\star}\left(\bx \right) - \ln\psi\left(\bx \right).
 \end{align}
 It may be noted that equation \eqref{NCEloss} also appears in SL tasks and is called binary
-CE loss. It is actually a special case of CE itself. Thus, it is used for classification between two classes. This gives an intuitive insight into how noise--contrastive estimation
-really works. By comparing data and noise, the model is learned, so this method can be called
+CE loss. It is actually a special case of CE itself. Thus, it is used for the classification of two classes. This gives an intuitive insight into how noise--contrastive estimation
+really works. When data and noise are compared, the model is learned, so this method can be called
 learning by comparison. This approach does not use labels, so it is a UL algorithm. 
 \begin{example}[Gaussian distribution]
-To test this approach, we perform a simple experiment. There are a total of $N = 100$ i.i.d. one
-dimensional observations $x_1,x_2,\dots,x_N$ from an unknown distribution that is assumed to be non-normalized and Gaussian. It is therefore of the form
+To test this approach, we performed a simple experiment. There are a total of $N = 100$ i.i.d. one-dimensional observations $x_1,x_2,\dots,x_N$ from an unknown distribution that is assumed to be nonnormalized and Gaussian. Therefore, it is of the form
 \begin{align}
     q_{\bt^\star}\left(x\right) = \exp\left(-\frac{1}{2}\cdot\frac{\left(x-\mu\right)^2}{\sigma^2} + c \right)
 \end{align}
-where $\bt^\star = \left\lbrace \mu, \sigma^2, c \right\rbrace$. Next, we artificially generate $N = 100$ noise data $e_1,e_2,\dots,e_N$, which is again easiest
-to do using a Gaussian distribution. Which means that it can be chosen, for example
+where $\bt^\star = \left\lbrace \mu, \sigma^2, c \right\rbrace$. Next, we artificially generate $N = 100$ noise data $e_1,e_2,\dots,e_N$, which is again easier to do using a Gaussian distribution. This means that it can be chosen, for example,
 \begin{align}
     \psi\left(e\right) = \frac{1}{\sqrt{2\pi 10}}\exp\left(-\frac{1}{2}\cdot\frac{e^2}{10} \right)
 \end{align}
-At this point it is possible to construct a function $\pazocal{L}^{\mathrm{NC}}\left(\bt^\star\right)$ that is minimized using stochastic
+At this point, it is possible to construct a function $\pazocal{L}^{\mathrm{NC}}\left(\bt^\star\right)$ that is minimized by using stochastic
 gradient descent. The following figure shows the training process and the comparison between
-the estimated distribution and the true one. As can be seen in the figure 4.1, this approach works quite well and for more observations results would be even better.
+the estimated distribution and the true one. As can be seen in Figure 4.1, this approach works quite well and for more observations the results would be even better.
 \begin{figure}[h]
 	\centering
 	\subfloat[Training loss function]

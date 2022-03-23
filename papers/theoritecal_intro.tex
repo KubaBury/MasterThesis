@@ -105,19 +105,19 @@ Mean value, unlike MAP estimate, may be very expensive to compute because of the
 \end{enumerate}	
 
 \subsection{Choice of prior distribution}
-For the posterior computation, it is necessary to specify the prior distribution $p(\boldsymbol{\theta})$, unfortunately, this might not be easily determined. This can be achieved via knowledge of previous models, expert knowledge, their combination or even uncertainty about $\boldsymbol{\theta}$ can be viable option. 
+For the posterior computation, it is necessary to specify the prior distribution $p(\boldsymbol{\theta})$, unfortunately, this might not be easily determined. This can be achieved through knowledge of previous models, expert knowledge, their combination, or even uncertainty about $\boldsymbol{\theta}$ being a viable option. 
 
-There is also many practical aspects of priors:
+There are also many practical aspects of priors:
 \begin{itemize}
-	\item \emph{Regularization} - supplementing the data, if there is insufficient data or poorly defined model. 
-	\item \emph{Restrictive conditions} - Imposing various restrictions on the parameters $\boldsymbol{\theta}$ reflecting physical constraints. The choice of prior distribution with bounded support will result to posterior distribution with bounded support as well. 
-	\item \emph{Non--informative prior} - if the data are informative enough to make a prediction, it is proposed to choose a prior with minimal impact on the posterior distribution, such as uniform distribution. However, typical choices of non--informative priors are so--called \emph{Jeffreys priors} \cite{jeffrey}.
+	\item \emph{Regularization} - Supplementing the data, if there are insufficient data or poorly defined model. 
+	\item \emph{Restrictive conditions} - Imposing various restrictions on the parameters $\boldsymbol{\theta}$ reflecting physical constraints. The choice of prior distribution with bounded support will result in posterior distribution with bounded support as well. 
+	\item \emph{Non--informative prior} - If the data are informative enough to make a prediction, it is proposed to choose a prior with minimal impact on the posterior distribution, such as uniform distribution. However, typical choices of non--informative priors are the so--called \emph{Jeffreys priors} \cite{jeffrey}.
 \end{itemize}
 
 
 
 \subsection{Prediction}
-We are not usually interested in the value of $\widehat{\boldsymbol{\theta}}$ itself but rather, once the model is estimated, we are interested in making prediction of output variable $y^{\star}$ for the new input variable $\boldsymbol{x}^{\star}$. Note that the symbol $\mathcal{D}$ contains all of the previous given data $\boldsymbol{x}$ and $y$. The posterior predictive distribution is then determined by distribution of the $y^{\star}$, marginalized over the posterior
+We are not usually interested in the value of $\widehat{\boldsymbol{\theta}}$ itself, but rather, once the model is estimated, we are interested in making a prediction of the output variable $y^{\star}$ for the new input variable $\boldsymbol{x}^{\star}$. Note that the symbol $\mathcal{D}$ contains all the previously given data $\boldsymbol{x}$ and $y$. The posterior predictive distribution is then determined by the distribution of $y^{\star}$, marginalized over the posterior
 \begin{equation}
 	p(y^{\star} | \boldsymbol{x}^{\star}, \mathcal{D}) =   \int_{\boldsymbol{\Theta}} p(y^{\star}|\boldsymbol{x}^{\star}, \boldsymbol{\theta}) p(\boldsymbol{\theta}|\mathcal{D}) \d\boldsymbol{\theta}.
 \end{equation} 
@@ -125,11 +125,11 @@ When the distribution $p(\boldsymbol{\theta}|\mathcal{D})$ is not available, we 
 \begin{equation}
 p(y^{\star} | \boldsymbol{x}^{\star}, \mathcal{D}) = \int_{\boldsymbol{\Theta}} 	p(y^{\star}|\boldsymbol{x}^{\star}, \boldsymbol{\theta}) \delta(\boldsymbol{\theta} - \widehat{\boldsymbol{\theta}})\d\boldsymbol{\theta} = p(y^{\star}|\boldsymbol{x}^{\star}, \widehat{\boldsymbol{\theta}}),
 \end{equation}
-causing an error. In typical MAP, this is known as \emph{over--fitting}. Prediction error is then defined by a loss function measuring errors between $y$ and $\widehat{y}$
+causing an error. In typical MAP, this is known as \emph{over--fitting}. The prediction error is then defined by a loss function measuring errors between $y$ and $\widehat{y}$
 \begin{equation}
 	\mathrm{Err} = \pazocal{L}\left(\widehat{y}, y \right),
 \end{equation}	
-where $\widehat{y} = \widehat{f}_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) = f(\boldsymbol{x}; \widehat{\boldsymbol{\theta}})$.  As an example, we can mention couple of typically used loss functions 
+where $\widehat{y} = \widehat{f}_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right) = f(\boldsymbol{x}; \widehat{\boldsymbol{\theta}})$.  As an example, we can mention a couple of typically used loss functions 
 \begin{equation}
 \pazocal{L}\left(y,\widehat{y} \right) =
  \begin{cases}
@@ -141,10 +141,10 @@ We shall also discuss the problem of the model complexity. Consider a polynomial
 \begin{equation}
 	f_{\boldsymbol{\theta}}(x) = \sum_{i=0}^{s-1}\theta_ix^i.
 \end{equation}
- Here, over--fitting occurs very frequently. Model complexity of this case is very intuitive, as it is just the order of the polynomial, $s-1$.  Smaller orders of the polynomial (may) give rather poor fits to the data in contrast to much higher order polynomial giving an excellent fit. Such polynomial passes exactly through each datapoint, however, oscillates wildly and gives poor prediction for new input variable $x^{\star}$. 
+ Here, overfitting occurs very frequently. The complexity of the model of this case is very intuitive, as it is just the order of the polynomial, $s-1$.  Smaller orders of the polynomial (may) give rather poor fits to the data in contrast to a much higher order polynomial giving an excellent fit. However, such a polynomial passes exactly through each data point, oscillates wildly and gives poor prediction for the new input variable $x^{\star}$. 
  
-To obtain some quantitative insight into dependence of the generalization performance on model complexity, consider separate test set of data (testing data) used to assess the performance of the model. 
-In general, prediction error evaluated on the training data for increasing model complexity approaches zero. On the other hand, prediction error evaluated on the testing data for increasing model complexity is (from certain point) increasing as well. The typical scenario is illustrated in Figure \ref{fig:Prediction_error}.
+To obtain some quantitative insight into dependence of the generalization performance on model complexity, consider a separate test set of data (testing data) used to assess the performance of the model. 
+In general, the prediction error evaluated on the training data for increasing the model complexity approaches zero. On the other hand, the prediction error evaluated on the testing data for increasing model complexity is (from a certain point) increasing as well. The typical scenario is illustrated in Figure \ref{fig:Prediction_error}.
  \begin{figure}[h]
 	\centering
 	\includegraphics[width=16.0cm]{plots/Images/PE3.pdf}

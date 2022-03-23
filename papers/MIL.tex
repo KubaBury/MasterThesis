@@ -1,7 +1,8 @@
 \chapter{Multiple Instance Learning}
 \section{Fundamentals}
-The term multiple instance learning originates from \cite{MILfirstly} and in \cite{mandlik}, authors proposed following nomenclature for MIL, which will be reviewed and gladly used in our work. \\
-In standard machine learning problems each sample is represented by a fixed vector $\boldsymbol{x}$ of observations, however in multiple instance learning (MIL) it is dealt with samples which are represented by a set of vectors. These vectors are called \emph{instances} and come from an instance space $\pazocal{X}$, for example $\mathbb{R}^n$. Sets of these instances are called \emph{bags} and come from bag space $\pazocal{B} = \pazocal{P}_F\left(\pazocal{X}\right)$, where $\pazocal{P}_F\left(\pazocal{X}\right)$ denotes all finite subsets of $\pazocal{X}$. With this in mind, we can easily write down any bag as $b = \left\lbrace \boldsymbol{x} \in  \pazocal{X} \right\rbrace_{\boldsymbol{x} \in b}$. Each bag $b$ can be arbitrarily large or empty thus the size of bag is defined in the form $\vert b\vert \in \mathbb{N}_0$. There may exist intrinsic labeling of instances, but we are only interested in labeling at the bag levels. Bag labels come from a finite set $\pazocal{C}$ and what we want in MIL is learning a predictor in the form $f_{\boldsymbol{\theta}}: \pazocal{B}\left(\pazocal{X}\right) \rightarrow \pazocal{C}$ which can also be rewritten in the form $f_{\boldsymbol{\theta}}\left(\left\lbrace \boldsymbol{x}\right\rbrace_{\boldsymbol{x}\in b}\right)$. In contrast to ML, where a predictor is learned in the form  $f_{\boldsymbol{\theta}}: \mathbb{R}^n \rightarrow \pazocal{C}$.  We consider supervised setting, in which each sample of the dataset is attributed a label. We can denote available data by notation $\pazocal{D} = \Big\lbrace \left(b_i, y_i\right) \in \pazocal{B}\times\pazocal{C} \ | \ i \in \big\lbrace 1,2,\dots,\vert \pazocal{D} \vert \big\rbrace \Big\rbrace$, where $\vert \pazocal{D} \vert$ apparently denotes the size of $\pazocal{D}$. 
+The term multiple instance learning originates from \cite{MILfirstly} and in \cite{mandlik}, the authors proposed the following nomenclature for MIL, which will be reviewed and will be used gladly in our work. 
+
+In standard machine learning problems, each sample is represented by a fixed vector $\boldsymbol{x}$ of observations, however, in multiple instance learning (MIL) it is dealt with samples which are represented by a set of vectors. These vectors are called \emph{instances} and come from an instance space $\pazocal{X}$, for example, $\mathbb{R}^n$. The sets of these instances are called \emph{bags} and come from the bag space $\pazocal{B} = \pazocal{P}_F\left(\pazocal{X}\right)$, where $\pazocal{P}_F\left(\pazocal{X}\right)$ denotes all finite subsets of $\pazocal{X}$. With this in mind, we can easily write any bag as $b = \left\lbrace \boldsymbol{x} \in  \pazocal{X} \right\rbrace_{\boldsymbol{x} \in b}$. Each bag $b$ can be arbitrarily large or empty, thus the size of the bag is defined in the form $\vert b\vert \in \mathbb{N}_0$. There may exist intrinsic labeling of instances, but we are only interested in labeling at the bag levels. Bag labels come from a finite set $\pazocal{C}$, and what we want in MIL is to learn a predictor in the form $f_{\boldsymbol{\theta}}: \pazocal{B}\left(\pazocal{X}\right) \rightarrow \pazocal{C}$ that can also be rewritten in the form $f_{\boldsymbol{\theta}}\left(\left\lbrace \boldsymbol{x}\right\rbrace_{\boldsymbol{x}\in b}\right)$. In contrast to ML, where a predictor is learned in the form  $f_{\boldsymbol{\theta}}: \mathbb{R}^n \rightarrow \pazocal{C}$.  We consider the supervised setting, in which each sample of the data set is attributed a label. We can denote the available data by the notation $\pazocal{D} = \Big\lbrace \left(b_i, y_i\right) \in \pazocal{B}\times\pazocal{C} \ | \ i \in \big\lbrace 1,2,\dots,\vert \pazocal{D} \vert \big\rbrace \Big\rbrace$, where $\vert \pazocal{D} \vert$ apparently denotes the size of $\pazocal{D}$. 
 \begin{figure}[h]
 	\centering
 	\subfloat[Standard machine learning]
@@ -12,17 +13,17 @@ In standard machine learning problems each sample is represented by a fixed vect
 	\label{ggm}%
 \end{figure}
 \section{Embedded-space paradigm}
-Embedded space paradigm \cite{mandlik} defines a vector space for bag representation and specify a mapping from each bag $b\in \pazocal{B}$ to this space. Assume that target vector space is $\R^d$, then partial mapping $\phi_i$: $\pazocal{B} \to \R,~~\forall i=1,2\dots d$~~is defined and overall embedding $\boldsymbol{\phi}: \pazocal{B} \to \R^d $ is given by
+Embedded space paradigm \cite{mandlik} defines a vector space for bag representation and specifies a mapping from each bag $b\in \pazocal{B}$ to this space. Assume that the target vector space is $\R^d$, then partial mapping $\phi_i$: $\pazocal{B} \to \R,~~\forall i=1,2\dots d$~~is defined and overall embedding $\boldsymbol{\phi}: \pazocal{B} \to \R^d $ is given by
 \begin{equation}
 	\boldsymbol{\phi}(b) = \left(\phi_1(b), \phi_2(b), \dots, \phi_d(b)\right).
 \end{equation}
-Mappings $\phi_i$ are instrumentals towards extraction and suitable aggregation of information on the level of instances. They can be defined via some instance transformation $k:\pazocal{X}\to \R^d$ and aggregation function $g:\pazocal{P}_F\left(\R^d\right) \to \R^s$ in the form 
+Mappings $\phi_i$ are instrumental in obtaining and aggregating the appropriate information on the level of instances. They can be defined by some instance transformation $k:\pazocal{X}\to \R^d$ and an aggregation function $g:\pazocal{P}_F\left(\R^d\right) \to \R^s$ of the form 
 \begin{equation}
 	\phi_i(b)=g\left( k\left\lbrace\boldsymbol{x}\right\rbrace_{\boldsymbol{x} \in b}\right).
 \end{equation}
-On the resulting embedded representation of bag samples can be applied any standard machine learning algorithm, which is training bag-level classifier $f_{\boldsymbol{\theta}}^B :\R^s \to \pazocal{C}$ using adjusted dataset $D_{\mathrm{ES}}~=~\Big\lbrace \left(\phi(b_i), y_i\right)~\in~\R^s\times\pazocal{C}~\ ~|~\ i~\in~\big\lbrace 1,2,\dots,\vert D\vert\big\rbrace\Big\rbrace$. The most used aggregation functions are minimum, maximum or mean value.
+On the resulting embedded representation of bag samples, any standard machine learning algorithm can be applied, that is, training a bag-level classifier $f_{\boldsymbol{\theta}}^B :\R^s \to \pazocal{C}$ using adjusted dataset $D_{\mathrm{ES}}~=~\Big\lbrace \left(\phi(b_i), y_i\right)~\in~\R^s\times\pazocal{C}~\ ~|~\ i~\in~\big\lbrace 1,2,\dots,\vert D\vert\big\rbrace\Big\rbrace$. The most used aggregation functions are minimum, maximum, or mean value.
 \section{Training}\label{MILtraining}
-Authors of \cite{mandlik} proposed a versatile, unified framework called HMill (Hierarchical multi--instance learning library) for model definition, training and even implemented this functionality in \emph{Julia} programming language. Furthermore, the framework was published as an open--source project entitled \emph{Mill.jl} under MIT license. The aim of this work does not lie in rigorous derivation of the MIL model, since it is fairly complicated and requires considerable amount of work. Considering that, we settle with the MIL model being a neural network (NN) utilizing aggregation functions on the level of instances and we refer to \cite{mandlik} for more details about the model definition and its composition.   \\
+Authors of \cite{mandlik} proposed a versatile unified framework called HMill (Hierarchical multi--instance learning library) for the definition and training of the models and even implemented this functionality in the \emph{Julia} programming language. Furthermore, the framework was published as an open source project entitled \emph{Mill.jl} under the MIT license. The aim of this work is not to rigorously derive the MIL model since it is fairly complicated and requires a considerable amount of work. Taking into account that we settled for the MIL model being a neural network (NN) that utilizes aggregation functions on the level of instances and refer to \cite{mandlik} for more details about the definition of the model and its composition.   
 Learning of the MIL model $f_{\boldsymbol{\theta}}$ is also supervised, a specific case called binary classification, and therefore accomplished by minimizing standard cross--entropy 
 \begin{equation}\label{crossentropy52}
 	\min_{\boldsymbol{\theta}}- \mathbb{E}_{p_{\mathrm{data}}(\boldsymbol{x},y) }\left[\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)} \right],
@@ -30,9 +31,9 @@ Learning of the MIL model $f_{\boldsymbol{\theta}}$ is also supervised, a specif
 already mentioned in section \ref{discriminative_modelinmg}. This is very important for us and we will take advantage of that in our experiments.
  
 \section{Cross--validation on MIL datasets}\label{experimentCV}
-For testing MIL, we have available four datasets, namely Musk1, Musk2, Tiger and Fox. All of them will be used to assess performance of the MIL model.
+For the MIL testing, we have four datasets available, namely Musk1, Musk2, Tiger, and Fox. All of them will be used to assess the performance of the MIL model.
 \subsection{Setup}
-In this experiment, datasets are 100 times randomly split into 2 sets in advance, train and test sets, with 80\% of observations being in train set and 20\% of observations belonging to test set. For a future simplification, let a number of random splits be denoted by $r$, thus $r=100$.  We fit the model on train set, then we evaluate the prediction error on the train data via cross--entropy \ref{crossentropy}. The objective here is to plot the prediction error dependency on the model complexity. Smaller number of random splits $r$ were tested, but obtained results were too noisy. For this reason, such high $r$ was selected, although the experiment became noticeably expensive to compute.    \\
+In this experiment, data sets are 100 times randomly split into 2 sets in advance, train and test sets, with 80\% of observations being in train set and 20\% of observations belonging to the test set. For future simplification, let a number of random splits be denoted by $r$, and thus $r=100$.  We fit the model on train set, then we evaluate the prediction error on the train data via cross--entropy \ref{crossentropy}. The objective here is to plot the dependence of the prediction error on the complexity of the model. A smaller number of random splits $r$ were tested, but the results obtained were too noisy. For this reason, such a high $r$ was selected, although the experiment became noticeably expensive to compute.    \\
 
 \begin{figure}[h]
 	\centering
@@ -45,16 +46,16 @@ In this experiment, datasets are 100 times randomly split into 2 sets in advance
 \end{para}     
 
 \begin{para}{Prediction Error}
-For prediction error metrics will be simply used standard cross--entropy loss  as outlined at the beginning of this section.  There is no need for any trickier objective. Let the total cross--entropy loss evaluated on $k^{\mathrm{th}}$ random split for fixed $z$ be denoted by $\pazocal{L}_k(z)$, then the estimated prediction error is given by 
+For prediction error metrics, we simply used the standard cross--entropy loss as outlined at the beginning of this section.  There is no need for any trickier objective. Let the total cross--entropy loss evaluated in the $k^{\mathrm{th}}$ random split for fixed $z$ be denoted by $\pazocal{L}_k(z)$, then the estimated prediction error is given by 
 \begin{equation}
 	\widehat{\mathrm{Err}}(z) = \frac{1}{r}\sum_{k=1}^r \pazocal{L}_k(z).
 \end{equation}
 \end{para}
 \vspace{1cm}
 
-To summarize,  we fit 100 models for selected $z$ on train data and evaluate prediction error for all of them on test data, then we take mean value. This process is repeated for each $z~\in~\left\{1,2,3\dots,20 \right\}$, giving 2000 models in total. 
+To summarize,  we fit 100 models for selected $z$ on train data and evaluate the prediction error for all of them on test data, then we take the mean value. This process is repeated for each $z~\in~\left\{1,2,3\dots,20 \right\}$, giving 2000 models in total. 
 \subsection{Results}
-As can be seen in Figure \ref{CV}, obtained results are totally expected. The prediction error evaluated on the training data for higher model complexity approaches zero. However, testing data give oscillating curves with an increasing trend (with a little exception of Musk1), therefore the model selection is necessary. This applies for each dataset.  In addition, following table \ref{tab:resultsCV} numerically summarizes the results evaluated on testing data. 
+As can be seen in Figure \ref{CV}, the results obtained are totally expected. The prediction error evaluated on the training data for the higher complexity of the model approaches zero. However, testing data give oscillating curves with an increasing trend (with a little exception of Musk1), therefore, model selection is necessary. This applies to each data set.  Furthermore, Table \ref{tab:resultsCV} numerically summarizes the results evaluated in the test data. 
 
 \begin{figure}[h]
 	\centering
@@ -89,9 +90,9 @@ As can be seen in Figure \ref{CV}, obtained results are totally expected. The pr
 
 
 \section{MIL to HDGM problem}
-In the previous part was performed the CV experiment with expected results. However, the estimated prediction error seems to be rather high. Logically, the question has been raised whether the prediction error can be reduced and also whether it is possible to make $r$ smaller.
+In the previous part, the CV experiment was performed with expected results. However, the estimated prediction error seems to be rather high. Logically, the question of whether the prediction error can be reduced has been raised and also whether it is possible to make $r$ smaller has been raised.
 \subsection{Setup}
-On the initiative of reducing the prediction error, it is proposed to train a MIL model that is obtained by minimizing the hybrid loss function 
+On the initiative to reduce prediction error, it is proposed to train a MIL model that is obtained by minimizing the hybrid loss function 
 
 \begin{equation}
 	\min_{\boldsymbol{\theta}}- \mathbb{E}_{p_{\mathrm{data}}(\boldsymbol{x},y)}\left[\alpha\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{i=1}^C\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y_i]}\right)}+ \left(1-\alpha\right)\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}_i\right)[y]}\right)}{\sum_{j=1}^N\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}_j\right)[y]}\right)} \right].
@@ -101,12 +102,13 @@ In the first part of this experiment, we would like to train models in relation 
 \begin{equation}
 	\widehat{\mathrm{Err}}(\alpha) = \frac{1}{r}\sum_{k=1}^r \pazocal{L}_k(z=10, \alpha).
 \end{equation}
-We hope to see a curve in the shape of a bowl, having its global minimum in a point $\alpha=0.5$ or somewhere near.\\ 
-In the second part, evaluating of the prediction error is approached the other way. Fixed $\alpha = 0.5$ is selected and the dependency on $z~\in~\left\{1,2,3\dots,20 \right\}$ is evaluated as in the section \ref{experimentCV}. Finally, estimated prediction error in this case is defined by
+We hope to see a curve in the shape of a bowl, having its global minimum at a point $\alpha=0.5$ or somewhere near.
+
+In the second part, evaluating the prediction error is approached in the other way. The fixed $\alpha = 0.5$ is selected and the dependency on $z~\in~\left\{1,2,3\dots,20 \right\}$ is evaluated as in Section \ref{experimentCV}. Finally, the estimated prediction error in this case is defined by
 \begin{equation}
 	\widehat{\mathrm{Err}}(z) = \frac{1}{r}\sum_{k=1}^r \pazocal{L}_k(z, \alpha =0.5).
 \end{equation}
-In other words, the setup is the same as in the \ref{experimentCV}, therefore obtained results will be added to the Figure \ref{CV} and table \ref{tab:resultsCV} for a convenient comparison. Note that curves for train data from this experiment will be omitted, since they are not important at this point. We are only interested in predictions for test data.  
+In other words, the setup is the same as in \ref{experimentCV}, therefore, the results obtained will be added to the figure \ref{CV} and the table \ref{tab:resultsCV} for a convenient comparison. Note that curves for train data from this experiment will be omitted, since they are not important at this point. We are only interested in predictions for test data.  
 \clearpage
 \subsection{Results}
 
@@ -170,6 +172,6 @@ Overall, it can be said that HDGM approach leads to the decreased prediction err
 	{{\includegraphics[width=8.2cm]{plots/Images/supervisedvsHDGM0_5_Fox.pdf} }}%
 	\subfloat[HDGM: $\alpha=0.5$ vs Discriminative; Tiger.]
 	{{\includegraphics[width=8.2cm]{plots/Images/supervisedvsHDGM0_5_Tiger.pdf} }}
-\caption{Comparison of the prediction error  $\widehat{\mathrm{Err}}(z)$ for HDGM $\alpha=0.5$ and discriminative part only. }%
+\caption{Comparison of the prediction error $\widehat{\mathrm{Err}}(z)$ for HDGM $\alpha=0.5$ and the discriminative part only. }%
 	\label{fig:resultsHDGMz}%
 \end{figure}
