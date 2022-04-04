@@ -87,23 +87,23 @@ Any joint probability distribution can be broken down into parts by the chain ru
 \begin{equation}\label{eq:chainrule}
 	p(x,y) =	p(y,x) = p(y\vert x)\cdot p(x),
 \end{equation}
-Therefore, we need to find $p(y\vert x)$ and $p(x)$. From polynomial regression we can obtain conditional probability density 
+Therefore, we need to find $p(y\vert x)$ and $p(x)$. From polynomial regression we can obtain the conditional probability density 
 \begin{equation}\label{eq:linregpdf}
 	p(y\vert x, \boldsymbol{\theta}) = \pazocal{N}\left(y; \sum_{i=0}^{s-1} \theta_i x^i, \sigma^2 \right),
 \end{equation}
-where the symbol $\pazocal{N}(\cdot)$ denotes the probability density function of Normal distribution and $\sigma^2$ is the known variance. In this case, we also need to determine the prior distribution of $x$. To keep this example simple, let the PDF takes the form
+where the symbol $\pazocal{N}(\cdot)$ denotes the probability density function of the Normal distribution and $\sigma^2$ is the known variance. In this case, we also need to determine the prior distribution of $x$. To keep this example simple, let the PDF takes the form
 \begin{equation}\label{eq:tauprior}
 	p(x|\tau) = \pazocal{N}\left(x; 0, \tau^2\right),
 \end{equation}
 where the choice of parameter $\tau$ is based on the fact that we would like to have a non--informative prior, thus $\tau$ should be adequately high. If the value of $\tau$ is high, the data are spread very far from their expected value.  Substituting equations \eqref{eq:tauprior} and \eqref{eq:linregpdf} into \eqref{eq:chainrule} results
 \begin{equation}
-	p(x,y) = \pazocal{N}\left(0,\tau^2\right) \cdot \pazocal{N}\left(\sum_{i=0}^{s-1} \theta_i x^i, \sigma^2 \right)  =  \frac{1}{2\pi\sigma\tau}\exp\left(-\frac{\left(y-\sum_{i=0}^{s-1} \theta_i x^i\right)^2}{2\sigma^2}-\frac{x^2}{2\tau^2}\right),
+	p(x,y) = \pazocal{N}\left(x;0,\tau^2\right) \cdot \pazocal{N}\left(y;\sum_{i=0}^{s-1} \theta_i x^i, \sigma^2 \right)  =  \frac{1}{2\pi\sigma\tau}\exp\left(-\frac{\left(y-\sum_{i=0}^{s-1} \theta_i x^i\right)^2}{2\sigma^2}-\frac{x^2}{2\tau^2}\right),
 \end{equation}
 whereas our desirable model is given by
 \begin{equation}\label{modelflinreg}
 	f_{\boldsymbol{\theta}}(x)[y] = -\frac{\left(y-\sum_{i=0}^{s-1} \theta_i x^i\right)^2}{2\sigma^2} - \frac{x^2}{2\tau^2}.
 \end{equation}
-We can now substitute \eqref{modelflinreg} and \eqref{S(theta)} into equation \eqref{q1q2}, resulting in
+We can now substitute \eqref{modelflinreg} and \eqref{S(theta)} in the equation \eqref{q1q2}, resulting in
 \begin{align}\label{eq:SSEq}
 	&\min_{\boldsymbol{\theta}}\Big\lbrace \alpha~S(\boldsymbol{\theta}) - \mathbb{E}_{p_{\mathrm{data}}(x,y)}\left[ \left(1-\alpha\right)\log q_{\boldsymbol{\theta}}\left(x|y\right) \right] \Big\rbrace  =\\
 	&\min_{\boldsymbol{\theta}}\Bigg\lbrace \alpha~S(\boldsymbol{\theta}) - \mathbb{E}_{p_{\mathrm{data}}(x,y)}\left[ \left(1-\alpha\right)\log \frac{\exp\left({f_{\boldsymbol{\theta}}\left(x\right)[y]}\right)}{\sum_{i=1}^N\exp\left({f_{\boldsymbol{\theta}}\left(x_i\right)[y]}\right)} \right] \Bigg\rbrace  =\\
@@ -118,7 +118,7 @@ Note that for $\alpha =1$ we get purely polynomial regression, and for $\alpha =
 We would like to test the sensitivity of this approach to the unknown parameter $\tau$ and the order of the polynomial $s-1$. In addition, we would like to observe how the estimated model behaves in relation to $\alpha$. 
 
 We generate synthetic data, two clusters consisting of 5 data points each, then the model was fitted for different weights $\alpha \in \left\{0.0, 0.1, 0.2,\dots,1.0\right\}$, giving 11 different models in total. The models estimated for $\alpha \in \left\{0.0, 0.5, 1.0 \right\}$ are highlighted because they are more important to us than the other models.
-At first, we trained the models mentioned for the fixed order of the polynomial, but for 6 different values of the parameter $\tau$. The results obtained (Figure \ref{fig:linregtoy_tau}) for small $\tau$ barely vary from those for high $\tau$, which is exactly what we hoped for, since the prior distribution should be non--informative \eqref{eq:tauprior}.  This is a very exciting discovery, because there is no need to know much about the data distribution. Second, we trained our polynomial models for the fixed value of $\tau$ with 6 different values of the order of the polynomial. The goal of this part of the experiment is to observe how the contrastive part of Equation \eqref{eq:SSEq} affects the loss of polynomial regression for different values of $s-1$. As can be seen in Figure \ref{fig:linregtoy_s}, for small $s-1$, such as $s-1 = 2$, the term $\log q_{\theta}\left(x|y\right)$ does not affect the polynomial regression too much. However, we get a considerable difference for higher orders of the polynomial. Furthermore, it seems that the curve $\alpha = 0$ prefers not to oscillate. This could also be very interesting because combining discriminative and generative models could result in better model predictions.    
+At first, we trained the models mentioned for the fixed order of the polynomial, but for 6 different values of the parameter $\tau$. The results obtained (Figure \ref{fig:linregtoy_tau}) for small $\tau$ barely vary from those for high $\tau$, which is exactly what we hoped for, as the previous distribution should be non--informative \eqref{eq:tauprior}.  This is a very exciting discovery because there is no need to know much about the data distribution. Second, we trained our polynomial models for the fixed value of $\tau$ with 6 different values of the order of the polynomial. The goal of this part of the experiment is to observe how the contrastive part of Equation \eqref{eq:SSEq} affects the loss of polynomial regression for different values of $s-1$. As can be seen in Figure \ref{fig:linregtoy_s}, for small $s-1$, such as $s-1 = 2$, the term $\log q_{\theta}\left(x|y\right)$ does not affect the polynomial regression too much. However, we get a considerable difference for higher orders of the polynomial. Furthermore, it seems that the curve $\alpha = 0$ prefers not to oscillate. This could also be very interesting because combining discriminative and generative models could result in better model predictions.    
 
 \begin{figure}[h] 
 	\centering
