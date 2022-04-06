@@ -126,7 +126,28 @@ Another important fact is that the KL distance from a Gaussian distribution to a
 \end{equation}
 Now all that is left is to plug everything into equation \eqref{eq:VAEloss}, which leads to the final form
 \begin{align}\label{řešení_VAE}
- \widehat{\bt}, \widehat{\bphi} & = \argmin_{\bt,\bphi}-\sum_{i=1}^N\mathbb{E}_{q_{\bphi}\left(\boldsymbol{z}\vert \bx_i \right)}\left[\log p_{\bt}(\bx_i\vert \boldsymbol{z}) \right] - D_{\mathrm{KL}}\left(q_{\bphi}\left(\boldsymbol{z}\vert\bx_i \right) \Vert p_{\bt}\left(\boldsymbol{z}\right)\right) \\
+ \widehat{\bt}, \widehat{\bphi} & = \argmin_{\bt,\bphi}-\sum_{i=1}^N\mathbb{E}_{q_{\bphi}\left(\boldsymbol{z}\vert \bx_i \right)}\left[\log p_{\bt}(\bx_i\vert \boldsymbol{z}) \right] - D_{\mathrm{KL}}\left(q_{\bphi}\left(\boldsymbol{z}\vert\bx_i \right) \Vert p_{\bt}\left(\boldsymbol{z}\right)\right) \\ \label{VAE:finalargmin}
  & = \argmin_{\bt, \bphi}-\sum_{i = 1}^N\left(\frac{1}{P}\sum_{j = 1}^P \log p_{\bt}\left(\bx_i\vert \bz_{i,j}\right) +   \frac{1}{2}\sum_{j=1}^P\left(1 + \log\sigma^2_{i,j} -\mu_{i,j}^2 -\sigma_{i,j}^2 \right)\right).
 \end{align}
+
+\begin{example}[Toy problem]
+The goal of this example is to verify that VAE can be used to generate new data. Assume that we have a dataset of 2D observations generated from the unknown distribution and that we would like to sample new observations from this distribution. Let the probabilistic decoder be in Gaussian form \ref{eq:VAE_decoder}, but with identity matrix as a covariance matrix; therefore,
+\begin{equation}
+p_{\bt}\left(\bx\vert\boldsymbol{z}\right) = \pazocal{N}\left(\boldsymbol{x};f_{\bt}\left(\boldsymbol{z}\right),\mathbb{I}_D \right).
+\end{equation}
+This allows us to once again rewrite Equation \eqref{VAE:finalargmin} in concrete form
+\begin{align}
+  \widehat{\bt}, \widehat{\bphi}  &=\argmin_{\bt, \bphi}-\sum_{i = 1}^N\left(\frac{1}{P}\sum_{j = 1}^P \log \pazocal{N}\left(\boldsymbol{x}_i;f_{\bt}\left(\boldsymbol{z}_{i,j}\right),\mathbb{I}_D \right) +   \frac{1}{2}\sum_{j=1}^P\left(1 + \log\sigma^2_{i,j} -\mu_{i,j}^2 -\sigma_{i,j}^2 \right)\right) \\
+  &=\argmin_{\bt, \bphi}-\sum_{i = 1}^N\left(\frac{1}{P}\sum_{j = 1}^P \left(\bx_i -f\left(\bz_{i,j} \right)\right)^\top\left(\bx_i -f\left(\bz_{i,j} \right)\right)+   \frac{1}{2}\sum_{j=1}^P\left(1 + \log\sigma^2_{i,j} -\mu_{i,j}^2 -\sigma_{i,j}^2 \right)\right),
+\end{align}
+where $f_{\bt}, \boldsymbol{\mu}$ and $\boldsymbol{\sigma}$ are represented via the neural network (NN). For the training of parameters $\widehat{\bt}$ and $\widehat{\bphi}$, the ADAM optimization algorithm [] is used. It  with standard default values, the learning rate $\alpha =0.001$, the decay rates $\beta_1=0.9$, $\beta_2=0.999$, and finally $\epsilon =10^{-8}$. The results are shown in Figure \ref{fig:VAE_example}, where the true data and the estimated data are depicted. The estimated distribution is very close to the true distribution, as the pattern of samples is very similar. This experiment confirms that VAE works.
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{plots/Images/VAE_example.pdf}
+	\caption{True and estimated samples using VAE.}%
+	\label{fig:VAE_example}%
+\end{figure}
+
+
+\end{example}
 
