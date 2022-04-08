@@ -1,0 +1,24 @@
+
+\section{Solution of $\KL{\pazocal{N}\left(\boldsymbol{z}; \boldsymbol{\mu},\sigma^2\mathbb{I}_P  \right) }{\pazocal{N}\left(\boldsymbol{z}; \boldsymbol{0},\mathbb{I}_P^{}  \right)}$}
+In the VAE section, the ELBO \eqref{eq:VAEloss} is derived and subsequently optimized. One of the ELBO expressions is the KL distance mentioned above. For two multivariate Gaussian distributions we have a KL distance analytical solution. The complete calculation is given here. First, recall that PDF for a multivariate Gaussian distribution in $\R^P$ with mean $\boldsymbol{\mu}$ and covariance matrix $\boldsymbol{\Sigma}$ is defined as
+\begin{equation}
+    \pazocal{N}\left(\boldsymbol{z}; \boldsymbol{\mu},\boldsymbol{\Sigma}  \right) = \frac{1}{\sqrt{\left(2\pi\right)^P\det\boldsymbol{\Sigma}}}\exp\left(-\frac{1}{2}\left(\boldsymbol{z} - \boldsymbol{\mu}\right)^\top\boldsymbol{\Sigma}^{-1}\left(\boldsymbol{z} - \boldsymbol{\mu}\right) \right).
+\end{equation}
+
+
+\begin{align}
+    \mathrm{KL} &= \KL{\pazocal{N}\left(\boldsymbol{z}; \boldsymbol{\mu}_1,\boldsymbol{\Sigma}_1  \right)}{\pazocal{N}\left(\boldsymbol{z}; \boldsymbol{\mu}_2,\boldsymbol{\Sigma}_2  \right)}  = \mathbb{E}_{\pazocal{N}\left(\boldsymbol{\mu}_1,\boldsymbol{\Sigma}_1\right)}\left[\log\pazocal{N}\left(\boldsymbol{\mu}_1,\boldsymbol{\Sigma}_1\right) - \log\pazocal{N}\left(\boldsymbol{\mu}_2,\boldsymbol{\Sigma}_2\right) \right]  
+    \\
+    &= \frac{1}{2}\mathbb{E}_{\pazocal{N}\left(\boldsymbol{\mu}_1,\boldsymbol{\Sigma}_1\right)}\left[-\log\det\boldsymbol{\Sigma}_1 - \left(\boldsymbol{z} - \boldsymbol{\mu}_1\right)^\top\boldsymbol{\Sigma}^{-1}_1\left(\boldsymbol{z}-\boldsymbol{\mu}_1\right) + \log\det\boldsymbol{\Sigma}_2+\left(\boldsymbol{z} - \boldsymbol{\mu}_1\right)^\top\boldsymbol{\Sigma}^{-1}_1\left(\boldsymbol{z}-\boldsymbol{\mu}_1\right) \right] \\
+    &= \frac{1}{2}\log\frac{\det\boldsymbol{\Sigma}_2}{\det\boldsymbol{\Sigma}_1} + \frac{1}{2}\mathbb{E}_{\pazocal{N}\left(\boldsymbol{\mu}_1,\boldsymbol{\Sigma}_1\right)} \left[-\left(\boldsymbol{z} - \boldsymbol{\mu}_1\right)^\top\boldsymbol{\Sigma}^{-1}_1\left(\boldsymbol{z}-\boldsymbol{\mu}_1\right) + \left(\boldsymbol{z} -\boldsymbol{\mu}_2\right)^\top\boldsymbol{\Sigma}^{-1}_2\left(\boldsymbol{z}-\boldsymbol{\mu}_2\right)\right]
+    \\
+    &= \frac{1}{2}\log\frac{\det\boldsymbol{\Sigma}_2}{\det\boldsymbol{\Sigma}_1} + \frac{1}{2}\mathbb{E}_{\pazocal{N}\left(\boldsymbol{\mu}_1,\boldsymbol{\Sigma}_1\right)} \left[-\Tr\left(\boldsymbol{\Sigma}_1^{-1}\left(\boldsymbol{z} - \boldsymbol{\mu}_1\right)\left(\boldsymbol{z} - \boldsymbol{\mu}_1\right)^\top\right) + \Tr\left(\boldsymbol{\Sigma}_2^{-1}\left(\boldsymbol{z} - \boldsymbol{\mu}_2\right)\left(\boldsymbol{z} - \boldsymbol{\mu}_2\right)^\top\right) \right]
+    \\
+    &= \frac{1}{2}\log\frac{\det\boldsymbol{\Sigma}_2}{\det\boldsymbol{\Sigma}_1} + \frac{1}{2}\mathbb{E}_{\pazocal{N}\left(\boldsymbol{\mu}_1,\boldsymbol{\Sigma}_1\right)} \left[-\Tr\left(\boldsymbol{\Sigma}_1^{-1}\boldsymbol{\Sigma}_1\right) +  \Tr\left(\boldsymbol{\Sigma}_2^{-1}\left(\bz\bz^\top - 2\bz\boldsymbol{\mu}_2^\top + \boldsymbol{\mu}_2\boldsymbol{\mu}_2^\top \right) \right)\right] 
+    \\
+    &= \frac{1}{2}\log\frac{\det\boldsymbol{\Sigma}_2}{\det\boldsymbol{\Sigma}_1} - \frac{1}{2}n + \frac{1}{2}\Tr\left(\boldsymbol{\Sigma}_2^{-1}\left(\boldsymbol{\Sigma}_1 +\boldsymbol{\mu}_1\boldsymbol{\mu}_1^\top - 2\boldsymbol{\mu}_2\boldsymbol{\mu}_1^\top  + \boldsymbol{\mu}_2\boldsymbol{\mu}_2^\top \right)\right)
+    \\
+     &= \frac{1}{2}\left( \log\frac{\det\boldsymbol{\Sigma}_2}{\det\boldsymbol{\Sigma}_1} - n +\Tr\left(\boldsymbol{\Sigma}_2^{-1}\boldsymbol{\Sigma}_1\right) + \Tr\left(\boldsymbol{\mu}_1^\top\boldsymbol{\Sigma}_2^{-1}\boldsymbol{\mu}_1 - 2\boldsymbol{\mu}_1^\top\boldsymbol{\Sigma}_2^{-1}\boldsymbol{\mu}_2 + \boldsymbol{\mu}_2^\top\boldsymbol{\Sigma}_2^{-1}\boldsymbol{\mu}_2 \right)\right)
+     \\
+      &=\frac{1}{2}\left( \log\frac{\det\boldsymbol{\Sigma}_2}{\det\boldsymbol{\Sigma}_1} - n +\Tr\left(\boldsymbol{\Sigma}_2^{-1}\boldsymbol{\Sigma}_1\right) + \left(\boldsymbol{\mu}_2 - \boldsymbol{\mu}_1\right)^\top\boldsymbol{\Sigma}_2^{-1}\left(\boldsymbol{\mu}_2 - \boldsymbol{\mu}_1\right)\right)
+\end{align}
