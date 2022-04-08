@@ -9,7 +9,7 @@ only on the one class at the time and builds a model what that certain class loo
 \begin{align}\label{eq:prob_decompostion}
 p\left(\bx,y\right) = p\left(\bx|y\right)\cdot p\left(y\right),
 \end{align}
-with joint PDF it is possible to generate new $\left(\bx',y'\right)$ pairs. In some cases, the use of the second decomposition $p\left(\bx,y\right) = p\left(y|\bx\right)\cdot p\left(\bx\right)$ is also an option.  Note that in an unsupervised setting, the task is reduced to inferring only $p\left(\bx\right)$.
+with joint PDF it is possible to generate new $\left\lbrace\bx',y'\right\rbrace$ pairs. In some cases, the use of the second decomposition $p\left(\bx,y\right) = p\left(y|\bx\right)\cdot p\left(\bx\right)$ is also an option.  Note that in an unsupervised setting, the task is reduced to inferring only $p\left(\bx\right)$.
 \begin{figure}[h]
 	\centering
 	\begin{minipage}{.5\textwidth}
@@ -26,8 +26,8 @@ with joint PDF it is possible to generate new $\left(\bx',y'\right)$ pairs. In s
 	\end{minipage}
 %\caption{Discriminative and Generative approach.}
 \end{figure}
-\section{Discriminative modeling}
-In this section, we review the basics of discriminative modeling proposed in \cite{HDGEmain}. Given a data distribution through the probability density $p(\boldsymbol{x})$ and a label distribution with probability density $p(y|\boldsymbol{x})$ containing $C$ categories. In this thesis, we focus on classification problems, where the label $y$ is now a qualitative variable, taking on $C$ possible values, and comes from a finite set $\pazocal{C}$.  A classification problem is typically solved using a parametric function $f_{\boldsymbol{\theta}} : \mathbb{R}^D \to \pazocal{C}$, where $\boldsymbol{\theta}$ denotes the parameters of the model. In practice, the function $f_{\boldsymbol{\theta}}$ is often used in the form of $\mathbb{R}^D \to  \mathbb{R}^C$. This function maps each data point $\boldsymbol{x} \in \mathbb{R}^D$ to $C$ real-valued numbers known as logits. It should be noted that $\mathbb{R}^C$ is allowed here due to the utilization of \emph{one-hot encoding}, which will be explained in Section \ref{OHE}. Logits are used to parameterize a categorical distribution through the function
+\section{Discriminative Modeling}
+In this section, we review the basics of discriminative modeling proposed in \cite{HDGEmain}. Given a data distribution through the probability density $p(\boldsymbol{x})$ and a label distribution with probability density $p(y|\boldsymbol{x})$ containing $C$ categories. In this thesis, we focus on classification problems, where the label $y$ is now a qualitative variable, taking on $C$ possible values and comes from a finite set $\pazocal{C}$.  A classification problem is typically solved using a parametric function $f_{\boldsymbol{\theta}}~:~\mathbb{R}^D~\to~\pazocal{C}$, where $\boldsymbol{\theta}$ denotes the parameters of the model. In practice, the function $f_{\boldsymbol{\theta}}$ is often used in the form of $\mathbb{R}^D \to  \mathbb{R}^C$. This function maps each data point $\boldsymbol{x} \in \mathbb{R}^D$ to $C$ real-valued numbers known as logits. It should be noted that $\mathbb{R}^C$ is allowed here due to the utilization of \emph{one-hot encoding}, which will be explained in Section \ref{OHE}. Logits are used to parameterize a categorical distribution through the function
 \begin{equation}\label{softmax}
 	q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right) = \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{y\in\pazocal{C}}\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)},
 \end{equation}
@@ -56,7 +56,7 @@ the first term does not depend on $\bt$ and therefore minimizing either CE or KL
 \begin{equation}
 \min_{\boldsymbol{\theta}} D_{\mathrm{KL}} \left(p(y| \boldsymbol{x}) \Vert q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right) \right) = \min_{\boldsymbol{\theta}} - \E_{p(y| \boldsymbol{x})}\left[ \log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right].
 \end{equation}
-For the sake of clarity, the expected value will be discussed. In practice, it is dealt with discrete data, so the term $\E_{ p(y| \boldsymbol{x})}\left[\log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right]$ takes the form of
+For the sake of clarity, the expected value will be discussed. In practice, it is dealt with with discrete data, so the term $\E_{ p(y| \boldsymbol{x})}\left[\log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right]$ takes the form of
 \begin{equation}
     \E_{p(y| \boldsymbol{x})}\left[\log q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)\right] \approx \sum_{k=1}^C p(y_k| \boldsymbol{x})\log q_{\boldsymbol{\theta}}\left(y_k|\boldsymbol{x}\right).
 \end{equation}
@@ -65,22 +65,23 @@ This part deserves further discussion for a few reasons:
     \item Maximum likelihood estimation (MLE) of $\bt$ is equivalent to minimizing the KL distance.
     \item One may encounter the concepts of minimization or maximization of CE.
 \end{itemize}
-To address these reasons, it is necessary to briefly review the MLE. The principle of MLE assumes that the most reasonable
+To address these reasons, it is necessary to briefly review the MLE. The MLE principle assumes that the most reasonable
 values for $\bt$ are those for which the probability of the observed sample is
 highest. Since $q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)$ is model PDF, we have to follow the objective function
 \begin{equation}
-   \pazocal{L}\left(\bt^{}\right)= \sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right).
+   \pazocal{L}\left(\bt^{}\right)= \sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right),
 \end{equation}
-Further optimization of $\pazocal{L}\left(\bt\right)$ gives 
+which is up to the factor $-\frac{1}{N}$ same as \eqref{crossentropy}. Clearly, this changes only the value of $\pazocal{L}\left(\bt^{}\right)$, but not the location of the optima, so from an optimization perspective, the distinction is not important. However, the negative sign is obviously important since it is the difference between maximizing and minimizing.
+Further optimization of $\pazocal{L}\left(\bt\right)$ gives the point estimate
 \begin{align}
-    \widehat{\bt}_{\mathrm{ML}} &= \argmax_{\bt} \sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right)\\  
-    &=\argmin_{\bt} -\sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right).
+    \widehat{\bt}_{\mathrm{ML}} &= \argmax_{\bt} \sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right)\label{eq:argmax}\\ 
+    &=\argmin_{\bt} -\sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right)\label{eq:argmin}.
 \end{align}
-
+It is more common to minimize a function than to maximize it in practice and therefore log--likelihood function is inverted by adding a negative sign to the front yielding a negative log--likelihood. 
 \subsection{One--hot encoding}\label{OHE}
- Machine learning (ML) algorithms can misinterpret the numeric values of labels if there exists a hierarchy between them. One--hot encoding is a very common approach for dealing with this issue, in order to improve the algorithm performance. Each unique category value is transformed into a new column, and these dummy variables are then filled with 0 or 1 (0 for FALSE and 1 for TRUE). For the sake of clarity, the transformation of a label encoding into a one--hot encoding is illustrated in the following table \ref{tab:OHE}. 
+ Machine learning (ML) algorithms can misinterpret the numeric values of labels if there exists a hierarchy between them. One--hot encoding is a very common approach for dealing with this issue, in order to improve the algorithm performance. Each unique category value is transformed into a new column and these dummy variables are then filled with 0 or 1 (0 for FALSE and 1 for TRUE). For the sake of clarity, the transformation of a label encoding into a one--hot encoding is illustrated in the following table \ref{tab:OHE}. 
  
- However, this method has its own downsides. For example, it creates new variables and if there exist many unique category values, the models have to deal with a large number of predictors, which leads to the so-called \emph{Big-p problem} \cite{Bigp}. Also, one--hot encoding causes multicolinearity between the individual variables, which may lead to reducing the model's accuracy. 
+ However, this method has its own downsides. For example, it creates new variables and if there exist many unique category values, the models have to deal with a large number of predictors, leading to the so-called \emph{Big-p problem} \cite{Bigp}. Also, one--hot encoding causes multicolinearity between the individual variables, which may lead to reducing the model's accuracy. 
  \begin{table}[h]
  \centering
  	\begin{tabular}{|l|l|l|}
@@ -101,18 +102,18 @@ Further optimization of $\pazocal{L}\left(\bt\right)$ gives
 	\caption{Transformation of a label encoding (left) to the one--hot encoding (right).}
 	\label{tab:OHE}
  \end{table}
-\section{Generative modeling}
+\section{Generative Modeling}
 
 \input{variational_autoencoder.tex}
 
-\subsection{Noise--contrastive estimation}
+\subsection{Noise--Contrastive Estimation}
 Suppose one has to estimate a model that is specified by an non-normalized probability density function $q^0_{\bt}\left(\boldsymbol{x}\right)$. In such a case, one can utilize noise--contrastive estimation (NCE). The first step is to introduce another parameter $c$ among the estimated parameters $\bt$. For clarity, the symbol $\bt^\star=\left\lbrace\bt^{},c^{}_{}\right\rbrace$ is introduced for the set of estimated parameters, including
-$c$. Using this notation, the following equality hold
+$c$. Using this notation, we can write the following equality
 \begin{align}
     \log q_{\bt^\star}\left(\boldsymbol{x}\right) = \log q_{\bt^\star}^0\left(\boldsymbol{x}\right) + c,
     \end{align}
 which means that the newly introduced parameter $c$ is an estimate of the negative logarithm of
-the normalization constant $Z\left(\bt\right)$.
+the normalization constant $Z\left(\bt\right)$ \eqref{eq:partitionfunction}.
 As the name suggests, we use noise to estimate. By our convention, let $\boldsymbol{X} = \left\lbrace\bx_1,\bx_2,\dots,\bx_N\right\rbrace$
 be the observations and $\boldsymbol{\Xi} = \left\lbrace\boldsymbol{\varepsilon}_1,\boldsymbol{\varepsilon}_2,\dots,\boldsymbol{\varepsilon}_N\right\rbrace$ be the artificially generated noise data with known distribution $\psi\left(\boldsymbol{\varepsilon}\right)$. The estimate $\widehat{\bt^\star}$ is then defined as
 \begin{align}
@@ -135,26 +136,26 @@ learning by comparison. To make the connection with SL more explicit, denote $U 
 \begin{equation}
     p\left(\boldsymbol{u}\vert y =1 \right) =  q_{\bt^\star}\left(\boldsymbol{u} \right) \qquad p\left(\boldsymbol{u}\vert y =0 \right) =  \psi\left(\boldsymbol{u} \right).
 \end{equation}
-Class labels are equally likely, so that $P\left(y = 1\right) =P\left(y = 0\right)=\frac{1}{2}$ and the posteriors are determined as follows
+Class labels are equally likely, so that $\mathrm{Pr}\left(y = 1\right) =\mathrm{Pr}\left(y = 0\right)=\frac{1}{2}$ and the posteriors are determined as follows
 \begin{align}
-    P\left( y=1 \vert\boldsymbol{u} \right) &= \frac{q_{\bt^\star}\left(\boldsymbol{u} \right)}{q_{\bt^\star}\left(\boldsymbol{u} \right) + \psi\left(\boldsymbol{u} \right)} = S_{\bt^\star}\left(\boldsymbol{u}\right),\\
-    P\left( y=0\vert \boldsymbol{u} \right) &= 1 - S_{\bt^\star}\left(\boldsymbol{u}\right).
+    \mathrm{Pr}\left( y=1 \vert\boldsymbol{u} \right) &= \frac{q_{\bt^\star}\left(\boldsymbol{u} \right)}{q_{\bt^\star}\left(\boldsymbol{u} \right) + \psi\left(\boldsymbol{u} \right)} = S_{\bt^\star}\left(\boldsymbol{u}\right),\\
+    \mathrm{Pr}\left( y=0\vert \boldsymbol{u} \right) &= 1 - S_{\bt^\star}\left(\boldsymbol{u}\right).
 \end{align}
 The class labels $y_i$ are Bernoulli--distributed so that
-for the log--likelihood we get
+for the log--likelihood of Bernoulli we get
 \begin{align}
-    \pazocal{L}^{\mathrm{NC}}\left(\bt\right) &= \sum_{i=1}^{2N} y_i\log P\left( y=1 \vert\boldsymbol{u}_i \right) + \left(1-y_i\right)\log P\left( y=0 \vert\boldsymbol{u}_i \right) \\
+    \pazocal{L}^{\mathrm{NC}}\left(\bt\right) &= \sum_{i=1}^{2N} y_i\log \mathrm{Pr}\left( y=1 \vert\boldsymbol{u}_i \right) + \left(1-y_i\right)\log \mathrm{Pr}\left( y=0 \vert\boldsymbol{u}_i \right) \\
     &= \sum_{i=1}^{N}\log S_{\bt^\star}\left(\boldsymbol{x}_i\right) +\log \left(1 - S_{\bt^\star}\left(\boldsymbol{\epsilon}_i\right)\right),
 \end{align}
-which is the equation that is optimized in \eqref{NCEloss1} or \eqref{NCEloss2}.
+which is the equation (up to extrinsic factor $\frac{1}{2N}$) that is optimized in \eqref{NCEloss1} or \eqref{NCEloss2}.
 \subsubsection{Choice of the contrastive noise PDF}
-The noise distribution $\psi\left(\boldsymbol{\varepsilon}\right)$ can be considered as a design parameter. But this choice is not completely arbitrary because in practice the noise distribution should meet certain conditions. These are:
+The noise distribution $\psi\left(\boldsymbol{\varepsilon}\right)$ can be considered as a design parameter. But this choice is not completely arbitrary, because in practice the noise distribution should meet certain conditions. These are:
 \begin{enumerate}
     \item It is easy to sample from, because NCE approach relies on artificially generated noise data $\boldsymbol{\varepsilon}_1,\boldsymbol{\varepsilon}_2,\dots,\boldsymbol{\varepsilon}_N$. 
-    \item Closed form for $\log\psi\left(. \right)$ in order to smoothly evaluate \eqref{eq:NCE_G}.
+    \item In order to smoothly evaluate \eqref{eq:NCE_G}, closed form for $\log\psi\left(. \right)$ is requisite.
     \item It leads to a small mean squared error $\mathbb{E}\left[\left(\widehat{\bt^\star} - \bt^\star\right)^2\right]$.
 \end{enumerate}
-The authors of [] suggest using Gaussian or uniform distribution, eventually a Gaussian mixture. 
+The authors of [] suggest using a Gaussian or uniform distribution, eventually a Gaussian mixture. 
 \begin{example}[One--dimensional Gaussian distribution]
 \begin{figure}[h]
 	\centering
@@ -174,7 +175,7 @@ where $\bt^\star = \left\lbrace \mu, \sigma^2, c \right\rbrace$. Next, we artifi
 \begin{align}\label{eq:NCE_noisedist1}
     \psi\left(e\right) = \frac{1}{\sqrt{2\pi 10}}\exp\left(-\frac{1}{2}\cdot\frac{e^2}{10} \right).
 \end{align}
-We choose the noise PDF intentionally so widely spread from its mean value because these two PDFs, i.e. \eqref{eq:NCE_datadist1} and \eqref{eq:NCE_noisedist1}, should at least partially overlap. At this point, we have all components available and it is possible to construct a function $-\pazocal{L}^{\mathrm{NC}}\left(\bt^\star\right)$ that is minimized by using stochastic gradient descent. The following figure shows the training process and the comparison between
+We choose the noise PDF intentionally so widely spread from its mean value because these two PDFs, i.e. \eqref{eq:NCE_datadist1} and \eqref{eq:NCE_noisedist1}, should at least partially overlap. At this point, we have all the components available and it is possible to construct a function $-\pazocal{L}^{\mathrm{NC}}\left(\bt^\star\right)$ that is minimized by using the ADAM optimization algorithm []. The following figure shows the training process and the comparison between
 the estimated distribution and the true one. As can be seen in Figure \ref{ex:NCE_1}, this approach works quite well and for more observations, the results would be even better. In addition, the minimization of $-\pazocal{L}^{\mathrm{NC}}\left(\bt^\star\right)$ is very fast.
 
 
@@ -188,13 +189,13 @@ the estimated distribution and the true one. As can be seen in Figure \ref{ex:NC
 	\caption{Results of the NCE experiment for two--dimensional Gaussian case.}%
 	\label{ex:NCE_2}%
 \end{figure}
-\end{example}
+
 The one--dimensional case may seem too simple, and therefore an example with a two-dimensional Gaussian distribution was performed. The experimental setup remains nearly the same; only the dimensionality of the problem differs. 
 
 Recall that the non--normalized multivariate Gaussian distribution in $\R^2$ can be written as
 \begin{equation}
    q_{\bt^\star}\left(\bx\right) = \exp\left(-\frac{1}{2}\left(\boldsymbol{x} - \boldsymbol{\mu}\right)^\top\boldsymbol{\Sigma}^{-1}\left(\boldsymbol{x} - \boldsymbol{\mu}\right)+ c \right),
 \end{equation}
-where $\boldsymbol{\mu} \in \R^2$ and $\boldsymbol{\Sigma}\in \R^{2\times 2}$ is a symmetric and positive semidefinite covariance matrix. As noise PDF is chosen 
+where $\boldsymbol{\mu} \in \R^2$ and $\boldsymbol{\Sigma}\in \R^{2\times 2}$ is a symmetric and positive semidefinite covariance matrix. As the noise PDF is chosen 
 $\psi\left(\boldsymbol{e}\right)=\pazocal{N}\left(\boldsymbol{e}; \boldsymbol{\mu}_1,\boldsymbol{\Sigma}_1\right)$, where $\boldsymbol{\mu}_1 = \left(2,2\right)^\top$ and $\boldsymbol{\Sigma}_1=10\cdot\mathbb{I}_2$. Figure \ref{ex:NCE_2} shows the results in a similar vein to the previous case.
-
+\end{example}
