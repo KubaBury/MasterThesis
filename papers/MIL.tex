@@ -17,7 +17,7 @@ where $\vert \pazocal{D}^\star \vert$ apparently denotes the size of $\pazocal{D
 	\label{MILvsML}%
 \end{figure}
 \section{Embedded-space paradigm}
-Very elegant solution to deal with samples on the level bags provides an embedded--space paradigm\cite{mandlik}. This paradigm defines a vector space for the representation of bags and specifies a mapping from each bag $b\in \pazocal{B}$ to this space. Assume that the target vector space is $\R^D$, then the partial mapping $\phi_i$: $\pazocal{B} \to \R,~~ i\in\left\lbrace1,2\dots, D\right\rbrace$~~is defined and overall embedding $\boldsymbol{\phi}: \pazocal{B} \to \R^D $ is given by
+Very elegant solution to deal with samples on the level of bags provides an embedded--space paradigm\cite{mandlik}. This paradigm defines a vector space for the representation of bags and specifies a mapping from each bag $b\in \pazocal{B}$ to this space. Assume that the target vector space is $\R^D$, then the partial mapping $\phi_i$: $\pazocal{B} \to \R,~~ i\in\left\lbrace1,2\dots, D\right\rbrace$~~is defined and overall embedding $\boldsymbol{\phi}: \pazocal{B} \to \R^D $ is given by
 \begin{align}
 	\boldsymbol{\phi}(b) &= \left(\phi_1(b), \phi_2(b), \dots, \phi_D(b)\right)\\
 	&= \left(\phi_1\left(\left\lbrace \bx \right\rbrace_{\bx \in b}\right), \phi_2\left(\left\lbrace \bx \right\rbrace_{\bx \in b}\right), \dots, \phi_D\left(\left\lbrace \bx \right\rbrace_{\bx \in b}\right)\right).
@@ -26,12 +26,12 @@ Mappings $\phi_i$ are instrumental in obtaining and aggregating the appropriate 
 \begin{equation}
 	\phi_i(b)=g\left( k\left\lbrace\boldsymbol{x}\right\rbrace_{\boldsymbol{x} \in b}\right).
 \end{equation}
-On the resulting embedded representation of bag samples, any standard machine learning algorithm can be applied, that is, training a bag-level classifier $f_{\boldsymbol{\theta}}^B :\R^D \to \pazocal{C}$ using an adjusted dataset $\pazocal{D}^\star_{\mathrm{ES}}~=~\Big\lbrace \left(\boldsymbol{\phi}(b_i), y_i\right)~\in~\R^D\times\pazocal{C}~\ ~|~\ i~\in~\big\lbrace 1,2,\dots,\vert D\vert\big\rbrace\Big\rbrace$. The most widely used aggregation functions are minimum, maximum, or mean value
+On the resulting embedded representation of bag samples, any standard machine learning algorithm can be applied, that is, training a bag-level classifier $f_{\boldsymbol{\theta}}^B :\R^D \to \pazocal{C}$ using an adjusted dataset $\pazocal{D}^\star_{\mathrm{ES}}~=~\Big\lbrace \left(\boldsymbol{\phi}(b_i), y_i\right)~\in~\R^D\times\pazocal{C}~\ ~|~\ i~\in~\big\lbrace 1,2,\dots,\vert \pazocal{D}^\star\vert\big\rbrace\Big\rbrace$. The most widely used aggregation functions are minimum, maximum, or mean value
 \begin{equation}
-    g\left(\left\lbrace x_1,x_2,\dots,x_D \right\rbrace \right) = \begin{cases}
-	 \min \left\lbrace x_1,x_2,\dots,x_D\right\rbrace\\
-	 \max  \left\lbrace x_1,x_2,\dots,x_D\right\rbrace\\
-	 \frac{1}{D}\sum_{i=1}^D x_i \\
+    g\left(\left\lbrace \bx_1,\bx_2,\dots,\bx_{\vert b \vert} \right\rbrace \right) = \begin{cases}
+	 \min \left\lbrace \bx_1,\bx_2,\dots,\bx_{\vert b \vert}\right\rbrace\\
+	 \max  \left\lbrace \bx_1,\bx_2,\dots,\bx_{\vert b \vert}\right\rbrace\\
+	 \frac{1}{\vert b \vert}\sum_{\bx \in b} \bx \\
 \end{cases}   
 \end{equation}
 \section{Training}\label{MILtraining}

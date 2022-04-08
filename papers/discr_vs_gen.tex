@@ -26,8 +26,8 @@ with joint PDF it is possible to generate new $\left\lbrace\bx',y'\right\rbrace$
 	\end{minipage}
 %\caption{Discriminative and Generative approach.}
 \end{figure}
-\section{Discriminative modeling}
-In this section, we review the basics of discriminative modeling proposed in \cite{HDGEmain}. Given a data distribution through the probability density $p(\boldsymbol{x})$ and a label distribution with probability density $p(y|\boldsymbol{x})$ containing $C$ categories. In this thesis, we focus on classification problems, where the label $y$ is now a qualitative variable, taking on $C$ possible values, and comes from a finite set $\pazocal{C}$.  A classification problem is typically solved using a parametric function $f_{\boldsymbol{\theta}} : \mathbb{R}^D \to \pazocal{C}$, where $\boldsymbol{\theta}$ denotes the parameters of the model. In practice, the function $f_{\boldsymbol{\theta}}$ is often used in the form of $\mathbb{R}^D \to  \mathbb{R}^C$. This function maps each data point $\boldsymbol{x} \in \mathbb{R}^D$ to $C$ real-valued numbers known as logits. It should be noted that $\mathbb{R}^C$ is allowed here due to the utilization of \emph{one-hot encoding}, which will be explained in Section \ref{OHE}. Logits are used to parameterize a categorical distribution through the function
+\section{Discriminative Modeling}
+In this section, we review the basics of discriminative modeling proposed in \cite{HDGEmain}. Given a data distribution through the probability density $p(\boldsymbol{x})$ and a label distribution with probability density $p(y|\boldsymbol{x})$ containing $C$ categories. In this thesis, we focus on classification problems, where the label $y$ is now a qualitative variable, taking on $C$ possible values and comes from a finite set $\pazocal{C}$.  A classification problem is typically solved using a parametric function $f_{\boldsymbol{\theta}}~:~\mathbb{R}^D~\to~\pazocal{C}$, where $\boldsymbol{\theta}$ denotes the parameters of the model. In practice, the function $f_{\boldsymbol{\theta}}$ is often used in the form of $\mathbb{R}^D \to  \mathbb{R}^C$. This function maps each data point $\boldsymbol{x} \in \mathbb{R}^D$ to $C$ real-valued numbers known as logits. It should be noted that $\mathbb{R}^C$ is allowed here due to the utilization of \emph{one-hot encoding}, which will be explained in Section \ref{OHE}. Logits are used to parameterize a categorical distribution through the function
 \begin{equation}\label{softmax}
 	q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right) = \frac{\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)}{\sum_{y\in\pazocal{C}}\exp\left({f_{\boldsymbol{\theta}}\left(\boldsymbol{x}\right)[y]}\right)},
 \end{equation}
@@ -69,18 +69,19 @@ To address these reasons, it is necessary to briefly review the MLE. The MLE pri
 values for $\bt$ are those for which the probability of the observed sample is
 highest. Since $q_{\boldsymbol{\theta}}\left(y|\boldsymbol{x}\right)$ is model PDF, we have to follow the objective function
 \begin{equation}
-   \pazocal{L}\left(\bt^{}\right)= \sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right).
+   \pazocal{L}\left(\bt^{}\right)= \sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right),
 \end{equation}
-Further optimization of $\pazocal{L}\left(\bt\right)$ gives 
+which is up to the factor $-\frac{1}{N}$ same as \eqref{crossentropy}. Clearly, this changes only the value of $\pazocal{L}\left(\bt^{}\right)$, but not the location of the optima, so from an optimization perspective, the distinction is not important. However, the negative sign is obviously important since it is the difference between maximizing and minimizing.
+Further optimization of $\pazocal{L}\left(\bt\right)$ gives the point estimate
 \begin{align}
-    \widehat{\bt}_{\mathrm{ML}} &= \argmax_{\bt} \sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right)\\  
-    &=\argmin_{\bt} -\sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right).
+    \widehat{\bt}_{\mathrm{ML}} &= \argmax_{\bt} \sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right)\label{eq:argmax}\\ 
+    &=\argmin_{\bt} -\sum_{i=1}^{N}\log q_{\boldsymbol{\theta}}\left(y_i|\boldsymbol{x}_i\right)\label{eq:argmin}.
 \end{align}
-
+It is more common to minimize a function than to maximize it in practice and therefore log--likelihood function is inverted by adding a negative sign to the front yielding a negative log--likelihood. 
 \subsection{One--hot encoding}\label{OHE}
  Machine learning (ML) algorithms can misinterpret the numeric values of labels if there exists a hierarchy between them. One--hot encoding is a very common approach for dealing with this issue, in order to improve the algorithm performance. Each unique category value is transformed into a new column and these dummy variables are then filled with 0 or 1 (0 for FALSE and 1 for TRUE). For the sake of clarity, the transformation of a label encoding into a one--hot encoding is illustrated in the following table \ref{tab:OHE}. 
  
- However, this method has its own downsides. For example, it creates new variables and if there exist many unique category values, the models have to deal with a large number of predictors, which leads to the so-called \emph{Big-p problem} \cite{Bigp}. Also, one--hot encoding causes multicolinearity between the individual variables, which may lead to reducing the model's accuracy. 
+ However, this method has its own downsides. For example, it creates new variables and if there exist many unique category values, the models have to deal with a large number of predictors, leading to the so-called \emph{Big-p problem} \cite{Bigp}. Also, one--hot encoding causes multicolinearity between the individual variables, which may lead to reducing the model's accuracy. 
  \begin{table}[h]
  \centering
  	\begin{tabular}{|l|l|l|}
@@ -101,11 +102,11 @@ Further optimization of $\pazocal{L}\left(\bt\right)$ gives
 	\caption{Transformation of a label encoding (left) to the one--hot encoding (right).}
 	\label{tab:OHE}
  \end{table}
-\section{Generative modeling}
+\section{Generative Modeling}
 
 \input{variational_autoencoder.tex}
 
-\subsection{Noise--contrastive estimation}
+\subsection{Noise--Contrastive Estimation}
 Suppose one has to estimate a model that is specified by an non-normalized probability density function $q^0_{\bt}\left(\boldsymbol{x}\right)$. In such a case, one can utilize noise--contrastive estimation (NCE). The first step is to introduce another parameter $c$ among the estimated parameters $\bt$. For clarity, the symbol $\bt^\star=\left\lbrace\bt^{},c^{}_{}\right\rbrace$ is introduced for the set of estimated parameters, including
 $c$. Using this notation, we can write the following equality
 \begin{align}
@@ -135,18 +136,18 @@ learning by comparison. To make the connection with SL more explicit, denote $U 
 \begin{equation}
     p\left(\boldsymbol{u}\vert y =1 \right) =  q_{\bt^\star}\left(\boldsymbol{u} \right) \qquad p\left(\boldsymbol{u}\vert y =0 \right) =  \psi\left(\boldsymbol{u} \right).
 \end{equation}
-Class labels are equally likely, so that $P\left(y = 1\right) =P\left(y = 0\right)=\frac{1}{2}$ and the posteriors are determined as follows
+Class labels are equally likely, so that $\mathrm{Pr}\left(y = 1\right) =\mathrm{Pr}\left(y = 0\right)=\frac{1}{2}$ and the posteriors are determined as follows
 \begin{align}
-    P\left( y=1 \vert\boldsymbol{u} \right) &= \frac{q_{\bt^\star}\left(\boldsymbol{u} \right)}{q_{\bt^\star}\left(\boldsymbol{u} \right) + \psi\left(\boldsymbol{u} \right)} = S_{\bt^\star}\left(\boldsymbol{u}\right),\\
-    P\left( y=0\vert \boldsymbol{u} \right) &= 1 - S_{\bt^\star}\left(\boldsymbol{u}\right).
+    \mathrm{Pr}\left( y=1 \vert\boldsymbol{u} \right) &= \frac{q_{\bt^\star}\left(\boldsymbol{u} \right)}{q_{\bt^\star}\left(\boldsymbol{u} \right) + \psi\left(\boldsymbol{u} \right)} = S_{\bt^\star}\left(\boldsymbol{u}\right),\\
+    \mathrm{Pr}\left( y=0\vert \boldsymbol{u} \right) &= 1 - S_{\bt^\star}\left(\boldsymbol{u}\right).
 \end{align}
 The class labels $y_i$ are Bernoulli--distributed so that
-for the log--likelihood we get
+for the log--likelihood of Bernoulli we get
 \begin{align}
-    \pazocal{L}^{\mathrm{NC}}\left(\bt\right) &= \sum_{i=1}^{2N} y_i\log P\left( y=1 \vert\boldsymbol{u}_i \right) + \left(1-y_i\right)\log P\left( y=0 \vert\boldsymbol{u}_i \right) \\
+    \pazocal{L}^{\mathrm{NC}}\left(\bt\right) &= \sum_{i=1}^{2N} y_i\log \mathrm{Pr}\left( y=1 \vert\boldsymbol{u}_i \right) + \left(1-y_i\right)\log \mathrm{Pr}\left( y=0 \vert\boldsymbol{u}_i \right) \\
     &= \sum_{i=1}^{N}\log S_{\bt^\star}\left(\boldsymbol{x}_i\right) +\log \left(1 - S_{\bt^\star}\left(\boldsymbol{\epsilon}_i\right)\right),
 \end{align}
-which is the equation that is optimized in \eqref{NCEloss1} or \eqref{NCEloss2}.
+which is the equation (up to extrinsic factor $\frac{1}{2N}$) that is optimized in \eqref{NCEloss1} or \eqref{NCEloss2}.
 \subsubsection{Choice of the contrastive noise PDF}
 The noise distribution $\psi\left(\boldsymbol{\varepsilon}\right)$ can be considered as a design parameter. But this choice is not completely arbitrary, because in practice the noise distribution should meet certain conditions. These are:
 \begin{enumerate}
