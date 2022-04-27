@@ -3,9 +3,10 @@ using FileIO, JLD2, Statistics, Mill, Flux
 using Flux: throttle, @epochs
 using Mill: reflectinmodel
 using Base.Iterators: repeated
-using EvalMetrics
+# using EvalMetrics
 using Random
 using Plots
+using Zygote
 
 function seqids2bags(bagids)
 	c = countmap(bagids)
@@ -20,18 +21,23 @@ function csv2mill(problem)
 	y = map(b -> maximum(y[b]), bags)
 	(samples = BagNode(ArrayNode(x), bags), labels = y)
 end
-
-function labels2instances(x)
-    ym=map(x->x[1]*ones(x[2]),zip(softmax(model(x)),length.(x.bags)))
+function labels2instances(yb,xbl)
+    ym=map(x->x[1]*ones(x[2]),zip(yb,xbl))
 	y=vcat(ym...)
 	return [y';(1.0 .-y)']
+end
+function labels2instances(x)
+    xbl = Zygote.@ignore (length.(x.bags))
+    yb = softmax(model(x))[1,:]
+    labels2instances(yb,xbl)
 end
 
 
 data = "D:/VU/SCRIPTS/DataSets/Musk1"
 (x,y) = csv2mill(data)
 y_oh= Flux.onehotbatch((y.+1)[:],1:2) 
-y_oh_i = labels2instances(x)
+#y_oh_i = labels2instances(x)  #uvnitr se vola model!!! 
+y_oh_i = labels2instances(y,length.(x.bags))  
 
 v=size(x.data.data)[2]
 
@@ -73,7 +79,8 @@ s=0.02 #(0.02 pro hybrid loss1, 0.08 pro hybrodloss2)
 function L(x,y_oh_i)      #VAE loss    , x jsou instance      
     HID = encoder(x,y_oh_i)
     zsample = z(μ(HID),logσ(HID))
-    K = 0.5*diag((x.data.data .-decoder(zsample,y_oh_instances))' *(x.data.data .-decoder(zsample,y_oh_instances))) .+ s*KL(μ(HID),logσ(HID))'
+    # VS!! diag?
+    K = 0.5*sum((x.data.data .-decoder(zsample,y_oh_i)).^2) + s*sum(KL(μ(HID),logσ(HID)))
     return K
 end
 
